@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  # ---------------------------------------------------------------
+  # MCP Flow Visualizer
+  # Interactive demo showing how MCP connects an LLM to the AACT
+  # database schema. Open http://localhost:8090 in your browser.
+  # ---------------------------------------------------------------
+  visualizer:
+    build:
+      context: ./visualizer
+      dockerfile: Dockerfile
+    container_name: mcp-flow-visualizer
+    ports:
+      - "${PORT:-8090}:8090"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-}
+      - LLM_MODEL=${LLM_MODEL:-gpt-4.1-mini}
+    restart: unless-stopped

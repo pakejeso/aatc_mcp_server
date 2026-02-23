@@ -6,6 +6,8 @@ A read-only, lightweight [Model Context Protocol (MCP)](https://modelcontext.dev
 
 This server is a key component in a hybrid "Human-in-the-loop" architecture for SQL generation. It provides the schema context to the LLM but **does not execute any queries**, ensuring a safe and secure separation of concerns.
 
+The repository also includes an **interactive MCP Flow Visualizer** — a web app that demonstrates how the entire MCP architecture works, step by step, using real LLM calls.
+
 ## Architectural Context
 
 This server is designed to fit into the following workflow:
@@ -50,8 +52,8 @@ The server exposes the following resources:
 
 1.  Clone the repository:
     ```bash
-    git clone <repo_url>
-    cd aact-mcp-server
+    git clone https://github.com/pakejeso/aatc_mcp_server.git
+    cd aatc_mcp_server
     ```
 
 2.  Install dependencies:
@@ -59,7 +61,7 @@ The server exposes the following resources:
     pip install -e .
     ```
 
-### Running the Server
+### Running the MCP Server
 
 The server runs over `stdio` by default, as is common for MCP servers invoked by a parent process.
 
@@ -96,3 +98,67 @@ python test_server.py
 ```
 
 This script exercises all available resources and validates their output without requiring a database connection.
+
+---
+
+## MCP Flow Visualizer (Docker)
+
+The `visualizer/` directory contains an interactive web app that demonstrates the full MCP architecture. It lets you type a clinical trials query in natural language (any language) and watch the entire message flow unfold step by step — from user to backend to LLM to MCP server and back — with real JSON-RPC payloads and actual LLM-generated SQL.
+
+### Quick Start with Docker
+
+```bash
+# 1. Clone the repo
+git clone https://github.com/pakejeso/aatc_mcp_server.git
+cd aatc_mcp_server
+
+# 2. Create your .env file
+cp .env.example .env
+# Edit .env and set your OPENAI_API_KEY (required)
+
+# 3. Build and run
+docker compose up --build
+
+# 4. Open in your browser
+#    http://localhost:8090
+```
+
+That's it. The visualizer will be running at **http://localhost:8090**.
+
+### Environment Variables for the Visualizer
+
+| Variable | Required | Default | Description |
+| :--- | :---: | :--- | :--- |
+| `OPENAI_API_KEY` | **Yes** | — | Your OpenAI API key (or any OpenAI-compatible key) |
+| `OPENAI_BASE_URL` | No | `https://api.openai.com/v1` | Override for compatible endpoints (Azure, local LLMs, etc.) |
+| `LLM_MODEL` | No | `gpt-4.1-mini` | Model to use for SQL generation |
+| `PORT` | No | `8090` | Port the visualizer listens on |
+
+### What the Visualizer Shows
+
+The app animates 7 steps that correspond to the real MCP protocol flow:
+
+| Step | Direction | What Happens |
+| :---: | :--- | :--- |
+| 1 | User → Backend | Natural language query sent as HTTP request |
+| 2 | Backend → LLM | Backend wraps the query in a prompt |
+| 3 | LLM → MCP Server | JSON-RPC `initialize` handshake |
+| 4 | LLM ↔ MCP Server | LLM discovers available Resources via `resources/list` |
+| 5 | LLM ← MCP Server | LLM reads the full schema via `resources/read` |
+| 6 | LLM → Backend | LLM generates SQL using schema + user query |
+| 7 | Backend → User | Backend validates and returns the SQL |
+
+Each step has an expandable panel showing the actual JSON-RPC messages exchanged. The architecture diagram at the top animates in real time. Example queries are provided in English, Spanish, and French.
+
+### Running Without Docker
+
+If you prefer to run the visualizer directly:
+
+```bash
+cd visualizer
+pip install -r requirements.txt
+export OPENAI_API_KEY=sk-your-key
+python app.py
+```
+
+Open **http://localhost:8090** in your browser.

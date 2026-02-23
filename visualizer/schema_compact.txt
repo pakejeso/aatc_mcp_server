@@ -1,0 +1,513 @@
+-- AACT Database Schema (ctgov) - Key Tables
+-- All tables join to studies via nct_id
+
+TABLE ctgov.studies (70 cols):
+  nct_id character varying PK FK
+  nlm_download_date_description character varying
+  study_first_submitted_date date
+  results_first_submitted_date date
+  disposition_first_submitted_date date
+  last_update_submitted_date date
+  study_first_submitted_qc_date date
+  study_first_posted_date date
+  study_first_posted_date_type character varying
+  results_first_submitted_qc_date date
+  results_first_posted_date date
+  results_first_posted_date_type character varying
+  disposition_first_submitted_qc_date date
+  disposition_first_posted_date date
+  disposition_first_posted_date_type character varying
+  last_update_submitted_qc_date date
+  last_update_posted_date date
+  last_update_posted_date_type character varying
+  start_month_year character varying
+  start_date_type character varying
+  start_date date
+  verification_month_year character varying
+  verification_date date
+  completion_month_year character varying
+  completion_date_type character varying
+  completion_date date
+  primary_completion_month_year character varying
+  primary_completion_date_type character varying
+  primary_completion_date date
+  target_duration character varying
+  study_type character varying
+  acronym character varying
+  baseline_population text
+  brief_title text
+  official_title text
+  overall_status character varying
+  last_known_status character varying
+  phase character varying
+  enrollment integer
+  enrollment_type character varying
+  source character varying
+  limitations_and_caveats character varying
+  number_of_arms integer
+  number_of_groups integer
+  why_stopped character varying
+  has_expanded_access boolean
+  expanded_access_type_individual boolean
+  expanded_access_type_intermediate boolean
+  expanded_access_type_treatment boolean
+  has_dmc boolean
+  is_fda_regulated_drug boolean
+  is_fda_regulated_device boolean
+  is_unapproved_device boolean
+  is_ppsd boolean
+  is_us_export boolean
+  biospec_retention character varying
+  biospec_description text
+  ipd_time_frame character varying
+  ipd_access_criteria character varying
+  ipd_url character varying
+  plan_to_share_ipd character varying
+  plan_to_share_ipd_description character varying
+  created_at timestamp without time zone
+  updated_at timestamp without time zone
+  source_class character varying
+  delayed_posting character varying
+  expanded_access_nctid character varying
+  expanded_access_status_for_nctid character varying
+  fdaaa801_violation boolean
+  baseline_type_units_analyzed character varying
+
+TABLE ctgov.baseline_counts (6 cols):
+  nct_id character varying FK
+  result_group_id integer FK
+  ctgov_group_code character varying
+  units character varying
+  scope character varying
+  count integer
+
+TABLE ctgov.baseline_measurements (21 cols):
+  nct_id character varying FK
+  result_group_id integer FK
+  ctgov_group_code character varying
+  classification character varying
+  category character varying
+  title character varying
+  description text
+  units character varying
+  param_type character varying
+  param_value character varying
+  param_value_num numeric
+  dispersion_type character varying
+  dispersion_value character varying
+  dispersion_value_num numeric
+  dispersion_lower_limit numeric
+  dispersion_upper_limit numeric
+  explanation_of_na character varying
+  number_analyzed integer
+  number_analyzed_units character varying
+  population_description character varying
+  calculate_percentage character varying
+
+TABLE ctgov.brief_summaries (2 cols):
+  nct_id character varying FK
+  description text
+
+TABLE ctgov.browse_conditions (4 cols):
+  nct_id character varying FK
+  mesh_term character varying
+  downcase_mesh_term character varying
+  mesh_type character varying
+
+TABLE ctgov.browse_interventions (4 cols):
+  nct_id character varying FK
+  mesh_term character varying
+  downcase_mesh_term character varying
+  mesh_type character varying
+
+TABLE ctgov.calculated_values (18 cols):
+  nct_id character varying FK
+  number_of_facilities integer
+  number_of_nsae_subjects integer
+  number_of_sae_subjects integer
+  registered_in_calendar_year integer
+  nlm_download_date date
+  actual_duration integer
+  were_results_reported boolean
+  months_to_report_results integer
+  has_us_facility boolean
+  has_single_facility boolean
+  minimum_age_num integer
+  maximum_age_num integer
+  minimum_age_unit character varying
+  maximum_age_unit character varying
+  number_of_primary_outcomes_to_measure integer
+  number_of_secondary_outcomes_to_measure integer
+  number_of_other_outcomes_to_measure integer
+
+TABLE ctgov.central_contacts (7 cols):
+  nct_id character varying FK
+  contact_type character varying
+  name character varying
+  phone character varying
+  email character varying
+  phone_extension character varying
+  role character varying
+
+TABLE ctgov.conditions (3 cols):
+  nct_id character varying FK
+  name character varying
+  downcase_name character varying
+
+TABLE ctgov.countries (3 cols):
+  nct_id character varying FK
+  name character varying
+  removed boolean
+
+TABLE ctgov.design_group_interventions (3 cols):
+  nct_id character varying FK
+  design_group_id integer FK
+  intervention_id integer FK
+
+TABLE ctgov.design_groups (4 cols):
+  nct_id character varying FK
+  group_type character varying
+  title character varying
+  description text
+
+TABLE ctgov.design_outcomes (6 cols):
+  nct_id character varying FK
+  outcome_type character varying
+  measure text
+  time_frame text
+  population character varying
+  description text
+
+TABLE ctgov.designs (13 cols):
+  nct_id character varying FK
+  allocation character varying
+  intervention_model character varying
+  observational_model character varying
+  primary_purpose character varying
+  time_perspective character varying
+  masking character varying
+  masking_description text
+  intervention_model_description text
+  subject_masked boolean
+  caregiver_masked boolean
+  investigator_masked boolean
+  outcomes_assessor_masked boolean
+
+TABLE ctgov.detailed_descriptions (2 cols):
+  nct_id character varying FK
+  description text
+
+TABLE ctgov.documents (5 cols):
+  nct_id character varying FK
+  document_id character varying
+  document_type character varying
+  url character varying
+  comment text
+
+TABLE ctgov.drop_withdrawals (9 cols):
+  nct_id character varying FK
+  result_group_id integer FK
+  ctgov_group_code character varying
+  period character varying
+  reason character varying
+  count integer
+  drop_withdraw_comment character varying
+  reason_comment character varying
+  count_units integer
+
+TABLE ctgov.eligibilities (13 cols):
+  nct_id character varying FK
+  sampling_method character varying
+  gender character varying
+  minimum_age character varying
+  maximum_age character varying
+  healthy_volunteers character varying
+  population text
+  criteria text
+  gender_description text
+  gender_based boolean
+  adult boolean
+  child boolean
+  older_adult boolean
+
+TABLE ctgov.facilities (7 cols):
+  nct_id character varying FK
+  status character varying
+  name character varying
+  city character varying
+  state character varying
+  zip character varying
+  country character varying
+
+TABLE ctgov.facility_contacts (7 cols):
+  nct_id character varying FK
+  facility_id integer FK
+  contact_type character varying
+  name character varying
+  email character varying
+  phone character varying
+  phone_extension character varying
+
+TABLE ctgov.facility_investigators (4 cols):
+  nct_id character varying FK
+  facility_id integer FK
+  role character varying
+  name character varying
+
+TABLE ctgov.id_information (6 cols):
+  nct_id character varying FK
+  id_source character varying
+  id_value character varying
+  id_type character varying
+  id_type_description character varying
+  id_link character varying
+
+TABLE ctgov.intervention_other_names (3 cols):
+  nct_id character varying FK
+  intervention_id integer FK
+  name character varying
+
+TABLE ctgov.interventions (4 cols):
+  nct_id character varying FK
+  intervention_type character varying
+  name character varying
+  description text
+
+TABLE ctgov.ipd_information_types (2 cols):
+  nct_id character varying FK
+  name character varying
+
+TABLE ctgov.keywords (3 cols):
+  nct_id character varying FK
+  name character varying
+  downcase_name character varying
+
+TABLE ctgov.links (3 cols):
+  nct_id character varying FK
+  url character varying
+  description text
+
+TABLE ctgov.milestones (9 cols):
+  nct_id character varying FK
+  result_group_id integer FK
+  ctgov_group_code character varying
+  title character varying
+  period character varying
+  description text
+  count integer
+  milestone_description character varying
+  count_units character varying
+
+TABLE ctgov.outcome_analyses (21 cols):
+  nct_id character varying FK
+  outcome_id integer FK
+  non_inferiority_type character varying
+  non_inferiority_description text
+  param_type character varying
+  param_value numeric
+  dispersion_type character varying
+  dispersion_value numeric
+  p_value_modifier character varying
+  p_value double precision
+  ci_n_sides character varying
+  ci_percent numeric
+  ci_lower_limit numeric
+  ci_upper_limit numeric
+  ci_upper_limit_na_comment character varying
+  p_value_description character varying
+  method character varying
+  method_description text
+  estimate_description text
+  groups_description text
+  other_analysis_description text
+
+TABLE ctgov.outcome_analysis_groups (4 cols):
+  nct_id character varying FK
+  outcome_analysis_id integer FK
+  result_group_id integer FK
+  ctgov_group_code character varying
+
+TABLE ctgov.outcome_counts (7 cols):
+  nct_id character varying FK
+  outcome_id integer FK
+  result_group_id integer FK
+  ctgov_group_code character varying
+  scope character varying
+  units character varying
+  count integer
+
+TABLE ctgov.outcome_measurements (18 cols):
+  nct_id character varying FK
+  outcome_id integer FK
+  result_group_id integer FK
+  ctgov_group_code character varying
+  classification character varying
+  category character varying
+  title character varying
+  description text
+  units character varying
+  param_type character varying
+  param_value character varying
+  param_value_num numeric
+  dispersion_type character varying
+  dispersion_value character varying
+  dispersion_value_num numeric
+  dispersion_lower_limit numeric
+  dispersion_upper_limit numeric
+  explanation_of_na text
+
+TABLE ctgov.outcomes (12 cols):
+  nct_id character varying FK
+  outcome_type character varying
+  title text
+  description text
+  time_frame text
+  population text
+  anticipated_posting_date date
+  anticipated_posting_month_year character varying
+  units character varying
+  units_analyzed character varying
+  dispersion_type character varying
+  param_type character varying
+
+TABLE ctgov.overall_officials (4 cols):
+  nct_id character varying FK
+  role character varying
+  name character varying
+  affiliation character varying
+
+TABLE ctgov.participant_flows (4 cols):
+  nct_id character varying FK
+  recruitment_details text
+  pre_assignment_details text
+  units_analyzed character varying
+
+TABLE ctgov.pending_results (4 cols):
+  nct_id character varying FK
+  event character varying
+  event_date_description character varying
+  event_date date
+
+TABLE ctgov.provided_documents (7 cols):
+  nct_id character varying FK
+  document_type character varying
+  has_protocol boolean
+  has_icf boolean
+  has_sap boolean
+  document_date date
+  url character varying
+
+TABLE ctgov.reported_event_totals (8 cols):
+  nct_id character varying FK
+  ctgov_group_code character varying
+  event_type character varying
+  classification character varying
+  subjects_affected integer
+  subjects_at_risk integer
+  created_at timestamp without time zone
+  updated_at timestamp without time zone
+
+TABLE ctgov.reported_events (16 cols):
+  nct_id character varying FK
+  result_group_id integer FK
+  ctgov_group_code character varying
+  time_frame text
+  event_type character varying
+  default_vocab character varying
+  default_assessment character varying
+  subjects_affected integer
+  subjects_at_risk integer
+  description text
+  event_count integer
+  organ_system character varying
+  adverse_event_term character varying
+  frequency_threshold integer
+  vocab character varying
+  assessment character varying
+
+TABLE ctgov.responsible_parties (7 cols):
+  nct_id character varying FK
+  responsible_party_type character varying
+  name character varying
+  title character varying
+  organization character varying
+  affiliation text
+  old_name_title character varying
+
+TABLE ctgov.result_agreements (6 cols):
+  nct_id character varying FK
+  pi_employee character varying
+  agreement text
+  restriction_type character varying
+  other_details text
+  restrictive_agreement character varying
+
+TABLE ctgov.result_contacts (6 cols):
+  nct_id character varying FK
+  organization character varying
+  name character varying
+  phone character varying
+  email character varying
+  extension character varying
+
+TABLE ctgov.result_groups (5 cols):
+  nct_id character varying FK
+  ctgov_group_code character varying
+  result_type character varying
+  title character varying
+  description text
+
+TABLE ctgov.retractions (4 cols):
+  reference_id integer FK
+  pmid character varying
+  source character varying
+  nct_id character varying FK
+
+TABLE ctgov.search_results (6 cols):
+  nct_id character varying FK
+  name character varying
+  created_at timestamp without time zone
+  updated_at timestamp without time zone
+  grouping character varying
+  study_search_id integer FK
+
+TABLE ctgov.sponsors (4 cols):
+  nct_id character varying FK
+  agency_class character varying
+  lead_or_collaborator character varying
+  name character varying
+
+TABLE ctgov.study_references (4 cols):
+  nct_id character varying FK
+  pmid character varying
+  reference_type character varying
+  citation text
+
+TABLE ctgov.study_searches (8 cols):
+  save_tsv boolean
+  query character varying
+  grouping character varying
+  name character varying
+  beta_api boolean
+  created_at timestamp without time zone
+  updated_at timestamp without time zone
+  active boolean
+
+-- FOREIGN KEYS:
+  baseline_counts.result_group_id -> result_groups.id
+  baseline_measurements.result_group_id -> result_groups.id
+  design_group_interventions.design_group_id -> design_groups.id
+  design_group_interventions.intervention_id -> interventions.id
+  drop_withdrawals.result_group_id -> result_groups.id
+  facility_contacts.facility_id -> facilities.id
+  facility_investigators.facility_id -> facilities.id
+  intervention_other_names.intervention_id -> interventions.id
+  milestones.result_group_id -> result_groups.id
+  outcome_analyses.outcome_id -> outcomes.id
+  outcome_analysis_groups.outcome_analysis_id -> outcome_analyses.id
+  outcome_analysis_groups.result_group_id -> result_groups.id
+  outcome_counts.outcome_id -> outcomes.id
+  outcome_counts.result_group_id -> result_groups.id
+  outcome_measurements.outcome_id -> outcomes.id
+  outcome_measurements.result_group_id -> result_groups.id
+  reported_events.result_group_id -> result_groups.id
