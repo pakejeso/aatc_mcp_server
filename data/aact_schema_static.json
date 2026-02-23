@@ -1,0 +1,4033 @@
+{
+  "schema": "ctgov",
+  "tables": [
+    {
+      "table_name": "studies",
+      "table_schema": "ctgov",
+      "description": "Basic info about study, including study title, date study registered with ClinicalTrials.gov, date results first posted to ClinicalTrials.gov, dates for study start and completion, phase of study, enrollment status, planned or actual enrollment, number of study arms/groups, etc.",
+      "primary_key": "nct_id",
+      "domain": "Protocol & Results",
+      "rows_per_study": "one",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "(primary key)  NCT ID is a unique identification code given to each clinical study registered on ClinicalTrials.gov. The format is the letters \"NCT\" followed by an 8-digit number (for example, NCT00000419).",
+          "is_primary_key": true,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "nlm_download_date_description",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Date NLM made study available via their API.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "study_first_submitted_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"The _submitted suffix indicates the date that the responsible party pressed the release button in the ClinicalTrials.gov data submission system, thereby submitting the data for review prior to posting.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "results_first_submitted_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "This value is only available for studies that have results.  It is the date when the results were first received.  Per NLM: \"The _submitted suffix indicates the date that the responsible party pressed the release button in the ClinicalTrials.gov data submission system, thereby submitting the data for review prior to posting.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "disposition_first_submitted_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Date when a sponsor indicates that they will be delaying posting of results (and are certifying initial approval or new use), or when they apply for an extension of the deadline. Per NLM: \"The _submitted suffix indicates the date that the responsible party pressed the release button in the ClinicalTrials.gov data submission system, thereby submitting the data for review prior to posting.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "last_update_submitted_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"The _submitted suffix indicates the date that the responsible party pressed the release button in the ClinicalTrials.gov data submission system, thereby submitting the data for review prior to posting.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "study_first_submitted_qc_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"The _submitted_qc suffix indicates the submission date of the version of the record that met quality control criteria. It is common for there to be revisions between the first submission and the submission that meets qc criteria. Note this is not the date that the qc review was completed.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "study_first_posted_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"The _posted suffix indicates the date that a submission was made public on ClinicalTrials.gov. Typically, posting occurs the business day after qc review was successfully completed. We began collecting posted dates in early 2017. Dates from before then are estmates. All posted dates include a type attribute of Actual or Estimate.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "study_first_posted_date_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "results_first_submitted_qc_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"The _submitted_qc suffix indicates the submission date of the version of the record that met quality control criteria. It is common for there to be revisions between the first submission and the submission that meets qc criteria. Note this is not the date that the qc review was completed.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "results_first_posted_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"The _posted suffix indicates the date that a submission was made public on ClinicalTrials.gov. Typically, posting occurs the business day after qc review was successfully completed. We began collecting posted dates in early 2017. Dates from before then are estmates. All posted dates include a type attribute of Actual or Estimate.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "results_first_posted_date_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "disposition_first_submitted_qc_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"The _submitted_qc suffix indicates the submission date of the version of the record that met quality control criteria. It is common for there to be revisions between the first submission and the submission that meets qc criteria. Note this is not the date that the qc review was completed.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "disposition_first_posted_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"The _posted suffix indicates the date that a submission was made public on ClinicalTrials.gov. Typically, posting occurs the business day after qc review was successfully completed. We began collecting posted dates in early 2017. Dates from before then are estmates. All posted dates include a type attribute of Actual or Estimate.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "disposition_first_posted_date_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "last_update_submitted_qc_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"The _submitted_qc suffix indicates the submission date of the version of the record that met quality control criteria. It is common for there to be revisions between the first submission and the submission that meets qc criteria. Note this is not the date that the qc review was completed.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "last_update_posted_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Per NLM: \"From a utility standpoint, the new <last_update_posted> date is likely the date that most people want to search. We previously did not have this date available and the old <lastchanged_date> was the closest alternative, though problematic because it never meant what was implied by the name. The _posted suffix indicates the date that a submission was made public on ClinicalTrials.gov. Typically, posting occurs the business day after qc review was successfully completed. We began collecting posted dates in early 2017. Dates from before then are estmates. All posted dates include a type attribute of Actual or Estimate.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "last_update_posted_date_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "start_month_year",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "The value of the start date exactly as it is provided by ClinicalTrials.gov. Some studies have only month/year defined for the start date (ie. October, 2014). That value is stored in this column and the start_date column converts this value to a date by assigning it the last day of the month.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "start_date_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "start_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "The date the study started in a date-type format so that it can be used to find studies before/after/inclusive of a date or dates.  For studies that only provide month/year, the last day of the month is used.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "verification_month_year",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "The value of the verification date exactly as it is provided by ClinicalTrials.gov. Some studies have only month/year defined for the verification date (ie. October, 2014). That value is stored in this column and the verification_date column converts this value to a date by assigning it the first day of the month.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "verification_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "The date the study was last verified in a date-type format so that it can be used to find studies before/after/inclusive of a date or dates.  For studies that only provide month/year, the last day of the month is used.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "completion_month_year",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "The value of the completion date exactly as it is provided by ClinicalTrials.gov. Some studies have only month/year defined for the completion date (ie. October, 2014). That value is stored in this column and the completion_date column converts this value to a date by assigning it the first day of the month.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "completion_date_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "completion_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "The date the study was completed (as defined by NLM) in a date-type format so that it can be used to find studies before/after/inclusive of a date or dates.  For studies that only provide month/year, the last day of the month is used.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "primary_completion_month_year",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "The value of the primary completion date exactly as it is provided by ClinicalTrials.gov. Some studies have only month/year defined for the primary completion date (ie. October, 2014). That value is stored in this column and the primary_completion_date column converts this value to a date by assigning it the first day of the month.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "primary_completion_date_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "primary_completion_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "The primary completion date for the study (as defined by NLM) in a date-type format so that it can be used to find studies before/after/inclusive of a date or dates.  For studies that only provide month/year, the last day of the month is used.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "target_duration",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "study_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "acronym",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "baseline_population",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "brief_title",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "official_title",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "overall_status",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "last_known_status",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "phase",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "enrollment",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "For Interventional Study Design, Enrollment is required by FDAAA.    For Observational Study Design, Enrollment is required by ClinicalTrials.gov (*)",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "enrollment_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "source",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "limitations_and_caveats",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "number_of_arms",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "number_of_groups",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "why_stopped",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "has_expanded_access",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "expanded_access_type_individual",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "expanded_access_type_intermediate",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "expanded_access_type_treatment",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "has_dmc",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "is_fda_regulated_drug",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "is_fda_regulated_device",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "is_unapproved_device",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "is_ppsd",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "is_us_export",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "Product Manufactured in and Exported from the U.S.  Definition: Whether any drug product (including a biological product) or device product studied in the clinical study is manufactured in the United States or one of its territories and exported for study in a clinical study in another country. Select Yes/No.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "biospec_retention",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "biospec_description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "ipd_time_frame",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "ipd_access_criteria",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "ipd_url",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "plan_to_share_ipd",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "plan_to_share_ipd_description",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone",
+          "is_nullable": "NO",
+          "description": "(AACT assigned timestamp) Date/time the study was loaded into AACT from ClinicalTrials.gov",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone",
+          "is_nullable": "NO",
+          "description": "(AACT assigned timestamp) Last date/time the row was modified (At this point, this value should always be same ascreated_at)",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "source_class",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "delayed_posting",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "expanded_access_nctid",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "expanded_access_status_for_nctid",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "fdaaa801_violation",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "baseline_type_units_analyzed",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "baseline_counts",
+      "table_schema": "ctgov",
+      "description": "Sample size at baseline for each study group; usually a count of participants but can represent other units of measure such as 'hands', 'hips', etc.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "result_group_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "units",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "scope",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "count",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "baseline_measurements",
+      "table_schema": "ctgov",
+      "description": "Summaries of demographic & baseline measures collected by arm or comparison group and for the entire population of participants in the clinical study.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "result_group_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "classification",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "category",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "title",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "units",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "param_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "param_value",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "value provided as string",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "param_value_num",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "value provided as decimal",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_value",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "value provided as string",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_value_num",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "value provided as decimal",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_lower_limit",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "Used for reporting the lower limit of the interquartile range or full range.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_upper_limit",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "Used for reporting the upper limit of the interquartile range or full range.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "explanation_of_na",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "number_analyzed",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "number_analyzed_units",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "population_description",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "calculate_percentage",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "brief_summaries",
+      "table_schema": "ctgov",
+      "description": "A single text column that provides a brief description of the study.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "one",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "browse_conditions",
+      "table_schema": "ctgov",
+      "description": "NLM uses an internal algorithm to assess the data entered for a study and creates a list of standard MeSH terms that describe the condition(s) being addressed by the clinical trial.  This table provides the results of NLM's assessment",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "mesh_term",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Condition MeSH terms generated by NLM algorithm",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "downcase_mesh_term",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "N/A default to mesh",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "mesh_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Indicates the level of the MeSH term within the hierarchy",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "browse_interventions",
+      "table_schema": "ctgov",
+      "description": "NLM uses an internal algorithm to assess the data entered for a study and creates a list of standard MeSH terms that describe the intervention(s) being addressed by the clinical trial.  This table provides the results of NLM's assessment",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "mesh_term",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Intervention MeSH terms generated by NLM algorithm",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "downcase_mesh_term",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "N/A default to mesh",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "mesh_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Indicates the level of the MeSH term within the hierarchy",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "calculated_values",
+      "table_schema": "ctgov",
+      "description": "An AACT-provided table that contains info that's been calculated from the information received from ClinicalTrials.gov.  For example, number_of_facilities and actual_duration are provided in this table.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "one",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "number_of_facilities",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "count number of related facility rows",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "number_of_nsae_subjects",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "count number of related non-serious event rows",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "number_of_sae_subjects",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "count number of related serious event rows",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "registered_in_calendar_year",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "Year value of first_received_date which represents the year in which the study was registered",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "nlm_download_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Date NLM made study available via their API.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "actual_duration",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "Number of months between start_date & primary_completion_date",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "were_results_reported",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "Set to true if clinical_results exist",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "months_to_report_results",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "Number of months between primary_completion_date & first_received_results_date",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "has_us_facility",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "Set to true if the study has at least one facility in the USA. It is possible that some studies with sites in the USA will not be set to true if the study has not identified the facilities.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "has_single_facility",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "Set to true if the study has just one facility",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "minimum_age_num",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "convert minimum age to an integer",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "maximum_age_num",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "convert maximum age to an integer",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "minimum_age_unit",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "part of minimum age info that specifies units",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "maximum_age_unit",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "part of maximum age info that specifies units",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "number_of_primary_outcomes_to_measure",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "count number of primary outcomes that the investigator intends to measure",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "number_of_secondary_outcomes_to_measure",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "count number of secondary outcomes that the investigator intends to measure",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "number_of_other_outcomes_to_measure",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "count number of other outcomes that the investigator intends to measure",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "central_contacts",
+      "table_schema": "ctgov",
+      "description": "Contact info for people (primary & backup) who can answer questions concerning enrollment at any location of the study.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "contact_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": " 'backup' if value from <overall_contact_backup>\n'regular' if value from <overall_contact>",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "phone",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "email",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "phone_extension",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "role",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "conditions",
+      "table_schema": "ctgov",
+      "description": "Name(s) of the disease(s) or condition(s) studied in the clinical study, or the focus of the clinical study. Can include NLM's Medical Subject Heading (MeSH)-controlled vocabulary terms.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "downcase_name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "countries",
+      "table_schema": "ctgov",
+      "description": "Countries in which the study has facilities/sites.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "removed",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "True if value from removed_countries",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "design_group_interventions",
+      "table_schema": "ctgov",
+      "description": "A cross reference for groups/interventions.  If a study has multiple groups and multiple interventions, this table shows which interventions are associated with which groups.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "design_group_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "intervention_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        }
+      ]
+    },
+    {
+      "table_name": "design_groups",
+      "table_schema": "ctgov",
+      "description": "Defines the protocol-specified group, subgroup, or cohort of participants in a clinical trial assigned to receive specific intervention(s) or observations according to a protocol.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "group_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "title",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "This tag is available only of those studies that have results and indicates the date when the results were first received.  This field captures the arm label or the group cohort label for the records coming from study tables, and arm/group title for the results tables. ",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "design_outcomes",
+      "table_schema": "ctgov",
+      "description": "Description of planned outcome measures and observations that will describe patterns of diseases and traits/associations with exposures, risk factors or treatment.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "outcome_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "primary' if value from <primary_outcome>\n'secondary' if value from <secondary_outcome>",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "measure",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "time_frame",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "population",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "designs",
+      "table_schema": "ctgov",
+      "description": "Description of how the study will be conducted, including comparison group design and strategies for masking and allocating participants.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "one",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "allocation",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "intervention_model",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "observational_model",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "primary_purpose",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "time_perspective",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "masking",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "masking_description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "intervention_model_description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "subject_masked",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "Parse content of 'Masking:' section. If it includes  'Subject' set to true",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "caregiver_masked",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "Parse content of 'Masking:' section. If it includes  'Caregiver' set to true",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "investigator_masked",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "Parse content of 'Masking:' section. If it includes  'Investigator' set to true",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "outcomes_assessor_masked",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "Parse content of 'Masking:' section. If it includes  'Outcomes_Assessor' set to true",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "detailed_descriptions",
+      "table_schema": "ctgov",
+      "description": "A single text column that provides a detailed description of the study protocol.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "one",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "documents",
+      "table_schema": "ctgov",
+      "description": "The full study protocol and statistical analysis plan must be uploaded as part of results information submission, for studies with a Primary Completion Date on or after January 18, 2017. The protocol and statistical analysis plan may be optionally uploaded before results information submission and updated with new versions, as needed. Informed consent forms may optionally be uploaded at any time.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "document_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "document_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "url",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "comment",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "drop_withdrawals",
+      "table_schema": "ctgov",
+      "description": "Summarized information about how many participants withdrew from the study, when and why. This information explains disposition of participants relative to the numbers starting and completing the study (enumerated in the Milestones table).",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "result_group_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "period",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "reason",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "count",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "drop_withdraw_comment",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "reason_comment",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "count_units",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "eligibilities",
+      "table_schema": "ctgov",
+      "description": "Information about the criteria used to select participants; includes inclusion and exclusion criteria",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "one",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "sampling_method",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "gender",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "minimum_age",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "maximum_age",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "healthy_volunteers",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "population",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "criteria",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "gender_description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "gender_based",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "adult",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "child",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "older_adult",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "facilities",
+      "table_schema": "ctgov",
+      "description": "Name, address and recruiting status of the facilities participating in the study.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "status",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "city",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "state",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "zip",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "country",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "facility_contacts",
+      "table_schema": "ctgov",
+      "description": "Contact information for people responsible for the study at each facility. (primary and backup)  Facility contact information is available if the facility status (Facilities.Status) is \u2018Recruiting\u2019 or \u2018Not yet recruiting\u2019, and if the data provider has provided such information. Contact information is removed from the publicly available content at ClinicalTrials.gov when the facility is no longer recruiting, or when the overall study status (Studies.Overall_status) changes to indicate that the study has completed recruitment.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "facility_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "contact_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "primary' if from <contact>\n'backup' if from <contact_backup>\n",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "email",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "phone",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "phone_extension",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "facility_investigators",
+      "table_schema": "ctgov",
+      "description": "Names of the investigators at each study facility.  Facility investigator information is available if the facility status (Facilities.Status) is \u2018Recruiting\u2019 or \u2018Not yet recruiting\u2019, and if the data provider has provided such information. Investigator information is removed from the publicly available content at ClinicalTrials.gov when the facility is no longer recruiting, or when the overall study status (Studies.Overall_status) changes to indicate that the study has completed recruitment.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "facility_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "role",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "id_information",
+      "table_schema": "ctgov",
+      "description": "Identifiers (other than the NCT ID) that uniquely identify the study such as that assigned by the sponsor, or an NCT ID that had previously been used for the study.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "id_source",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "id_value",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "id_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "org_study_id' if value from <org_study_id>\n'secondary_id' if value  from <secondary_id>\n'nct_id' if value  from <nct_id>\n'nct_alias' if value  from <nct_alias>",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "id_type_description",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "id_link",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "intervention_other_names",
+      "table_schema": "ctgov",
+      "description": "Terns or phrases that are synonymous with an intervention.  (Each row is linked to one of the interventions associated with the study.)",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "intervention_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreig",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "interventions",
+      "table_schema": "ctgov",
+      "description": "The interventions or exposures (including drugs, medical devices, procedures, vaccines, and other products) of interest to the study, or associated with study arms/groups.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "intervention_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "ipd_information_types",
+      "table_schema": "ctgov",
+      "description": "",
+      "primary_key": "id",
+      "domain": "",
+      "rows_per_study": "",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "keywords",
+      "table_schema": "ctgov",
+      "description": "Provides words or phrases that best describe the protocol. Keywords help users find studies in the database. Can include NLM's Medical Subject Heading (MeSH)-controlled vocabulary terms.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "downcase_name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "N/A",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "links",
+      "table_schema": "ctgov",
+      "description": "Web site directly relevant to the protocol.  (ie, links to educational, research, government, and other non-profit Web pages)",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "url",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "milestones",
+      "table_schema": "ctgov",
+      "description": "Information summarizing the progress of participants through each stage of a study, including the number of participants who started and completed the trial. Enumeration of participants not completing the study is included in the Drop_Withdrawals table.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "result_group_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "title",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "period",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "count",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "milestone_description",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "count_units",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "outcome_analyses",
+      "table_schema": "ctgov",
+      "description": "Results of scientifically appropriate statistical analyses performed on primary and secondary study outcomes. Includes results for treatment effect estimates, confidence intervals and othe rmeasures of dispersion, and p-values.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "outcome_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "non_inferiority_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "non_inferiority_description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "param_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "param_value",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_value",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "p_value_modifier",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "The p-value modifier: typically a less than or greater than sign",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "p_value",
+          "data_type": "double precision",
+          "is_nullable": "YES",
+          "description": "Just the numeric part of the value provided - to 6-decimal place precision ",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "ci_n_sides",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "ci_percent",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "ci_lower_limit",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "ci_upper_limit",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "ci_upper_limit_na_comment",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "p_value_description",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "method",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "method_description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "estimate_description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "groups_description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "other_analysis_description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "outcome_analysis_groups",
+      "table_schema": "ctgov",
+      "description": "Identifies the comparison groups that were involved with each outcome analysis",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "outcome_analysis_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "result_group_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "outcome_counts",
+      "table_schema": "ctgov",
+      "description": "Sample size included in analysis for each outcome for each study group; usually participants but can represent other units of measure such as eyes 'lesions', etc.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "outcome_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "result_group_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "scope",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "units",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "count",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "outcome_measurements",
+      "table_schema": "ctgov",
+      "description": "Summary data for primary and secondary outcome measures for each study group. Includes parameter estimates and measures of dispersion/precision.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "outcome_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "result_group_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "classification",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "category",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "title",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "A concise name for the specific measure that will be used to determine the effect of the intervention(s) or, for observational studies. ",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "units",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "param_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "param_value",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Required if the outcome measure is continuous (e.g. blood pressure)",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "param_value_num",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "Created as a varchar dataype in order to store possible non-numeric values.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_value",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": " ",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_value_num",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_lower_limit",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "Used for reporting the lower limit of the interquartile range or full range.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_upper_limit",
+          "data_type": "numeric",
+          "is_nullable": "YES",
+          "description": "Used for reporting the upper limit of the interquartile range or full range.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "explanation_of_na",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "outcomes",
+      "table_schema": "ctgov",
+      "description": "Descriptions of outcomes, or observation that were measured to determine patterns of diseases or traits, or associations with exposures, risk factors, or treatment. Includes information such as time frame, population and units.  (Specific measurement results are stored in the Outcome_Measurements table.)",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "outcome_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "title",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "time_frame",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "population",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "anticipated_posting_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "This is the date-type value of anticipated_posting_month_year.  The last day of the month is used as the 'day'.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "anticipated_posting_month_year",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "A study may have records in the Outcomes table but no corresponding records in either the Outcome_Measures or Otucome_Counts table.  These may be studies that have indicated which outcome measures they will provide results for, but have not yet posted the final results for these measures.  For these studies and outcome measures the value of anticipated_posting_date indicates the anticipated date when results will be provided.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "units",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "units_analyzed",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "dispersion_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "param_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "overall_officials",
+      "table_schema": "ctgov",
+      "description": "People responsible for the overall scientific leadership of the protocol including the principal investigator.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "role",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "affiliation",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "participant_flows",
+      "table_schema": "ctgov",
+      "description": "Recruitment information relevant to the recruitment process & pre-assignment details (ie. significant events in the study that occur after participant enrollment, but prior to assignment of participants).  Information about participant flow that applies to all milestones.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "one",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "recruitment_details",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "pre_assignment_details",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "units_analyzed",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "pending_results",
+      "table_schema": "ctgov",
+      "description": "Provides information about events related to the submission of study results for quality control (QC) review before the results are publicly posted.  Events reported: submissions, cancellations and returns for modifications.  'Unknown' is specified for cancellations that occurred before 05/08/2018 (when this data began being collected).\n\nWhen a study passes quality control review: 1) results_first_submitted_date is set to the study's first submission date, 2) results_first_submitted_qc_date is set to the submission date of the version of results that passed QC, 3) the study's pending_results rows are removed, and 4) the results are posted on ClinicalTrials.gov. \n\nThe latest versions of all studies are posted every business day but, there can be unexpected delays.  The results_first_posted_date value will usually  be identified as an 'Estimate' when first posted.  This will switch to 'Actual' (and the date may be adjusted) on the next posting cycle, when the true posting date is known.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "event",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Uses the tag label to identify the type of event this row represents",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "event_date_description",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "The value might be 'Unknown', so a date description (string-type) column is provided to capture this.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "event_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "Convert the value to a date-type.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "provided_documents",
+      "table_schema": "ctgov",
+      "description": "The full study protocol and statistical analysis plan must be uploaded as part of results information submission, for studies with a Primary Completion Date on or after January 18, 2017. The protocol and statistical analysis plan may be optionally uploaded before results information submission and updated with new versions, as needed. Informed consent forms may optionally be uploaded at any time.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "document_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "has_protocol",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "has_icf",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "has_sap",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "document_date",
+          "data_type": "date",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "url",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "reported_event_totals",
+      "table_schema": "ctgov",
+      "description": "",
+      "primary_key": "id",
+      "domain": "",
+      "rows_per_study": "",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "NO",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "NO",
+          "description": "Code to connect to results",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "event_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Indicates the type of event (options are \"Serious\", \"Other\" and \"Deaths\")",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "classification",
+          "data_type": "character varying",
+          "is_nullable": "NO",
+          "description": "Further explanation of the type of total",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "subjects_affected",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "Number of subjects affected by the event",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "subjects_at_risk",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "Number of subjects that were at risk of being affected by the event",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone",
+          "is_nullable": "NO",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone",
+          "is_nullable": "NO",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "reported_events",
+      "table_schema": "ctgov",
+      "description": "Summary information about reported adverse events (any untoward or unfavorable medical occurrence to participants, including abnormal physical exams, laboratory findings, symptoms, or diseases), including serious adverse events, other adverse events, and mortality.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "result_group_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "AACT assigned foreign key",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "time_frame",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "event_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "serious' if data from <serious_events>\n'other' if data from <other_events>",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "default_vocab",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "default_assessment",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "subjects_affected",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "subjects_at_risk",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "event_count",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "organ_system",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "adverse_event_term",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "frequency_threshold",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "vocab",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "assessment",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "responsible_parties",
+      "table_schema": "ctgov",
+      "description": "People who have access to and control over the data from the study, have the right to publish study results, and have the ability to meet all of the requirements for the submission of study information.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "responsible_party_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "This data element was introduced by ClinicalTrials.gov in August 2011.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "title",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "This data element was introduced by ClinicalTrials.gov in August 2011 and is required if either Principal Investigator or Sponsor-Investigator is selected for the responsible_party_type.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "organization",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "This data element was introduced in November 2007 and discontinued in August 2011. ",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "affiliation",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "old_name_title",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "result_agreements",
+      "table_schema": "ctgov",
+      "description": "Info about whether an agreement exists between the sponsor & the principal investigators (PIs) that restricts the PIs ability to discuss study results at scientific meetings or other public or private forums, or to publish info concerning the study in scientific or academic journals after the study is completed.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "pi_employee",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "NLM data dictionary reports this as Yes/No, but data actually stored as an affirmative statement or a negative statement as indicated in the enumerations tab.  Studies with a negative value for this variable provide information about any results disclosure restrictions on PI(s). This information is captured in the RESTRICTIVE_AGREEMENT variable in the RESULTS_RESTRICTION_AGREEMENTS table.",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "agreement",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "If the user answers \u201cN\u201d to the question about Results Disclosure Restriction on PI(s), or negatively whether all PI(s) are employees of the sponsor, the field contains the statement, \"There is NOT an agreement between the sponsor (or its agents) that restricts the PI's rights to discuss or publish trial results after the trial is completed.\"",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "restriction_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Indicates the type of restriction if the agreement is restrictive",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "other_details",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "Contains the additional details of note regarding the agreement",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "restrictive_agreement",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Indicates if the agreement is restrictive or not",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "result_contacts",
+      "table_schema": "ctgov",
+      "description": "Point of contact for scientific information about the clinical study results information.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "organization",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "phone",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "email",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "extension",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "result_groups",
+      "table_schema": "ctgov",
+      "description": "Consolidated, aggregate list of group titles/descriptions used for reporting summary results information.",
+      "primary_key": "id",
+      "domain": "Results",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "ctgov_group_code",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "result_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "Derived from XML tag: 'Baseline', 'Outcome', 'Reported Event', or 'Participant Flow' ",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "title",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "description",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "retractions",
+      "table_schema": "ctgov",
+      "description": "",
+      "primary_key": "id",
+      "domain": "",
+      "rows_per_study": "",
+      "columns": [
+        {
+          "column_name": "reference_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "pmid",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "source",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        }
+      ]
+    },
+    {
+      "table_name": "search_results",
+      "table_schema": "ctgov",
+      "description": "This joins studies with saved queries withing the study_searches table",
+      "primary_key": "id",
+      "domain": "n/a",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "NO",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "NO",
+          "description": "short name of the study_search this object belongs to",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone",
+          "is_nullable": "NO",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone",
+          "is_nullable": "NO",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "grouping",
+          "data_type": "character varying",
+          "is_nullable": "NO",
+          "description": "category the object is grouped under",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "study_search_id",
+          "data_type": "integer",
+          "is_nullable": "YES",
+          "description": "connects the object to the study_search that pulled it up",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        }
+      ]
+    },
+    {
+      "table_name": "sponsors",
+      "table_schema": "ctgov",
+      "description": "Name of study sponsors and collaborators. The sponsor is the entity or individual initiating the study. Collaborators are other organizations providing support, including funding, design, implementation, data analysis, and reporting.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "agency_class",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "NLM derived value that indicates the broad catergory of sponsor",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "lead_or_collaborator",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "lead' if value from <lead_sponsor>\n'collaborator' ifvalue from <collaborator>",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "study_references",
+      "table_schema": "ctgov",
+      "description": "Citations to publications related to the study protocol and/or results. Includes PubMed Unique Identifier (PMID) and/or full bibliographic citation.",
+      "primary_key": "id",
+      "domain": "Protocol",
+      "rows_per_study": "many",
+      "columns": [
+        {
+          "column_name": "nct_id",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "AACT foreign key to Study",
+          "is_primary_key": false,
+          "is_foreign_key": true
+        },
+        {
+          "column_name": "pmid",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "reference_type",
+          "data_type": "character varying",
+          "is_nullable": "YES",
+          "description": "reference' if value from <results>\n'results_reference' if value from <results_reference>",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "citation",
+          "data_type": "text",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    },
+    {
+      "table_name": "study_searches",
+      "table_schema": "ctgov",
+      "description": "These are saved queries that are used to search ClinicalTrials.gov",
+      "primary_key": "id",
+      "domain": "n/a",
+      "rows_per_study": "none",
+      "columns": [
+        {
+          "column_name": "save_tsv",
+          "data_type": "boolean",
+          "is_nullable": "NO",
+          "description": "indicates if a tsv should be made for the search_results",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "query",
+          "data_type": "character varying",
+          "is_nullable": "NO",
+          "description": "query used to search ClinicalTrials.gov",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "grouping",
+          "data_type": "character varying",
+          "is_nullable": "NO",
+          "description": "category the object is grouped under",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "name",
+          "data_type": "character varying",
+          "is_nullable": "NO",
+          "description": "short name",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "beta_api",
+          "data_type": "boolean",
+          "is_nullable": "NO",
+          "description": "indicates if the search should be done using the ClinicalTrials.gov beta api or not",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "created_at",
+          "data_type": "timestamp without time zone",
+          "is_nullable": "NO",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "updated_at",
+          "data_type": "timestamp without time zone",
+          "is_nullable": "NO",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        },
+        {
+          "column_name": "active",
+          "data_type": "boolean",
+          "is_nullable": "YES",
+          "description": "",
+          "is_primary_key": false,
+          "is_foreign_key": false
+        }
+      ]
+    }
+  ],
+  "foreign_keys": [
+    {
+      "child_table": "baseline_counts",
+      "parent_table": "result_groups",
+      "child_column": "result_group_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "baseline_counts",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "baseline_measurements",
+      "parent_table": "result_groups",
+      "child_column": "result_group_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "baseline_measurements",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "brief_summaries",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "browse_conditions",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "browse_interventions",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "calculated_values",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "central_contacts",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "conditions",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "countries",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "design_group_interventions",
+      "parent_table": "design_groups",
+      "child_column": "design_group_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "design_group_interventions",
+      "parent_table": "interventions",
+      "child_column": "intervention_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "design_group_interventions",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "design_groups",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "design_outcomes",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "designs",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "detailed_descriptions",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "documents",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "drop_withdrawals",
+      "parent_table": "result_groups",
+      "child_column": "result_group_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "drop_withdrawals",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "eligibilities",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "facilities",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "facility_contacts",
+      "parent_table": "facilities",
+      "child_column": "facility_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "facility_contacts",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "facility_investigators",
+      "parent_table": "facilities",
+      "child_column": "facility_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "facility_investigators",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "id_information",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "intervention_other_names",
+      "parent_table": "interventions",
+      "child_column": "intervention_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "intervention_other_names",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "interventions",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "ipd_information_types",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "keywords",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "links",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "milestones",
+      "parent_table": "result_groups",
+      "child_column": "result_group_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "milestones",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "outcome_analyses",
+      "parent_table": "outcomes",
+      "child_column": "outcome_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "outcome_analyses",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "outcome_analysis_groups",
+      "parent_table": "outcome_analyses",
+      "child_column": "outcome_analysis_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "outcome_analysis_groups",
+      "parent_table": "result_groups",
+      "child_column": "result_group_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "outcome_analysis_groups",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "outcome_counts",
+      "parent_table": "outcomes",
+      "child_column": "outcome_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "outcome_counts",
+      "parent_table": "result_groups",
+      "child_column": "result_group_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "outcome_counts",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "outcome_measurements",
+      "parent_table": "outcomes",
+      "child_column": "outcome_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "outcome_measurements",
+      "parent_table": "result_groups",
+      "child_column": "result_group_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "outcome_measurements",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "outcomes",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "overall_officials",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "participant_flows",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "pending_results",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "provided_documents",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "reported_event_totals",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "reported_events",
+      "parent_table": "result_groups",
+      "child_column": "result_group_id",
+      "parent_column": "id"
+    },
+    {
+      "child_table": "reported_events",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "responsible_parties",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "result_agreements",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "result_contacts",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "result_groups",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "retractions",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "search_results",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "sponsors",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    },
+    {
+      "child_table": "study_references",
+      "parent_table": "studies",
+      "child_column": "nct_id",
+      "parent_column": "nct_id"
+    }
+  ]
+}

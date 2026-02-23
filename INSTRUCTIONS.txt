@@ -1,0 +1,150 @@
+================================================================================
+AACT Schema MCP Server — Developer Instructions
+================================================================================
+
+PROJECT OVERVIEW
+----------------
+This is a read-only Model Context Protocol (MCP) server that exposes the AACT
+(Aggregate Analysis of ClinicalTrials.gov) PostgreSQL database schema as MCP
+Resources. It is designed so that an LLM can read the database structure and
+generate accurate SQL queries, without ever executing SQL itself.
+
+ARCHITECTURE
+------------
+The server fits into a "Human-in-the-loop" SQL generation pipeline:
+
+  User -> Backend -> LLM -> [THIS MCP SERVER reads schema] -> LLM generates SQL
+                                                             -> Backend validates & executes SQL
+
+This server ONLY provides schema context. It implements ZERO MCP Tools.
+
+PROJECT STRUCTURE
+-----------------
+  aact-mcp-server/
+  ├── src/
+  │   ├── __init__.py          # Package marker
+  │   ├── __main__.py          # Entry point for `python -m src`
+  │   └── server.py            # Main MCP server (all logic here)
+  ├── data/
+  │   └── aact_schema_static.json  # Bundled schema snapshot (48 tables, 63 FKs)
+  ├── pyproject.toml           # Project metadata and dependencies
+  ├── .env.example             # Template for database credentials
+  ├── .gitignore
+  ├── README.md
+  ├── test_server.py           # Automated test script
+  └── INSTRUCTIONS.txt         # This file
+
+DEPENDENCIES
+------------
+  - Python 3.10+
+  - mcp >= 1.0.0          (MCP SDK with FastMCP)
+  - asyncpg >= 0.29.0     (PostgreSQL async driver, for Live DB mode)
+  - python-dotenv >= 1.0.0 (Environment variable loading)
+
+Install: pip install -e .
+
+DUAL-MODE OPERATION
+-------------------
+1. STATIC FALLBACK (default, no DB needed):
+   If AACT_DB_HOST / AACT_DB_USER are not set, the server loads schema from
+   data/aact_schema_static.json. This is a comprehensive snapshot with:
+     - 48 tables with full column definitions
+     - PostgreSQL data types (character varying, integer, date, etc.)
+     - Column descriptions from the official AACT data dictionary
+     - 63 foreign key relationships
+     - Table metadata (domain, rows_per_study)
+
+2. LIVE DB MODE:
+   Set environment variables (see .env.example) to connect to a PostgreSQL
+   instance. The server queries information_schema dynamically. Falls back to
+   static mode if connection fails.
+
+MCP RESOURCES EXPOSED
+---------------------
+URI: postgres://aact/schema
+  Returns: Complete DDL-style schema of all 48 tables (~42K chars, ~10K tokens)
+  Use: Primary resource for initial LLM context
+
+URI: postgres://aact/schema/{table_name}
+  Returns: DDL for a single table + its FK relationships (both as child and parent)
+  Use: On-demand detail for a specific table
+
+URI: postgres://aact/tables
+  Returns: Concise list of all tables with column counts and domain classification
+  Use: Quick reference to identify relevant tables
+
+URI: postgres://aact/relationships
+  Returns: All 63 FK relationships, separated into nct_id joins and hierarchical FKs
+  Use: Essential for writing correct JOINs
+
+OUTPUT FORMAT
+-------------
+The schema is formatted as pseudo-DDL (CREATE TABLE statements) because LLMs
+are heavily trained on SQL DDL and parse it more reliably than custom formats.
+
+Example output for postgres://aact/schema/conditions:
+
+  -- Domain: Protocol | Rows per study: many
+  -- Name(s) of the disease(s) or condition(s) studied in the clinical study...
+  CREATE TABLE ctgov.conditions (
+      nct_id character varying,  -- AACT foreign key to Study
+      name character varying,
+      downcase_name character varying,
+      FOREIGN KEY (nct_id) REFERENCES ctgov.studies(nct_id)
+  );
+
+HOW TO RUN
+----------
+  # As installed script:
+  aact-mcp-server
+
+  # As Python module:
+  python -m src
+
+  # The server communicates over stdio (JSON-RPC 2.0)
+
+HOW TO TEST
+-----------
+  python test_server.py
+  # Runs all resource tests using static fallback, no DB needed
+
+KEY DESIGN DECISIONS
+--------------------
+1. Resource-only (no Tools): Eliminates SQL injection risk entirely.
+2. DDL output format: Maximizes LLM comprehension of schema structure.
+3. Static fallback: Ensures the server always works, even without DB access.
+4. Per-table resources: Allows token-efficient, surgical context loading.
+5. FK relationship summary: Separated into nct_id joins (46) and hierarchical
+   FKs (17) so the LLM knows which JOINs are "interesting" vs. ubiquitous.
+
+AACT DATABASE KEY FACTS
+------------------------
+- Schema name: ctgov
+- Central table: studies (primary key: nct_id, VARCHAR)
+- Most tables join to studies via nct_id
+- Results tables have hierarchical FK chains:
+    outcomes.id -> outcome_analyses.outcome_id
+    outcome_analyses.id -> outcome_analysis_groups.outcome_analysis_id
+    result_groups.id -> baseline_counts.result_group_id (and others)
+- 48 tables total, ~500 columns
+- Domains: Protocol (study design), Results (reported outcomes), Both
+
+FUTURE INTEGRATION NOTES
+-------------------------
+This server is intended to be integrated with the AACT Analytics Website project.
+When integrating:
+  - The main backend should spawn this server as a subprocess (stdio transport)
+  - Or use SSE transport: mcp.run(transport="sse") for HTTP-based integration
+  - The LLM client connects to this server to read schema before generating SQL
+  - The main backend validates and executes the generated SQL against the real DB
+
+TO PUSH TO GITHUB (when ready)
+------------------------------
+1. Create an empty private repo: https://github.com/new
+   Name: aact-mcp-server
+2. Then:
+   cd /path/to/aact-mcp-server
+   git remote add origin https://github.com/pakejeso/aact-mcp-server.git
+   git push -u origin main
+
+================================================================================

@@ -1,0 +1,1 @@
+"""AACT Schema MCP Server."""

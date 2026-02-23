@@ -1,0 +1,19 @@
+[project]
+name = "aact-mcp-server"
+version = "0.1.0"
+description = "Read-only MCP server exposing the AACT clinical trials database schema as Resources"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+    "asyncpg>=0.29.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+aact-mcp-server = "src.server:main"
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
