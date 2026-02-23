@@ -33,10 +33,29 @@ mcp = FastMCP(
     "aact-schema",
     instructions=(
         "This server provides read-only access to the AACT clinical trials "
-        "database **schema**. Use the resources to understand table structure, "
-        "column types, primary keys, and foreign key relationships before "
-        "writing SQL queries. The database schema is 'ctgov'. "
-        "All tables live under the ctgov schema (e.g. ctgov.studies)."
+        "database **schema** (PostgreSQL, schema name: ctgov). "
+        "All tables live under the ctgov schema (e.g. ctgov.studies).\n"
+        "\n"
+        "IMPORTANT — Follow this resource reading strategy for efficiency:\n"
+        "\n"
+        "Step 1: Read aact://tables FIRST. It lists all 48 tables with their "
+        "descriptions, column counts, and domain classification. Use the "
+        "descriptions to identify which tables are relevant to the user's query.\n"
+        "\n"
+        "Step 2: Read aact://schema/{table_name} for ONLY the tables you "
+        "identified as relevant. This gives you the full column definitions, "
+        "data types, and foreign key constraints for that specific table.\n"
+        "\n"
+        "Step 3: If you need to understand how tables connect, read "
+        "aact://relationships for the complete foreign key map.\n"
+        "\n"
+        "AVOID reading aact://schema (the full schema) unless the query is "
+        "complex enough to require most or all tables. The full schema is "
+        "~10K tokens — prefer targeted per-table reads when possible.\n"
+        "\n"
+        "Key facts: Most tables join to 'studies' via nct_id (VARCHAR). "
+        "Results tables have hierarchical FK chains (e.g. outcomes -> "
+        "outcome_analyses -> outcome_analysis_groups)."
     ),
 )
 
@@ -170,10 +189,13 @@ def _format_full_schema() -> str:
     name="AACT Full Schema",
     title="Complete AACT Database Schema",
     description=(
-        "Complete DDL-style schema of the AACT clinical trials database. "
-        "Includes all tables, columns with PostgreSQL types, primary keys, "
-        "foreign key constraints, and relationship summary. "
-        "Use this to understand the full database structure before writing SQL."
+        "Complete DDL-style schema of ALL 48 AACT tables (~10K tokens). "
+        "Includes columns, PostgreSQL types, primary keys, foreign key "
+        "constraints, and relationship summary. "
+        "WARNING: This is a large resource. Prefer reading aact://tables first "
+        "to identify relevant tables, then use aact://schema/{table_name} for "
+        "only the tables you need. Use this full schema only when the query "
+        "requires many tables or you cannot determine which tables are needed."
     ),
     mime_type="text/plain",
 )
@@ -189,8 +211,9 @@ async def full_schema() -> str:
     description=(
         "DDL-style schema for a single AACT table. "
         "Returns columns, types, keys, and foreign key constraints "
-        "for the specified table. Use when you need detail on one table "
-        "without loading the full schema."
+        "for the specified table. PREFERRED approach: read aact://tables "
+        "first to identify relevant tables by description, then request "
+        "only the specific tables you need using this resource."
     ),
     mime_type="text/plain",
 )
@@ -233,10 +256,11 @@ async def table_schema(table_name: str) -> str:
     name="AACT Table List",
     title="List of All AACT Tables",
     description=(
-        "List of all tables in the AACT database with their descriptions, "
-        "column counts, and domain classification. Read this first to identify "
-        "which tables are relevant, then use aact://schema/{table_name} for "
-        "detailed column definitions."
+        "START HERE. List of all 48 tables in the AACT database with their "
+        "descriptions, column counts, and domain classification. Read this "
+        "first to identify which tables are relevant to the user's query, "
+        "then use aact://schema/{table_name} for detailed column definitions "
+        "of only the tables you need."
     ),
     mime_type="text/plain",
 )
