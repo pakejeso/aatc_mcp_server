@@ -36,10 +36,10 @@ The server exposes the following resources:
 
 | URI Template | Name | Description |
 | :--- | :--- | :--- |
-| `postgres://aact/schema` | AACT Full Schema | The complete schema of all 48 tables, including columns, types, keys, and all 63 foreign key relationships. The primary resource for initial context. |
-| `postgres://aact/schema/{table_name}` | AACT Table Schema | The schema for a single table. Use this for surgical, on-demand context loading. |
-| `postgres://aact/tables` | AACT Table List | A concise list of all tables with their column counts and domain classification (Protocol, Results, etc.). |
-| `postgres://aact/relationships` | AACT Relationships | A summary of all foreign key relationships, separated into `nct_id` joins and hierarchical FKs. |
+| `aact://schema` | AACT Full Schema | The complete schema of all 48 tables, including columns, types, keys, and all 63 foreign key relationships. The primary resource for initial context. |
+| `aact://schema/{table_name}` | AACT Table Schema | The schema for a single table. Use this for surgical, on-demand context loading. |
+| `aact://tables` | AACT Table List | All tables with their descriptions, column counts, and domain classification. Read this first to identify relevant tables. |
+| `aact://relationships` | AACT Relationships | A summary of all foreign key relationships, separated into `nct_id` joins and hierarchical FKs. |
 
 ## Getting Started
 

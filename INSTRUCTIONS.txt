@@ -55,19 +55,19 @@ That's it. No database driver, no dotenv. Install: pip install -e .
 
 MCP RESOURCES EXPOSED
 ---------------------
-URI: postgres://aact/schema
+URI: aact://schema
   Returns: Complete DDL-style schema of all 48 tables (~42K chars, ~10K tokens)
   Use: Primary resource for initial LLM context
 
-URI: postgres://aact/schema/{table_name}
+URI: aact://schema/{table_name}
   Returns: DDL for a single table + its FK relationships (both as child and parent)
   Use: On-demand detail for a specific table
 
-URI: postgres://aact/tables
-  Returns: Concise list of all tables with column counts and domain classification
-  Use: Quick reference to identify relevant tables
+URI: aact://tables
+  Returns: All tables with descriptions, column counts, and domain classification
+  Use: Read this first to identify relevant tables before drilling into details
 
-URI: postgres://aact/relationships
+URI: aact://relationships
   Returns: All 63 FK relationships, separated into nct_id joins and hierarchical FKs
   Use: Essential for writing correct JOINs
 
@@ -77,7 +77,7 @@ The schema is formatted as pseudo-DDL (CREATE TABLE statements) because LLMs
 are heavily trained on SQL DDL and parse it more reliably than custom formats.
 Rich descriptions are included as SQL comments.
 
-Example output for postgres://aact/schema/conditions:
+Example output for aact://schema/conditions:
 
   -- Domain: Protocol | Rows per study: many
   -- Name(s) of the disease(s) or condition(s) studied in the clinical study...

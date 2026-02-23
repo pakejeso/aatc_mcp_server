@@ -32,20 +32,30 @@ async def test_resources():
     assert len(_TABLE_INDEX) == 48, f"Expected 48 index entries, got {len(_TABLE_INDEX)}"
     print("    PASS")
 
-    # 2. Test table list resource
-    print("\n[2] Testing postgres://aact/tables ...")
+    # 2. Test table list resource (now includes descriptions)
+    print("\n[2] Testing aact://tables ...")
     result = await table_list()
     assert "studies" in result
     assert "conditions" in result
+    # Verify descriptions are present in the table list
+    assert "Basic info about study" in result, "Expected studies description in table list"
+    assert "disease" in result.lower() or "condition" in result.lower(), \
+        "Expected conditions description in table list"
     lines = result.strip().split("\n")
     print(f"    Output: {len(lines)} lines, {len(result)} chars")
-    print(f"    First 3 lines:")
-    for line in lines[:3]:
-        print(f"      {line}")
+    # Show a sample table entry with description
+    for line in lines:
+        if "studies" in line and "columns" in line:
+            print(f"      {line}")
+            break
+    for line in lines:
+        if "Basic info" in line:
+            print(f"      {line}")
+            break
     print("    PASS")
 
     # 3. Test full schema resource
-    print("\n[3] Testing postgres://aact/schema ...")
+    print("\n[3] Testing aact://schema ...")
     result = await full_schema()
     assert "CREATE TABLE ctgov.studies" in result
     assert "CREATE TABLE ctgov.conditions" in result
@@ -58,7 +68,7 @@ async def test_resources():
     print("    PASS")
 
     # 4. Test single table resource — studies
-    print("\n[4] Testing postgres://aact/schema/studies ...")
+    print("\n[4] Testing aact://schema/studies ...")
     result = await table_schema("studies")
     assert "CREATE TABLE ctgov.studies" in result
     assert "nct_id" in result
@@ -70,7 +80,7 @@ async def test_resources():
     print("    PASS")
 
     # 5. Test single table resource — outcome_analyses (has FKs)
-    print("\n[5] Testing postgres://aact/schema/outcome_analyses ...")
+    print("\n[5] Testing aact://schema/outcome_analyses ...")
     result = await table_schema("outcome_analyses")
     assert "outcome_id" in result
     assert "FOREIGN KEY" in result
@@ -83,7 +93,7 @@ async def test_resources():
     print("    PASS")
 
     # 6. Test single table resource — nonexistent table
-    print("\n[6] Testing postgres://aact/schema/nonexistent ...")
+    print("\n[6] Testing aact://schema/nonexistent ...")
     result = await table_schema("nonexistent")
     assert "ERROR" in result
     assert "not found" in result
@@ -91,7 +101,7 @@ async def test_resources():
     print("    PASS")
 
     # 7. Test relationships resource
-    print("\n[7] Testing postgres://aact/relationships ...")
+    print("\n[7] Testing aact://relationships ...")
     result = await relationships()
     assert "nct_id" in result
     assert "Hierarchical" in result
@@ -122,8 +132,16 @@ async def test_resources():
     print(f"    studies table description: {studies['description'][:80]}...")
     print("    PASS")
 
+    # 10. Verify table list descriptions coverage
+    print("\n[10] Checking table list description coverage...")
+    tl = await table_list()
+    tables_with_desc = sum(1 for t in _TABLES if t.get("description"))
+    print(f"    Tables with descriptions: {tables_with_desc}/{len(_TABLES)}")
+    assert tables_with_desc > 30, f"Expected >30 tables with descriptions, got {tables_with_desc}"
+    print("    PASS")
+
     print("\n" + "=" * 60)
-    print("ALL 9 TESTS PASSED")
+    print("ALL 10 TESTS PASSED")
     print("=" * 60)
 
 

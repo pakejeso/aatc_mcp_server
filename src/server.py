@@ -166,7 +166,7 @@ def _format_full_schema() -> str:
 # ---------------------------------------------------------------------------
 
 @mcp.resource(
-    "postgres://aact/schema",
+    "aact://schema",
     name="AACT Full Schema",
     title="Complete AACT Database Schema",
     description=(
@@ -183,7 +183,7 @@ async def full_schema() -> str:
 
 
 @mcp.resource(
-    "postgres://aact/schema/{table_name}",
+    "aact://schema/{table_name}",
     name="AACT Table Schema",
     title="Single Table Schema",
     description=(
@@ -229,40 +229,54 @@ async def table_schema(table_name: str) -> str:
 
 
 @mcp.resource(
-    "postgres://aact/tables",
+    "aact://tables",
     name="AACT Table List",
     title="List of All AACT Tables",
     description=(
-        "A concise list of all tables in the AACT database with their "
-        "column counts and domain classification. Use this as a quick "
-        "reference to identify which tables are relevant before requesting "
-        "the full schema or individual table details."
+        "List of all tables in the AACT database with their descriptions, "
+        "column counts, and domain classification. Read this first to identify "
+        "which tables are relevant, then use aact://schema/{table_name} for "
+        "detailed column definitions."
     ),
     mime_type="text/plain",
 )
 async def table_list() -> str:
-    """Return a concise list of all AACT tables."""
+    """Return a list of all AACT tables with descriptions."""
     lines = [
         "AACT Database Tables (ctgov schema)",
-        "=" * 50,
+        "=" * 60,
         "",
-        f"{'Table':<35} {'Cols':>5}  {'Domain':<20}  {'Rows/Study':<10}",
-        "-" * 80,
+        f"Total: {len(_TABLES)} tables",
+        "",
     ]
     for t in _TABLES:
         name = t["table_name"]
         ncols = len(t["columns"])
         domain = t.get("domain", "")
         rows_per = t.get("rows_per_study", "")
-        lines.append(f"{name:<35} {ncols:>5}  {domain:<20}  {rows_per:<10}")
+        desc = t.get("description", "")
 
-    lines.append("")
-    lines.append(f"Total: {len(_TABLES)} tables")
+        meta_parts = []
+        if domain:
+            meta_parts.append(domain)
+        meta_parts.append(f"{ncols} columns")
+        if rows_per:
+            meta_parts.append(f"{rows_per} per study")
+        meta = " | ".join(meta_parts)
+
+        lines.append(f"  {name}  ({meta})")
+        if desc:
+            short_desc = desc[:200].replace("\n", " ")
+            if len(desc) > 200:
+                short_desc += "..."
+            lines.append(f"    {short_desc}")
+        lines.append("")
+
     return "\n".join(lines) + "\n"
 
 
 @mcp.resource(
-    "postgres://aact/relationships",
+    "aact://relationships",
     name="AACT Relationships",
     title="Foreign Key Relationships",
     description=(

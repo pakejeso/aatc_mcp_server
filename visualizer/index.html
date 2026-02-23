@@ -507,12 +507,12 @@ function buildSteps(userQuery, sqlResult) {
     id: 2,
     result: {
       resources: [
-        { uri: "postgres://aact/schema", name: "AACT Full Schema", description: "Complete DDL-style schema of all 48 tables..." },
-        { uri: "postgres://aact/tables", name: "AACT Table List", description: "Concise list of all tables..." },
-        { uri: "postgres://aact/relationships", name: "AACT Relationships", description: "All foreign key relationships..." }
+        { uri: "aact://schema", name: "AACT Full Schema", description: "Complete DDL-style schema of all 48 tables..." },
+        { uri: "aact://tables", name: "AACT Table List", description: "Concise list of all tables..." },
+        { uri: "aact://relationships", name: "AACT Relationships", description: "All foreign key relationships..." }
       ],
       resourceTemplates: [
-        { uriTemplate: "postgres://aact/schema/{table_name}", name: "AACT Table Schema" }
+        { uriTemplate: "aact://schema/{table_name}", name: "AACT Table Schema" }
       ]
     }
   };
@@ -521,7 +521,7 @@ function buildSteps(userQuery, sqlResult) {
     jsonrpc: "2.0",
     id: 3,
     method: "resources/read",
-    params: { uri: "postgres://aact/schema" }
+    params: { uri: "aact://schema" }
   };
 
   const schemaSnippet = `CREATE TABLE ctgov.studies (
@@ -555,7 +555,7 @@ CREATE TABLE ctgov.conditions (
     id: 3,
     result: {
       contents: [{
-        uri: "postgres://aact/schema",
+        uri: "aact://schema",
         mimeType: "text/plain",
         text: schemaSnippet + "\n\n(~42,000 chars / ~10,600 tokens of full DDL)"
       }]
