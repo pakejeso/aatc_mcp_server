@@ -2,9 +2,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A read-only, lightweight [Model Context Protocol (MCP)](https://modelcontext.dev/) server that exposes the AACT (Aggregate Analysis of ClinicalTrials.gov) PostgreSQL database schema as a set of structured **Resources**. It is designed to provide an LLM with the necessary structural context to generate accurate SQL queries against the AACT database.
+A read-only, lightweight [Model Context Protocol (MCP)](https://modelcontext.dev/) server that exposes the AACT (Aggregate Analysis of ClinicalTrials.gov) database schema as a set of structured **Resources**. It is designed to provide an LLM with the necessary structural context to generate accurate SQL queries against the AACT database.
 
 This server is a key component in a hybrid "Human-in-the-loop" architecture for SQL generation. It provides the schema context to the LLM but **does not execute any queries**, ensuring a safe and secure separation of concerns.
+
+The schema is loaded from a bundled JSON snapshot (`data/aact_schema_static.json`) that includes rich, human-readable descriptions sourced from the official AACT data dictionary. See [UPDATING_SCHEMA.md](UPDATING_SCHEMA.md) for instructions on regenerating this file when the AACT schema changes.
 
 The repository also includes an **interactive MCP Flow Visualizer** — a web app that demonstrates how the entire MCP architecture works, step by step, using real LLM calls.
 
@@ -23,12 +25,10 @@ This server **only** performs step 3. It has no capabilities to execute arbitrar
 ## Features
 
 -   **Read-Only by Design**: Exposes schema information via MCP Resources only. No MCP Tools are implemented.
--   **Dual-Mode Operation**:
-    -   **Live DB Mode**: Connects to a PostgreSQL database and dynamically queries `information_schema`.
-    -   **Static Fallback Mode**: If DB credentials are not provided or the connection fails, it serves a bundled, comprehensive snapshot of the AACT schema.
--   **Comprehensive Schema Output**: The schema is formatted as a pseudo-DDL (`CREATE TABLE ...`) text block, which is highly effective for LLM comprehension.
--   **Rich Metadata**: Includes table and column descriptions, data types, nullability, primary keys, and a full foreign key relationship summary.
+-   **Static Schema with Rich Descriptions**: The bundled JSON snapshot includes table and column descriptions from the official AACT data dictionary, domain classification, and cardinality metadata — not just raw column names and types.
+-   **Comprehensive Schema Output**: The schema is formatted as pseudo-DDL (`CREATE TABLE ...`) text, which is highly effective for LLM comprehension.
 -   **Multiple Resource Granularities**: Provides both the full schema and per-table resources for efficient context loading.
+-   **Zero Configuration**: No database connection required. Install, run, done.
 
 ## MCP Resources
 
@@ -46,7 +46,6 @@ The server exposes the following resources:
 ### Prerequisites
 
 -   Python 3.10+
--   Access to a PostgreSQL instance with the AACT schema (optional, for Live DB mode)
 
 ### Installation
 
@@ -73,31 +72,23 @@ aact-mcp-server
 python -m src
 ```
 
-### Configuration (Live DB Mode)
-
-To connect to a live PostgreSQL database, create a `.env` file in the project root (or set environment variables) with your connection details. See `.env.example` for the required variables.
-
-```dotenv
-# .env
-AACT_DB_HOST=your-rds-instance.amazonaws.com
-AACT_DB_PORT=5432
-AACT_DB_NAME=aact
-AACT_DB_USER=your_readonly_user
-AACT_DB_PASS=your_password
-AACT_DB_SCHEMA=ctgov
-```
-
-If these variables are not set, the server will automatically use the bundled static schema.
+No configuration is needed. The server reads from the bundled `data/aact_schema_static.json` file automatically.
 
 ## Testing
 
-A test script is included to verify the server works correctly in static fallback mode.
+A test script is included to verify the server works correctly.
 
 ```bash
 python test_server.py
 ```
 
-This script exercises all available resources and validates their output without requiring a database connection.
+This script exercises all 4 resources and validates their output, including checking that rich descriptions are present.
+
+## Updating the Schema
+
+When the AACT database schema changes (new tables, renamed columns, etc.), the bundled JSON snapshot needs to be regenerated. This is a **semi-automated process that requires an LLM** because the rich descriptions are not stored in the database itself — they must be extracted from the AACT data dictionary and merged with the structural data from `schema.rb`.
+
+See **[UPDATING_SCHEMA.md](UPDATING_SCHEMA.md)** for the full step-by-step guide.
 
 ---
 
@@ -114,7 +105,7 @@ cd aatc_mcp_server
 
 # 2. Create your .env file
 cp .env.example .env
-# Edit .env and set your OPENAI_API_KEY (required)
+# Edit .env and set your OPENAI_API_KEY (required for the visualizer)
 
 # 3. Build and run
 docker compose up --build
@@ -122,8 +113,6 @@ docker compose up --build
 # 4. Open in your browser
 #    http://localhost:8090
 ```
-
-That's it. The visualizer will be running at **http://localhost:8090**.
 
 ### Environment Variables for the Visualizer
 
@@ -148,17 +137,14 @@ The app animates 7 steps that correspond to the real MCP protocol flow:
 | 6 | LLM → Backend | LLM generates SQL using schema + user query |
 | 7 | Backend → User | Backend validates and returns the SQL |
 
-Each step has an expandable panel showing the actual JSON-RPC messages exchanged. The architecture diagram at the top animates in real time. Example queries are provided in English, Spanish, and French.
+Each step has an expandable panel showing the actual JSON-RPC messages exchanged. Example queries are provided in English, Spanish, and French.
 
-### Running Without Docker
-
-If you prefer to run the visualizer directly:
+### Running the Visualizer Without Docker
 
 ```bash
 cd visualizer
 pip install -r requirements.txt
 export OPENAI_API_KEY=sk-your-key
 python app.py
+# Open http://localhost:8090
 ```
-
-Open **http://localhost:8090** in your browser.

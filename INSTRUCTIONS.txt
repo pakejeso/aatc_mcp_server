@@ -5,9 +5,13 @@ AACT Schema MCP Server — Developer Instructions
 PROJECT OVERVIEW
 ----------------
 This is a read-only Model Context Protocol (MCP) server that exposes the AACT
-(Aggregate Analysis of ClinicalTrials.gov) PostgreSQL database schema as MCP
-Resources. It is designed so that an LLM can read the database structure and
-generate accurate SQL queries, without ever executing SQL itself.
+(Aggregate Analysis of ClinicalTrials.gov) database schema as MCP Resources.
+It is designed so that an LLM can read the database structure and generate
+accurate SQL queries, without ever executing SQL itself.
+
+The schema is loaded from a bundled static JSON file that includes rich,
+human-readable descriptions sourced from the official AACT data dictionary.
+No database connection is needed.
 
 ARCHITECTURE
 ------------
@@ -20,44 +24,34 @@ This server ONLY provides schema context. It implements ZERO MCP Tools.
 
 PROJECT STRUCTURE
 -----------------
-  aact-mcp-server/
+  aatc_mcp_server/
   ├── src/
-  │   ├── __init__.py          # Package marker
-  │   ├── __main__.py          # Entry point for `python -m src`
-  │   └── server.py            # Main MCP server (all logic here)
+  │   ├── __init__.py              # Package marker
+  │   ├── __main__.py              # Entry point for `python -m src`
+  │   └── server.py                # Main MCP server (all logic here)
   ├── data/
-  │   └── aact_schema_static.json  # Bundled schema snapshot (48 tables, 63 FKs)
-  ├── pyproject.toml           # Project metadata and dependencies
-  ├── .env.example             # Template for database credentials
+  │   └── aact_schema_static.json  # Bundled schema (48 tables, 63 FKs, rich descriptions)
+  ├── visualizer/
+  │   ├── Dockerfile               # Docker image for the flow visualizer
+  │   ├── requirements.txt         # Python deps for the visualizer
+  │   ├── app.py                   # Flask backend (LLM proxy)
+  │   ├── index.html               # Interactive MCP flow demo UI
+  │   └── schema_compact.txt       # Compact schema for LLM context
+  ├── docker-compose.yml           # One-command deployment for the visualizer
+  ├── pyproject.toml               # Project metadata and dependencies
+  ├── .env.example                 # Template for visualizer config
   ├── .gitignore
   ├── README.md
-  ├── test_server.py           # Automated test script
-  └── INSTRUCTIONS.txt         # This file
+  ├── UPDATING_SCHEMA.md           # Guide to regenerate the static schema
+  ├── test_server.py               # Automated test script (9 tests)
+  └── INSTRUCTIONS.txt             # This file
 
 DEPENDENCIES
 ------------
   - Python 3.10+
-  - mcp >= 1.0.0          (MCP SDK with FastMCP)
-  - asyncpg >= 0.29.0     (PostgreSQL async driver, for Live DB mode)
-  - python-dotenv >= 1.0.0 (Environment variable loading)
+  - mcp >= 1.0.0  (MCP SDK with FastMCP)
 
-Install: pip install -e .
-
-DUAL-MODE OPERATION
--------------------
-1. STATIC FALLBACK (default, no DB needed):
-   If AACT_DB_HOST / AACT_DB_USER are not set, the server loads schema from
-   data/aact_schema_static.json. This is a comprehensive snapshot with:
-     - 48 tables with full column definitions
-     - PostgreSQL data types (character varying, integer, date, etc.)
-     - Column descriptions from the official AACT data dictionary
-     - 63 foreign key relationships
-     - Table metadata (domain, rows_per_study)
-
-2. LIVE DB MODE:
-   Set environment variables (see .env.example) to connect to a PostgreSQL
-   instance. The server queries information_schema dynamically. Falls back to
-   static mode if connection fails.
+That's it. No database driver, no dotenv. Install: pip install -e .
 
 MCP RESOURCES EXPOSED
 ---------------------
@@ -81,6 +75,7 @@ OUTPUT FORMAT
 -------------
 The schema is formatted as pseudo-DDL (CREATE TABLE statements) because LLMs
 are heavily trained on SQL DDL and parse it more reliably than custom formats.
+Rich descriptions are included as SQL comments.
 
 Example output for postgres://aact/schema/conditions:
 
@@ -102,19 +97,34 @@ HOW TO RUN
   python -m src
 
   # The server communicates over stdio (JSON-RPC 2.0)
+  # No configuration needed — reads from the bundled static schema.
 
 HOW TO TEST
 -----------
   python test_server.py
-  # Runs all resource tests using static fallback, no DB needed
+  # Runs 9 tests covering all resources, descriptions, and schema integrity.
+
+UPDATING THE SCHEMA
+--------------------
+When the AACT database schema changes, the bundled JSON needs to be regenerated.
+This is a semi-automated process that requires an LLM because the rich
+descriptions are not stored in the database — they must be extracted from the
+AACT data dictionary (HTML) and merged with the structural data from schema.rb.
+
+See UPDATING_SCHEMA.md for the full step-by-step guide.
 
 KEY DESIGN DECISIONS
 --------------------
-1. Resource-only (no Tools): Eliminates SQL injection risk entirely.
-2. DDL output format: Maximizes LLM comprehension of schema structure.
-3. Static fallback: Ensures the server always works, even without DB access.
-4. Per-table resources: Allows token-efficient, surgical context loading.
-5. FK relationship summary: Separated into nct_id joins (46) and hierarchical
+1. Static-only (no DB connection): Simplifies deployment to zero configuration.
+   The schema changes rarely (a few times per year at most). When it does,
+   follow the UPDATING_SCHEMA.md guide to regenerate the JSON.
+2. Resource-only (no Tools): Eliminates SQL injection risk entirely.
+3. DDL output format: Maximizes LLM comprehension of schema structure.
+4. Rich descriptions: Column and table descriptions from the official AACT
+   data dictionary are embedded in the JSON, giving the LLM much better
+   context than raw column names alone.
+5. Per-table resources: Allows token-efficient, surgical context loading.
+6. FK relationship summary: Separated into nct_id joins (46) and hierarchical
    FKs (17) so the LLM knows which JOINs are "interesting" vs. ubiquitous.
 
 AACT DATABASE KEY FACTS
@@ -137,14 +147,5 @@ When integrating:
   - Or use SSE transport: mcp.run(transport="sse") for HTTP-based integration
   - The LLM client connects to this server to read schema before generating SQL
   - The main backend validates and executes the generated SQL against the real DB
-
-TO PUSH TO GITHUB (when ready)
-------------------------------
-1. Create an empty private repo: https://github.com/new
-   Name: aact-mcp-server
-2. Then:
-   cd /path/to/aact-mcp-server
-   git remote add origin https://github.com/pakejeso/aact-mcp-server.git
-   git push -u origin main
 
 ================================================================================
