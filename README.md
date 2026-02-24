@@ -14,7 +14,7 @@ The repository also includes an **interactive MCP Flow Visualizer** — a web ap
 
 This server is designed to fit into the following workflow:
 
-1.  A **main backend** receives a free-text request from a user (e.g., "find phase 3 trials for diabetes").
+1.  A **main backend** (e.g., the [CT.Sight](https://github.com/pakejeso/clinical-trials-search) FastAPI app) receives a free-text request from a user (e.g., "find phase 3 trials for diabetes").
 2.  The backend invokes an **LLM**, which connects to this **AACT Schema MCP Server**.
 3.  The LLM reads the database schema from the available MCP Resources to understand table structures, columns, and relationships.
 4.  The LLM generates a SQL query and sends it back to the main backend.
@@ -28,6 +28,7 @@ This server **only** performs step 3. It has no capabilities to execute arbitrar
 -   **Static Schema with Rich Descriptions**: The bundled JSON snapshot includes table and column descriptions from the official AACT data dictionary, domain classification, and cardinality metadata — not just raw column names and types.
 -   **Comprehensive Schema Output**: The schema is formatted as pseudo-DDL (`CREATE TABLE ...`) text, which is highly effective for LLM comprehension.
 -   **Multiple Resource Granularities**: Provides both the full schema and per-table resources for efficient context loading.
+-   **Dual Transport Modes**: Supports both `stdio` for local subprocess use and `streamable-http` for network-based deployment.
 -   **Zero Configuration**: No database connection required. Install, run, done.
 
 ## MCP Resources
@@ -62,17 +63,45 @@ The server exposes the following resources:
 
 ### Running the MCP Server
 
-The server runs over `stdio` by default, as is common for MCP servers invoked by a parent process.
+The server supports two transport modes, controlled by the `AACT_MCP_TRANSPORT` environment variable.
+
+#### 1. Stdio Mode (default)
+
+This is the classic MCP transport for local use, where the server communicates with a parent process over `stdin` and `stdout`.
 
 ```bash
-# Run using the installed script
+# Run using the installed script (default is stdio)
 aact-mcp-server
 
 # Or run as a module
 python -m src
 ```
 
-No configuration is needed. The server reads from the bundled `data/aact_schema_static.json` file automatically.
+#### 2. HTTP Mode
+
+This mode exposes the MCP server as a network service, allowing it to be called from other backends (like the CT.Sight web app). It uses the `streamable-http` transport from the `mcp` library.
+
+```bash
+# Set environment variables and run
+export AACT_MCP_TRANSPORT=streamable-http
+export AACT_MCP_HOST=0.0.0.0
+export AACT_MCP_PORT=8001
+
+aact-mcp-server
+```
+
+The following environment variables are available for HTTP mode:
+
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `AACT_MCP_TRANSPORT` | `stdio` | Set to `streamable-http` to enable HTTP mode. |
+| `AACT_MCP_HOST` | `127.0.0.1` | Host to bind the HTTP server to. Use `0.0.0.0` for Docker. |
+| `AACT_MCP_PORT` | `8001` | Port to listen on. |
+
+When running in HTTP mode, two endpoints are available:
+
+-   **MCP Endpoint**: `http://<host>:<port>/mcp`
+-   **Health Check**: `http://<host>:<port>/health` (returns a JSON object with server status)
 
 ## Testing
 

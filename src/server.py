@@ -13,24 +13,66 @@ The schema is loaded from a bundled JSON snapshot
 from the official AACT data dictionary and documentation. See
 UPDATING_SCHEMA.md for instructions on how to regenerate this file when
 the AACT schema changes.
+
+Transport Modes
+---------------
+The server supports two transport modes, controlled by the AACT_MCP_TRANSPORT
+environment variable (default: "stdio"):
+
+  AACT_MCP_TRANSPORT=stdio          — Classic stdio mode for local/subprocess use.
+  AACT_MCP_TRANSPORT=streamable-http — HTTP service mode for remote/web use.
+
+When running in HTTP mode, host and port are also configurable:
+  AACT_MCP_HOST=0.0.0.0   (default: 127.0.0.1)
+  AACT_MCP_PORT=8001       (default: 8001)
+
+The HTTP endpoint is served at: http://<host>:<port>/mcp
+A health-check endpoint is available at: http://<host>:<port>/health
 """
 
 from __future__ import annotations
 
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
 logger = logging.getLogger("aact-mcp-server")
 
 # ---------------------------------------------------------------------------
+# Transport configuration (from environment variables)
+# ---------------------------------------------------------------------------
+
+_TRANSPORT = os.environ.get("AACT_MCP_TRANSPORT", "stdio").lower()
+_HOST = os.environ.get("AACT_MCP_HOST", "127.0.0.1")
+_PORT = int(os.environ.get("AACT_MCP_PORT", "8001"))
+
+# ---------------------------------------------------------------------------
 # MCP Server instance
 # ---------------------------------------------------------------------------
+
+# When running in HTTP mode we need to allow cross-origin requests from the
+# CT.Sight backend.  The FastMCP transport-security defaults block unknown
+# hosts, so we relax them when the server is deployed as a network service.
+if _TRANSPORT == "streamable-http":
+    from mcp.server.fastmcp.server import TransportSecuritySettings
+
+    _transport_security = TransportSecuritySettings(
+        enable_dns_rebinding_protection=False,
+    )
+else:
+    _transport_security = None  # type: ignore[assignment]
+
 mcp = FastMCP(
     "aact-schema",
+    host=_HOST,
+    port=_PORT,
+    transport_security=_transport_security,
     instructions=(
         "This server provides read-only access to the AACT clinical trials "
         "database **schema** (PostgreSQL, schema name: ctgov). "
@@ -362,16 +404,57 @@ async def relationships() -> str:
 
 
 # ---------------------------------------------------------------------------
+# Health-check endpoint (HTTP mode only)
+# ---------------------------------------------------------------------------
+
+@mcp.custom_route("/health", methods=["GET"])
+async def health_check(request: Request) -> JSONResponse:
+    """
+    Liveness probe for Docker / load balancers and the CT.Sight backend.
+
+    Returns a JSON object with server status, transport mode, and schema
+    statistics so that clients can verify connectivity before sending queries.
+    """
+    return JSONResponse({
+        "status": "ok",
+        "server": "aact-mcp-server",
+        "transport": _TRANSPORT,
+        "tables": len(_TABLES),
+        "foreign_keys": len(_FOREIGN_KEYS),
+    })
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 
-def main():
-    """Run the MCP server via stdio transport."""
+def main() -> None:
+    """
+    Run the AACT MCP server.
+
+    Transport is selected via the AACT_MCP_TRANSPORT environment variable:
+      - "stdio"            (default) — for local / subprocess / Claude Desktop use
+      - "streamable-http"            — for remote / web-service use
+
+    When using streamable-http, set AACT_MCP_HOST and AACT_MCP_PORT as needed.
+    The MCP endpoint will be available at http://<host>:<port>/mcp
+    The health endpoint will be available at http://<host>:<port>/health
+    """
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
     )
-    mcp.run(transport="stdio")
+
+    if _TRANSPORT == "streamable-http":
+        logger.info(
+            "Starting AACT MCP Server in HTTP mode on %s:%d", _HOST, _PORT
+        )
+        logger.info("MCP endpoint : http://%s:%d/mcp", _HOST, _PORT)
+        logger.info("Health check : http://%s:%d/health", _HOST, _PORT)
+        mcp.run(transport="streamable-http")
+    else:
+        logger.info("Starting AACT MCP Server in stdio mode")
+        mcp.run(transport="stdio")
 
 
 if __name__ == "__main__":
