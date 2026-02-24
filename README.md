@@ -125,26 +125,35 @@ docker compose up --build
 
 ### What the Visualizer Shows
 
-The app animates 7 steps that correspond to the real MCP protocol flow:
+The app uses the **real MCP server** (spawned as a subprocess) and follows the efficient 3-step strategy. Every JSON-RPC message shown in the UI was actually exchanged. The flow has up to 11 steps:
 
 | Step | Direction | What Happens |
 | :---: | :--- | :--- |
 | 1 | User → Backend | Natural language query sent as HTTP request |
-| 2 | Backend → LLM | Backend wraps the query in a prompt |
-| 3 | LLM → MCP Server | JSON-RPC `initialize` handshake |
-| 4 | LLM ↔ MCP Server | LLM discovers available Resources via `resources/list` |
-| 5 | LLM ← MCP Server | LLM reads the full schema via `resources/read` |
-| 6 | LLM → Backend | LLM generates SQL using schema + user query |
-| 7 | Backend → User | Backend validates and returns the SQL |
+| 2 | Backend → LLM | LLM identifies which tables are relevant (using `aact://tables` list) |
+| 3 | LLM → Backend | LLM returns relevant table names (e.g., 2 of 48) |
+| 4 | Backend → MCP Server | JSON-RPC `initialize` handshake |
+| 5 | Backend ↔ MCP Server | Discover available Resources via `resources/list` |
+| 6 | Backend ← MCP Server | Read table list via `aact://tables` |
+| 7–N | Backend ← MCP Server | Read only the relevant table schemas via `aact://schema/{table}` |
+| N+1 | Backend ← MCP Server | Read relationships via `aact://relationships` |
+| N+2 | Backend → LLM | LLM generates SQL from targeted schema only |
+| N+3 | Backend → User | Backend validates and returns the SQL |
 
-Each step has an expandable panel showing the actual JSON-RPC messages exchanged. Example queries are provided in English, Spanish, and French.
+The app also shows an **Efficiency Report** comparing tokens used (targeted) vs. tokens that would be used (full schema). Each step has an expandable panel showing the actual JSON-RPC messages exchanged. Example queries are provided in English, Spanish, and French.
 
 ### Running the Visualizer Without Docker
 
 ```bash
-cd visualizer
-pip install -r requirements.txt
+# Install both the MCP server and visualizer dependencies
+pip install -e .
+pip install -r visualizer/requirements.txt
+
+# Set your API key and run
 export OPENAI_API_KEY=sk-your-key
+cd visualizer
 python app.py
 # Open http://localhost:8090
 ```
+
+Note: The visualizer must be able to find the `src/` and `data/` directories in the parent directory (the repo root). Always run `app.py` from the `visualizer/` directory.

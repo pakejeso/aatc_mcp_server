@@ -2,13 +2,13 @@ version: "3.8"
 
 services:
   # ---------------------------------------------------------------
-  # MCP Flow Visualizer
+  # AACT MCP Server + Flow Visualizer
   # Interactive demo showing how MCP connects an LLM to the AACT
   # database schema. Open http://localhost:8090 in your browser.
   # ---------------------------------------------------------------
   visualizer:
     build:
-      context: ./visualizer
+      context: .
       dockerfile: Dockerfile
     container_name: mcp-flow-visualizer
     ports:
