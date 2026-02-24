@@ -41,12 +41,7 @@
     border-bottom: 1px solid var(--border);
     background: linear-gradient(180deg, #161824 0%, var(--bg) 100%);
   }
-  .header h1 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-bottom: 6px;
-  }
+  .header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
   .header h1 span { color: var(--accent); }
   .header p { color: var(--text-dim); font-size: 0.92rem; max-width: 700px; margin: 0 auto; line-height: 1.5; }
 
@@ -58,45 +53,26 @@
   .arch-section h2 { font-size: 1.05rem; color: var(--text-dim); margin-bottom: 14px; font-weight: 500; }
 
   .arch-diagram {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0;
-    padding: 30px 10px;
-    background: var(--surface);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-    flex-wrap: wrap;
+    display: flex; align-items: flex-start; justify-content: center; gap: 0;
+    padding: 30px 10px; background: var(--surface); border-radius: 14px;
+    border: 1px solid var(--border); position: relative; overflow: hidden; flex-wrap: wrap;
   }
 
   .arch-node {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    z-index: 2;
-    position: relative;
-    min-width: 110px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    z-index: 2; position: relative; min-width: 110px;
     transition: transform 0.3s, filter 0.3s;
   }
   .arch-node.active { transform: scale(1.08); }
   .arch-node.dimmed { filter: brightness(0.4); }
 
   .node-icon {
-    width: 68px; height: 68px;
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px;
-    border: 2px solid transparent;
-    transition: border-color 0.4s, box-shadow 0.4s;
+    width: 68px; height: 68px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center; font-size: 28px;
+    border: 2px solid transparent; transition: border-color 0.4s, box-shadow 0.4s;
     position: relative;
   }
-  .arch-node.active .node-icon {
-    border-color: currentColor;
-    box-shadow: 0 0 20px var(--accent-glow);
-  }
+  .arch-node.active .node-icon { border-color: currentColor; box-shadow: 0 0 20px var(--accent-glow); }
   .node-icon.user { background: rgba(108,140,255,0.15); color: var(--user-color); }
   .node-icon.backend { background: rgba(251,146,60,0.15); color: var(--backend-color); }
   .node-icon.llm { background: rgba(167,139,250,0.15); color: var(--llm-color); }
@@ -105,265 +81,150 @@
   .node-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
   .node-sublabel { font-size: 0.68rem; color: var(--text-dim); text-align: center; max-width: 100px; line-height: 1.3; }
 
-  /* Arrows between nodes */
-  .arch-arrow {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 80px;
-    padding: 0 4px;
-    z-index: 1;
-    margin-top: 18px;
-  }
-  .arrow-line {
-    height: 3px;
-    width: 60px;
-    background: var(--border);
-    border-radius: 2px;
-    position: relative;
-    overflow: hidden;
-  }
-  .arrow-line .pulse {
-    position: absolute;
-    top: 0; left: -30px;
-    width: 30px; height: 100%;
-    border-radius: 2px;
-    opacity: 0;
-  }
-  .arrow-line .pulse.animate-right {
-    animation: pulseRight 0.6s ease-out forwards;
-  }
-  .arrow-line .pulse.animate-left {
-    animation: pulseLeft 0.6s ease-out forwards;
-  }
-  @keyframes pulseRight {
-    0% { left: -30px; opacity: 1; }
-    100% { left: 60px; opacity: 0.3; }
-  }
-  @keyframes pulseLeft {
-    0% { left: 60px; opacity: 1; }
-    100% { left: -30px; opacity: 0.3; }
-  }
-  .arrow-label {
-    font-size: 0.62rem;
-    color: var(--text-dim);
-    margin-top: 4px;
-    text-align: center;
-    min-height: 28px;
-    transition: color 0.3s;
-    max-width: 90px;
-    line-height: 1.3;
-  }
+  /* Arrows */
+  .arch-arrow { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 80px; padding: 0 4px; z-index: 1; margin-top: 18px; }
+  .arrow-line { height: 3px; width: 60px; background: var(--border); border-radius: 2px; position: relative; overflow: hidden; }
+  .arrow-line .pulse { position: absolute; top: 0; left: -30px; width: 30px; height: 100%; border-radius: 2px; opacity: 0; }
+  .arrow-line .pulse.animate-right { animation: pulseRight 0.6s ease-out forwards; }
+  .arrow-line .pulse.animate-left { animation: pulseLeft 0.6s ease-out forwards; }
+  @keyframes pulseRight { 0% { left: -30px; opacity: 1; } 100% { left: 60px; opacity: 0.3; } }
+  @keyframes pulseLeft { 0% { left: 60px; opacity: 1; } 100% { left: -30px; opacity: 0.3; } }
+  .arrow-label { font-size: 0.62rem; color: var(--text-dim); margin-top: 4px; text-align: center; min-height: 28px; transition: color 0.3s; max-width: 90px; line-height: 1.3; }
   .arrow-label.active { color: var(--cyan); font-weight: 600; }
 
   /* Input section */
-  .input-section {
-    background: var(--surface);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    padding: 22px;
-  }
+  .input-section { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 22px; }
   .input-section h2 { font-size: 1.05rem; color: var(--text-dim); margin-bottom: 12px; font-weight: 500; }
   .input-row { display: flex; gap: 10px; }
   .input-row input {
-    flex: 1;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 16px;
-    color: var(--text);
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.3s;
+    flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; color: var(--text); font-size: 0.95rem; outline: none; transition: border-color 0.3s;
   }
   .input-row input:focus { border-color: var(--accent); }
   .input-row input::placeholder { color: var(--text-dim); }
   .btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 24px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    white-space: nowrap;
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    padding: 12px 24px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    transition: background 0.2s, transform 0.1s; white-space: nowrap;
   }
   .btn:hover { background: #5a7af0; }
   .btn:active { transform: scale(0.97); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .examples { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
   .example-chip {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 0.78rem;
-    color: var(--text-dim);
-    cursor: pointer;
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 6px 12px; font-size: 0.78rem; color: var(--text-dim); cursor: pointer;
     transition: border-color 0.2s, color 0.2s;
   }
   .example-chip:hover { border-color: var(--accent); color: var(--text); }
 
   /* Flow timeline */
-  .flow-section {
-    background: var(--surface);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    padding: 22px;
-  }
+  .flow-section { background: var(--surface); border-radius: 14px; border: 1px solid var(--border); padding: 22px; }
   .flow-section h2 { font-size: 1.05rem; color: var(--text-dim); margin-bottom: 14px; font-weight: 500; }
-
   .flow-timeline { display: flex; flex-direction: column; gap: 0; }
 
   .flow-step {
-    display: flex;
-    gap: 14px;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.4s, transform 0.4s;
-    padding: 10px 0;
-    position: relative;
+    display: flex; gap: 14px; opacity: 0; transform: translateY(10px);
+    transition: opacity 0.4s, transform 0.4s; padding: 10px 0; position: relative;
   }
   .flow-step.visible { opacity: 1; transform: translateY(0); }
 
-  .step-marker {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 36px;
-  }
+  .step-marker { display: flex; flex-direction: column; align-items: center; min-width: 36px; }
   .step-dot {
-    width: 28px; height: 28px;
-    border-radius: 50%;
+    width: 28px; height: 28px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #fff;
-    flex-shrink: 0;
+    font-size: 0.7rem; font-weight: 700; color: #fff; flex-shrink: 0;
   }
-  .step-line {
-    width: 2px;
-    flex: 1;
-    min-height: 10px;
-    background: var(--border);
-  }
+  .step-line { width: 2px; flex: 1; min-height: 10px; background: var(--border); }
 
   .step-content { flex: 1; padding-bottom: 6px; }
-  .step-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 6px;
-  }
+  .step-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
   .step-direction {
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.05em;
   }
   .step-title { font-size: 0.88rem; font-weight: 600; }
   .step-desc { font-size: 0.82rem; color: var(--text-dim); line-height: 1.5; margin-bottom: 8px; }
 
-  .step-payload {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
+  .step-payload { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
   .payload-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: var(--surface2);
-    cursor: pointer;
-    user-select: none;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 12px; background: var(--surface2); cursor: pointer; user-select: none;
   }
   .payload-header:hover { background: #2a2e42; }
   .payload-label { font-size: 0.72rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
   .payload-toggle { font-size: 0.7rem; color: var(--text-dim); }
   .payload-body {
-    padding: 10px 12px;
-    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-    font-size: 0.74rem;
-    line-height: 1.6;
-    color: var(--cyan);
-    white-space: pre-wrap;
-    word-break: break-all;
-    max-height: 250px;
-    overflow-y: auto;
-    display: none;
+    padding: 10px 12px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.74rem; line-height: 1.6; color: var(--cyan); white-space: pre-wrap;
+    word-break: break-all; max-height: 300px; overflow-y: auto; display: none;
   }
   .payload-body.open { display: block; }
 
-  /* SQL output */
-  .sql-output {
-    background: var(--surface);
-    border-radius: 14px;
-    border: 2px solid var(--green);
-    padding: 22px;
-    display: none;
+  /* Efficiency badge */
+  .efficiency-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.3);
+    border-radius: 8px; padding: 4px 10px; font-size: 0.72rem; color: var(--green);
+    font-weight: 600; margin-left: 8px;
   }
+
+  /* SQL output */
+  .sql-output { background: var(--surface); border-radius: 14px; border: 2px solid var(--green); padding: 22px; display: none; }
   .sql-output.visible { display: block; }
   .sql-output h2 { font-size: 1.05rem; color: var(--green); margin-bottom: 12px; font-weight: 600; }
   .sql-code {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-    font-size: 0.85rem;
-    line-height: 1.7;
-    color: var(--cyan);
-    white-space: pre-wrap;
-    word-break: break-all;
-    overflow-x: auto;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.85rem; line-height: 1.7; color: var(--cyan); white-space: pre-wrap;
+    word-break: break-all; overflow-x: auto;
   }
 
+  /* Efficiency summary */
+  .efficiency-summary {
+    background: var(--surface); border-radius: 14px; border: 1px solid rgba(74,222,128,0.3);
+    padding: 18px 22px; display: none; margin-top: 0;
+  }
+  .efficiency-summary.visible { display: block; }
+  .efficiency-summary h3 { font-size: 0.95rem; color: var(--green); margin-bottom: 10px; font-weight: 600; }
+  .efficiency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  .eff-card {
+    background: var(--bg); border-radius: 10px; padding: 14px; border: 1px solid var(--border);
+    text-align: center;
+  }
+  .eff-value { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+  .eff-label { font-size: 0.72rem; color: var(--text-dim); }
+
   /* Concept cards */
-  .concepts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 14px;
-    margin-top: 10px;
-  }
-  .concept-card {
-    background: var(--surface);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    padding: 18px;
-  }
+  .concepts { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 10px; }
+  .concept-card { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 18px; }
   .concept-card h3 { font-size: 0.9rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
   .concept-card p { font-size: 0.8rem; color: var(--text-dim); line-height: 1.55; }
   .concept-icon { font-size: 1.1rem; }
+
+  /* Real badge */
+  .real-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.4);
+    border-radius: 6px; padding: 2px 8px; font-size: 0.65rem; color: var(--green);
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  }
 
   /* Responsive */
   @media (max-width: 700px) {
     .arch-diagram { flex-direction: column; align-items: center; gap: 4px; }
     .arch-arrow { flex-direction: row; min-width: auto; margin-top: 0; }
     .arrow-line { width: 3px; height: 30px; }
-    .input-row { flex-direction: column; }
   }
 
-  /* Spinner */
   .spinner {
-    display: inline-block;
-    width: 16px; height: 16px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    vertical-align: middle;
-    margin-right: 6px;
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid var(--border); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+    vertical-align: middle; margin-right: 6px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Scrollbar */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -374,7 +235,7 @@
 <div class="header">
   <h1>Understanding <span>MCP</span> — An Interactive Demo</h1>
   <p>See how the Model Context Protocol connects an LLM to a database schema server.<br>
-  Type a clinical trials query in any language and watch the full flow unfold step by step.</p>
+  This demo uses the <strong>real AACT MCP server</strong> — every JSON-RPC message you see below was actually exchanged.</p>
 </div>
 
 <div class="main">
@@ -382,52 +243,52 @@
   <!-- Key Concepts -->
   <div class="concepts">
     <div class="concept-card">
-      <h3><span class="concept-icon">🔌</span> What is MCP?</h3>
-      <p>The <strong>Model Context Protocol</strong> is a standard that lets LLMs connect to external data sources and tools. Think of it as a USB-C port for AI — a universal way for any LLM to read data from any server.</p>
+      <h3><span class="concept-icon">&#x1F50C;</span> What is MCP?</h3>
+      <p>The <strong>Model Context Protocol</strong> is a standard that lets LLMs connect to external data sources and tools. Think of it as a USB-C port for AI &mdash; a universal way for any LLM to read data from any server.</p>
     </div>
     <div class="concept-card">
-      <h3><span class="concept-icon">📖</span> Resources (Read-Only)</h3>
-      <p>MCP <strong>Resources</strong> are data the LLM can read — like files or database schemas. Our AACT MCP server exposes the database structure as a Resource. The LLM reads it, but <em>cannot</em> modify anything.</p>
+      <h3><span class="concept-icon">&#x1F4D6;</span> Resources (Read-Only)</h3>
+      <p>MCP <strong>Resources</strong> are data the LLM can read &mdash; like files or database schemas. Our AACT MCP server exposes the database structure as Resources. The LLM reads them, but <em>cannot</em> modify anything.</p>
     </div>
     <div class="concept-card">
-      <h3><span class="concept-icon">🔒</span> Why This Matters</h3>
-      <p>The LLM never touches the real database. It only reads the <em>schema</em> (table structure), generates SQL, and a separate backend validates and runs it. This is the <strong>human-in-the-loop</strong> pattern.</p>
+      <h3><span class="concept-icon">&#x1F3AF;</span> Efficient Strategy</h3>
+      <p>Instead of loading the full schema (~10K tokens), the LLM first reads a <strong>table list</strong>, identifies relevant tables, then reads <strong>only those</strong>. This saves tokens and focuses the context.</p>
     </div>
   </div>
 
   <!-- Architecture Diagram -->
   <div class="arch-section">
-    <h2>Architecture — The Four Components</h2>
+    <h2>Architecture &mdash; The Four Components</h2>
     <div class="arch-diagram" id="archDiagram">
       <div class="arch-node" id="node-user">
-        <div class="node-icon user">👤</div>
+        <div class="node-icon user">&#x1F464;</div>
         <div class="node-label" style="color:var(--user-color)">User</div>
         <div class="node-sublabel">Types a query in natural language</div>
       </div>
       <div class="arch-arrow" id="arrow-1">
         <div class="arrow-line"><div class="pulse" id="pulse-1" style="background:var(--user-color)"></div></div>
-        <div class="arrow-label" id="arrow-label-1">HTTP request</div>
+        <div class="arrow-label" id="arrow-label-1"></div>
       </div>
       <div class="arch-node" id="node-backend">
-        <div class="node-icon backend">⚙️</div>
+        <div class="node-icon backend">&#x2699;&#xFE0F;</div>
         <div class="node-label" style="color:var(--backend-color)">Backend</div>
         <div class="node-sublabel">Orchestrates the pipeline</div>
       </div>
       <div class="arch-arrow" id="arrow-2">
         <div class="arrow-line"><div class="pulse" id="pulse-2" style="background:var(--backend-color)"></div></div>
-        <div class="arrow-label" id="arrow-label-2">Prompt + query</div>
+        <div class="arrow-label" id="arrow-label-2"></div>
       </div>
       <div class="arch-node" id="node-llm">
-        <div class="node-icon llm">🧠</div>
+        <div class="node-icon llm">&#x1F9E0;</div>
         <div class="node-label" style="color:var(--llm-color)">LLM</div>
         <div class="node-sublabel">Generates SQL from context</div>
       </div>
       <div class="arch-arrow" id="arrow-3">
         <div class="arrow-line"><div class="pulse" id="pulse-3" style="background:var(--llm-color)"></div></div>
-        <div class="arrow-label" id="arrow-label-3">JSON-RPC (MCP)</div>
+        <div class="arrow-label" id="arrow-label-3"></div>
       </div>
       <div class="arch-node" id="node-mcp">
-        <div class="node-icon mcp">🗄️</div>
+        <div class="node-icon mcp">&#x1F5C4;&#xFE0F;</div>
         <div class="node-label" style="color:var(--mcp-color)">MCP Server</div>
         <div class="node-sublabel">Serves AACT database schema</div>
       </div>
@@ -436,29 +297,52 @@
 
   <!-- Input -->
   <div class="input-section">
-    <h2>Try It — Ask About Clinical Trials</h2>
+    <h2>Try It &mdash; Ask About Clinical Trials</h2>
     <div class="input-row">
-      <input type="text" id="queryInput" placeholder="e.g., todos los estudios de esclerosis múltiple" />
-      <button class="btn" id="goBtn" onclick="runDemo()">Run Flow ▶</button>
+      <input type="text" id="queryInput" placeholder="e.g., todos los estudios de esclerosis m&uacute;ltiple" />
+      <button class="btn" id="goBtn" onclick="runDemo()">Run Flow &#x25B6;</button>
     </div>
     <div class="examples">
-      <div class="example-chip" onclick="setQuery('todos los estudios que sean de esclerosis múltiple')">🇪🇸 Esclerosis múltiple</div>
-      <div class="example-chip" onclick="setQuery('phase 3 trials for breast cancer with results')">🇬🇧 Phase 3 breast cancer</div>
-      <div class="example-chip" onclick="setQuery('studies sponsored by Pfizer in the United States')">🇺🇸 Pfizer US studies</div>
-      <div class="example-chip" onclick="setQuery('essais cliniques sur le diabète de type 2 terminés')">🇫🇷 Diabète type 2</div>
-      <div class="example-chip" onclick="setQuery('interventional studies with more than 1000 participants')">📊 Large studies</div>
+      <div class="example-chip" onclick="setQuery('todos los estudios que sean de esclerosis m\u00FAltiple')">&#x1F1EA;&#x1F1F8; Esclerosis m&uacute;ltiple</div>
+      <div class="example-chip" onclick="setQuery('phase 3 trials for breast cancer with results')">&#x1F1EC;&#x1F1E7; Phase 3 breast cancer</div>
+      <div class="example-chip" onclick="setQuery('studies sponsored by Pfizer in the United States')">&#x1F1FA;&#x1F1F8; Pfizer US studies</div>
+      <div class="example-chip" onclick="setQuery('essais cliniques sur le diab\u00E8te de type 2 termin\u00E9s')">&#x1F1EB;&#x1F1F7; Diab&egrave;te type 2</div>
+      <div class="example-chip" onclick="setQuery('interventional studies with more than 1000 participants')">&#x1F4CA; Large studies</div>
     </div>
   </div>
 
   <!-- Flow Timeline -->
   <div class="flow-section" id="flowSection" style="display:none">
-    <h2>Message Flow — Step by Step</h2>
+    <h2>Message Flow &mdash; Step by Step <span class="real-badge">REAL MCP MESSAGES</span></h2>
     <div class="flow-timeline" id="flowTimeline"></div>
+  </div>
+
+  <!-- Efficiency Summary -->
+  <div class="efficiency-summary" id="efficiencySummary">
+    <h3>&#x26A1; Efficiency Report &mdash; Targeted vs Full Schema</h3>
+    <div class="efficiency-grid">
+      <div class="eff-card">
+        <div class="eff-value" id="effTables" style="color:var(--accent)">-</div>
+        <div class="eff-label">Tables read (of 48)</div>
+      </div>
+      <div class="eff-card">
+        <div class="eff-value" id="effTokens" style="color:var(--green)">-</div>
+        <div class="eff-label">Tokens used</div>
+      </div>
+      <div class="eff-card">
+        <div class="eff-value" id="effFull" style="color:var(--text-dim)">-</div>
+        <div class="eff-label">Full schema would use</div>
+      </div>
+      <div class="eff-card">
+        <div class="eff-value" id="effSaved" style="color:var(--green)">-</div>
+        <div class="eff-label">Tokens saved</div>
+      </div>
+    </div>
   </div>
 
   <!-- SQL Output -->
   <div class="sql-output" id="sqlOutput">
-    <h2>✅ Generated SQL Query</h2>
+    <h2>&#x2705; Generated SQL Query</h2>
     <div class="sql-code" id="sqlCode"></div>
   </div>
 
@@ -466,304 +350,110 @@
 
 <script>
 // ============================================================
-// FLOW STEP DEFINITIONS
-// ============================================================
-
-function buildSteps(userQuery, sqlResult) {
-  // JSON-RPC payloads (simulated but realistic)
-  const initRequest = {
-    jsonrpc: "2.0",
-    id: 1,
-    method: "initialize",
-    params: {
-      protocolVersion: "2024-11-05",
-      capabilities: {},
-      clientInfo: { name: "aact-backend", version: "1.0" }
-    }
-  };
-
-  const initResponse = {
-    jsonrpc: "2.0",
-    id: 1,
-    result: {
-      protocolVersion: "2024-11-05",
-      capabilities: {
-        resources: { subscribe: false, listChanged: false }
-      },
-      serverInfo: { name: "aact-schema", version: "1.0.0" },
-      instructions: "Read-only access to AACT database schema. Use resources to understand table structure before writing SQL."
-    }
-  };
-
-  const listRequest = {
-    jsonrpc: "2.0",
-    id: 2,
-    method: "resources/list",
-    params: {}
-  };
-
-  const listResponse = {
-    jsonrpc: "2.0",
-    id: 2,
-    result: {
-      resources: [
-        { uri: "aact://schema", name: "AACT Full Schema", description: "Complete DDL-style schema of all 48 tables..." },
-        { uri: "aact://tables", name: "AACT Table List", description: "Concise list of all tables..." },
-        { uri: "aact://relationships", name: "AACT Relationships", description: "All foreign key relationships..." }
-      ],
-      resourceTemplates: [
-        { uriTemplate: "aact://schema/{table_name}", name: "AACT Table Schema" }
-      ]
-    }
-  };
-
-  const readRequest = {
-    jsonrpc: "2.0",
-    id: 3,
-    method: "resources/read",
-    params: { uri: "aact://schema" }
-  };
-
-  const schemaSnippet = `CREATE TABLE ctgov.studies (
-    nct_id character varying PRIMARY KEY,
-    brief_title character varying,
-    official_title character varying,
-    overall_status character varying,
-    phase character varying,
-    enrollment integer,
-    study_type character varying,
-    ...70 columns total...
-);
-
-CREATE TABLE ctgov.conditions (
-    nct_id character varying,
-    name character varying,
-    downcase_name character varying,
-    FOREIGN KEY (nct_id) REFERENCES ctgov.studies(nct_id)
-);
-
-...46 more tables...
-
--- FOREIGN KEY RELATIONSHIPS:
--- conditions.nct_id -> studies.nct_id
--- interventions.nct_id -> studies.nct_id
--- outcome_analyses.outcome_id -> outcomes.id
--- ...63 relationships total...`;
-
-  const readResponse = {
-    jsonrpc: "2.0",
-    id: 3,
-    result: {
-      contents: [{
-        uri: "aact://schema",
-        mimeType: "text/plain",
-        text: schemaSnippet + "\n\n(~42,000 chars / ~10,600 tokens of full DDL)"
-      }]
-    }
-  };
-
-  return [
-    {
-      id: 1,
-      color: "var(--user-color)",
-      direction: "User → Backend",
-      dirBg: "rgba(108,140,255,0.2)",
-      dirColor: "var(--user-color)",
-      title: "User sends natural language query",
-      desc: `You typed: "${userQuery}". This is sent as a plain HTTP request to the backend. The backend doesn't understand natural language — it just forwards it.`,
-      payload: JSON.stringify({ method: "POST", url: "/api/generate-sql", body: { query: userQuery } }, null, 2),
-      payloadLabel: "HTTP Request",
-      activeNodes: ["node-user", "node-backend"],
-      activeArrow: 1,
-      arrowDir: "right",
-      arrowLabel: `"${userQuery.substring(0, 25)}..."`,
-    },
-    {
-      id: 2,
-      color: "var(--backend-color)",
-      direction: "Backend → LLM",
-      dirBg: "rgba(251,146,60,0.2)",
-      dirColor: "var(--backend-color)",
-      title: "Backend forwards query to the LLM",
-      desc: "The backend wraps your query into a prompt and sends it to the LLM. But the LLM doesn't know the database structure yet — it needs context.",
-      payload: JSON.stringify({ model: "gpt-4.1-mini", messages: [{ role: "system", content: "You are a SQL expert for the AACT database. Generate a PostgreSQL query. [Schema will be provided by MCP]" }, { role: "user", content: userQuery }] }, null, 2),
-      payloadLabel: "LLM API Call",
-      activeNodes: ["node-backend", "node-llm"],
-      activeArrow: 2,
-      arrowDir: "right",
-      arrowLabel: "Prompt + query",
-    },
-    {
-      id: 3,
-      color: "var(--llm-color)",
-      direction: "LLM → MCP Server",
-      dirBg: "rgba(167,139,250,0.2)",
-      dirColor: "var(--llm-color)",
-      title: "LLM initializes MCP connection",
-      desc: 'The LLM connects to the MCP server via JSON-RPC over stdio. First, it sends an "initialize" handshake — like a USB device announcing itself. The server responds with its capabilities (Resources only, no Tools).',
-      payload: "→ REQUEST:\n" + JSON.stringify(initRequest, null, 2) + "\n\n← RESPONSE:\n" + JSON.stringify(initResponse, null, 2),
-      payloadLabel: "MCP JSON-RPC: initialize",
-      activeNodes: ["node-llm", "node-mcp"],
-      activeArrow: 3,
-      arrowDir: "right",
-      arrowLabel: "initialize →",
-    },
-    {
-      id: 4,
-      color: "var(--mcp-color)",
-      direction: "LLM ↔ MCP Server",
-      dirBg: "rgba(74,222,128,0.2)",
-      dirColor: "var(--mcp-color)",
-      title: "LLM discovers available Resources",
-      desc: "The LLM asks: \"What resources do you have?\" The MCP server responds with a list: full schema, table list, relationships, and a template for individual tables. This is like browsing a file system.",
-      payload: "→ REQUEST:\n" + JSON.stringify(listRequest, null, 2) + "\n\n← RESPONSE:\n" + JSON.stringify(listResponse, null, 2),
-      payloadLabel: "MCP JSON-RPC: resources/list",
-      activeNodes: ["node-llm", "node-mcp"],
-      activeArrow: 3,
-      arrowDir: "left",
-      arrowLabel: "← resource list",
-    },
-    {
-      id: 5,
-      color: "var(--mcp-color)",
-      direction: "LLM ← MCP Server",
-      dirBg: "rgba(74,222,128,0.2)",
-      dirColor: "var(--mcp-color)",
-      title: "LLM reads the full database schema",
-      desc: "The LLM requests the full schema resource. The MCP server queries its data (or uses the static snapshot) and returns the complete DDL — all 48 tables, 396 columns, types, and 63 foreign key relationships. This is the KEY step: the LLM now knows the database structure.",
-      payload: "→ REQUEST:\n" + JSON.stringify(readRequest, null, 2) + "\n\n← RESPONSE (truncated):\n" + JSON.stringify(readResponse, null, 2),
-      payloadLabel: "MCP JSON-RPC: resources/read (schema)",
-      activeNodes: ["node-llm", "node-mcp"],
-      activeArrow: 3,
-      arrowDir: "left",
-      arrowLabel: "← 48 tables DDL",
-    },
-    {
-      id: 6,
-      color: "var(--llm-color)",
-      direction: "LLM → Backend",
-      dirBg: "rgba(167,139,250,0.2)",
-      dirColor: "var(--llm-color)",
-      title: "LLM generates SQL using schema + query",
-      desc: "Now the LLM has everything: your natural language request AND the full database structure. It combines both to generate a precise PostgreSQL query with correct table names, column names, JOINs, and WHERE clauses.",
-      payload: sqlResult ? `-- Generated SQL:\n${sqlResult}` : "-- Generating...",
-      payloadLabel: "LLM Output: SQL Query",
-      activeNodes: ["node-llm", "node-backend"],
-      activeArrow: 2,
-      arrowDir: "left",
-      arrowLabel: "← SQL query",
-    },
-    {
-      id: 7,
-      color: "var(--backend-color)",
-      direction: "Backend → User",
-      dirBg: "rgba(251,146,60,0.2)",
-      dirColor: "var(--backend-color)",
-      title: "Backend validates and returns the SQL",
-      desc: "The backend receives the SQL, validates it (checks for dangerous operations, ensures it's a SELECT), and returns it to you. In production, this is where a human reviews the SQL before it runs against the real database.",
-      payload: sqlResult ? JSON.stringify({ status: "success", sql: sqlResult, validated: true, note: "Human review recommended before execution" }, null, 2) : "-- Waiting...",
-      payloadLabel: "HTTP Response",
-      activeNodes: ["node-backend", "node-user"],
-      activeArrow: 1,
-      arrowDir: "left",
-      arrowLabel: "← validated SQL",
-    },
-  ];
-}
-
-// ============================================================
-// ANIMATION ENGINE
+// HELPERS
 // ============================================================
 
 let isRunning = false;
 
-function setQuery(q) {
-  document.getElementById("queryInput").value = q;
+function setQuery(q) { document.getElementById("queryInput").value = q; }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function escapeHtml(text) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
+function truncate(text, maxLen) {
+  if (!text || text.length <= maxLen) return text || "";
+  return text.substring(0, maxLen) + "\n\n... (" + text.length + " chars total, truncated for display)";
 }
 
 function resetUI() {
   document.getElementById("flowSection").style.display = "none";
   document.getElementById("flowTimeline").innerHTML = "";
   document.getElementById("sqlOutput").classList.remove("visible");
+  document.getElementById("efficiencySummary").classList.remove("visible");
   document.querySelectorAll(".arch-node").forEach(n => { n.classList.remove("active", "dimmed"); });
   document.querySelectorAll(".arrow-label").forEach(l => { l.classList.remove("active"); l.textContent = ""; });
 }
 
 function highlightNodes(activeIds) {
   document.querySelectorAll(".arch-node").forEach(n => {
-    if (activeIds.includes(n.id)) {
-      n.classList.add("active");
-      n.classList.remove("dimmed");
-    } else {
-      n.classList.remove("active");
-      n.classList.add("dimmed");
-    }
+    if (activeIds.includes(n.id)) { n.classList.add("active"); n.classList.remove("dimmed"); }
+    else { n.classList.remove("active"); n.classList.add("dimmed"); }
   });
 }
 
 function animateArrow(arrowNum, direction, color) {
-  const pulse = document.getElementById(`pulse-${arrowNum}`);
+  const pulse = document.getElementById("pulse-" + arrowNum);
   pulse.className = "pulse";
   pulse.style.background = color || "var(--accent)";
-  void pulse.offsetWidth; // force reflow
+  void pulse.offsetWidth;
   pulse.classList.add(direction === "right" ? "animate-right" : "animate-left");
 }
 
 function setArrowLabel(arrowNum, text) {
-  const label = document.getElementById(`arrow-label-${arrowNum}`);
+  const label = document.getElementById("arrow-label-" + arrowNum);
   label.textContent = text;
   label.classList.add("active");
 }
 
+// ============================================================
+// STEP RENDERING
+// ============================================================
+
+let stepCounter = 0;
+
 function createStepElement(step) {
   const el = document.createElement("div");
   el.className = "flow-step";
-  el.id = `step-${step.id}`;
+  const payloadId = "payload-body-" + stepCounter;
+  stepCounter++;
 
-  const payloadId = `payload-body-${step.id}`;
+  let badgeHtml = "";
+  if (step.realBadge) {
+    badgeHtml = ' <span class="real-badge">REAL</span>';
+  }
+  if (step.effBadge) {
+    badgeHtml += ' <span class="efficiency-badge">' + step.effBadge + '</span>';
+  }
 
-  el.innerHTML = `
-    <div class="step-marker">
-      <div class="step-dot" style="background:${step.color}">${step.id}</div>
-      <div class="step-line"></div>
-    </div>
-    <div class="step-content">
-      <div class="step-header">
-        <span class="step-direction" style="background:${step.dirBg};color:${step.dirColor}">${step.direction}</span>
-        <span class="step-title">${step.title}</span>
-      </div>
-      <div class="step-desc">${step.desc}</div>
-      <div class="step-payload">
-        <div class="payload-header" onclick="togglePayload('${payloadId}')">
-          <span class="payload-label">${step.payloadLabel}</span>
-          <span class="payload-toggle" id="toggle-${payloadId}">▶ Show message</span>
-        </div>
-        <div class="payload-body" id="${payloadId}">${escapeHtml(step.payload)}</div>
-      </div>
-    </div>
-  `;
+  el.innerHTML =
+    '<div class="step-marker">' +
+      '<div class="step-dot" style="background:' + step.color + '">' + step.num + '</div>' +
+      '<div class="step-line"></div>' +
+    '</div>' +
+    '<div class="step-content">' +
+      '<div class="step-header">' +
+        '<span class="step-direction" style="background:' + step.dirBg + ';color:' + step.dirColor + '">' + step.direction + '</span>' +
+        '<span class="step-title">' + step.title + badgeHtml + '</span>' +
+      '</div>' +
+      '<div class="step-desc">' + step.desc + '</div>' +
+      '<div class="step-payload">' +
+        '<div class="payload-header" onclick="togglePayload(\'' + payloadId + '\')">' +
+          '<span class="payload-label">' + step.payloadLabel + '</span>' +
+          '<span class="payload-toggle" id="toggle-' + payloadId + '">&#x25B6; Show message</span>' +
+        '</div>' +
+        '<div class="payload-body" id="' + payloadId + '">' + escapeHtml(step.payload) + '</div>' +
+      '</div>' +
+    '</div>';
   return el;
 }
 
 function togglePayload(id) {
   const body = document.getElementById(id);
-  const toggle = document.getElementById(`toggle-${id}`);
+  const toggle = document.getElementById("toggle-" + id);
   if (body.classList.contains("open")) {
     body.classList.remove("open");
-    toggle.textContent = "▶ Show message";
+    toggle.innerHTML = "&#x25B6; Show message";
   } else {
     body.classList.add("open");
-    toggle.textContent = "▼ Hide message";
+    toggle.innerHTML = "&#x25BC; Hide message";
   }
 }
 
-function escapeHtml(text) {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
+// ============================================================
+// MAIN FLOW
+// ============================================================
 
 async function runDemo() {
   if (isRunning) return;
@@ -771,6 +461,7 @@ async function runDemo() {
   if (!query) { document.getElementById("queryInput").focus(); return; }
 
   isRunning = true;
+  stepCounter = 0;
   const btn = document.getElementById("goBtn");
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Running...';
@@ -781,78 +472,223 @@ async function runDemo() {
   flowSection.style.display = "block";
   const timeline = document.getElementById("flowTimeline");
 
-  // Start the LLM call in background
-  const sqlPromise = fetchSQL(query);
+  // ---- Step 1: User -> Backend ----
+  await showStep(timeline, {
+    num: "1", color: "var(--user-color)",
+    direction: "User \u2192 Backend", dirBg: "rgba(108,140,255,0.2)", dirColor: "var(--user-color)",
+    title: "User sends natural language query",
+    desc: 'You typed: "' + escapeHtml(query) + '". This is sent as a plain HTTP request to the backend. The backend does not understand natural language \u2014 it orchestrates the pipeline.',
+    payload: JSON.stringify({ method: "POST", url: "/api/generate-sql", body: { query: query } }, null, 2),
+    payloadLabel: "HTTP Request",
+    activeNodes: ["node-user", "node-backend"], activeArrow: 1, arrowDir: "right",
+    arrowLabel: '"' + query.substring(0, 22) + '..."',
+  });
 
-  // Build steps with placeholder SQL
-  let steps = buildSteps(query, null);
+  // ---- Start the real API call in background ----
+  const apiPromise = fetch("/api/generate-sql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: query })
+  }).then(r => r.json());
 
-  // Animate steps 1-5 (before SQL is ready)
-  for (let i = 0; i < 5; i++) {
-    const step = steps[i];
-    highlightNodes(step.activeNodes);
-    animateArrow(step.activeArrow, step.arrowDir, step.color);
-    setArrowLabel(step.activeArrow, step.arrowLabel);
+  // ---- Step 2: Backend -> LLM (table identification) ----
+  await showStep(timeline, {
+    num: "2", color: "var(--backend-color)",
+    direction: "Backend \u2192 LLM", dirBg: "rgba(251,146,60,0.2)", dirColor: "var(--backend-color)",
+    title: "Backend asks LLM to identify relevant tables",
+    desc: "Before reading the full schema, the backend first needs to know WHICH tables are relevant. It sends the table list (from the MCP server) to the LLM and asks it to pick only the tables needed for your query.",
+    payload: JSON.stringify({
+      model: "gpt-4.1-mini",
+      messages: [{ role: "user", content: "Given this query and table list, which tables are needed? Return a JSON array.\n\nQuery: " + query + "\n\nTables: [48 tables with descriptions...]" }]
+    }, null, 2),
+    payloadLabel: "LLM API Call (table selection)",
+    activeNodes: ["node-backend", "node-llm"], activeArrow: 2, arrowDir: "right",
+    arrowLabel: "Which tables?",
+  });
 
-    const el = createStepElement(step);
-    timeline.appendChild(el);
-    await sleep(100);
-    el.classList.add("visible");
-    await sleep(1200);
-  }
-
-  // Wait for SQL result
-  let sql = "-- (Error generating SQL)";
+  // ---- Wait for API result ----
+  let result;
   try {
-    sql = await sqlPromise;
+    result = await apiPromise;
+    if (result.error) throw new Error(result.error);
   } catch (e) {
-    sql = `-- Error: ${e.message}`;
-  }
-
-  // Rebuild steps 6-7 with actual SQL
-  steps = buildSteps(query, sql);
-
-  // Animate steps 6-7
-  for (let i = 5; i < steps.length; i++) {
-    const step = steps[i];
-    highlightNodes(step.activeNodes);
-    animateArrow(step.activeArrow, step.arrowDir, step.color);
-    setArrowLabel(step.activeArrow, step.arrowLabel);
-
-    const el = createStepElement(step);
-    timeline.appendChild(el);
+    // Show error
+    const errEl = createStepElement({
+      num: "!", color: "var(--red)",
+      direction: "Error", dirBg: "rgba(248,113,113,0.2)", dirColor: "var(--red)",
+      title: "Pipeline failed", desc: e.message,
+      payload: e.message, payloadLabel: "Error",
+    });
+    timeline.appendChild(errEl);
     await sleep(100);
-    el.classList.add("visible");
-    await sleep(1200);
+    errEl.classList.add("visible");
+    btn.disabled = false;
+    btn.innerHTML = "Run Flow &#x25B6;";
+    isRunning = false;
+    return;
   }
 
-  // Show final SQL
+  const mcpFlow = result.mcp_flow || [];
+  const relevantTables = result.relevant_tables || [];
+  const sql = result.sql || "-- No SQL generated";
+  const schemaTokens = result.schema_tokens || 0;
+  const fullSchemaTokens = result.full_schema_tokens || 10611;
+
+  // ---- Step 3: LLM identifies tables ----
+  await showStep(timeline, {
+    num: "3", color: "var(--llm-color)",
+    direction: "LLM \u2192 Backend", dirBg: "rgba(167,139,250,0.2)", dirColor: "var(--llm-color)",
+    title: "LLM identifies " + relevantTables.length + " relevant tables",
+    desc: "The LLM analyzed your query and the table descriptions, and determined that only <strong>" + relevantTables.join(", ") + "</strong> are needed. That's " + relevantTables.length + " out of 48 tables.",
+    payload: JSON.stringify(relevantTables, null, 2),
+    payloadLabel: "LLM Response (selected tables)",
+    activeNodes: ["node-llm", "node-backend"], activeArrow: 2, arrowDir: "left",
+    arrowLabel: relevantTables.length + " tables",
+    effBadge: relevantTables.length + " of 48 tables",
+  });
+
+  // ---- Step 4: MCP Initialize ----
+  const initStep = mcpFlow.find(s => s.label === "initialize");
+  if (initStep) {
+    const instrText = initStep.instructions || "";
+    await showStep(timeline, {
+      num: "4", color: "var(--llm-color)",
+      direction: "Backend \u2192 MCP Server", dirBg: "rgba(74,222,128,0.2)", dirColor: "var(--mcp-color)",
+      title: "Backend initializes MCP connection",
+      desc: 'The backend connects to the MCP server via JSON-RPC over stdio. It sends an "initialize" handshake. The server responds with its capabilities and <strong>instructions</strong> that say: "Read aact://tables FIRST, then read only the tables you need."',
+      payload: "\u2192 REQUEST:\n" + JSON.stringify(initStep.request, null, 2) + "\n\n\u2190 RESPONSE:\n" + JSON.stringify(initStep.response, null, 2),
+      payloadLabel: "MCP JSON-RPC: initialize",
+      activeNodes: ["node-backend", "node-mcp"], activeArrow: 3, arrowDir: "right",
+      arrowLabel: "initialize \u2192", realBadge: true,
+    });
+  }
+
+  // ---- Step 5: resources/list ----
+  const listStep = mcpFlow.find(s => s.label === "resources/list");
+  if (listStep) {
+    await showStep(timeline, {
+      num: "5", color: "var(--mcp-color)",
+      direction: "Backend \u2194 MCP Server", dirBg: "rgba(74,222,128,0.2)", dirColor: "var(--mcp-color)",
+      title: "Backend discovers available Resources",
+      desc: 'The backend asks: "What resources do you have?" The MCP server responds with a list including aact://tables (marked "START HERE"), per-table schemas, and relationships.',
+      payload: "\u2192 REQUEST:\n" + JSON.stringify(listStep.request, null, 2) + "\n\n\u2190 RESPONSE:\n" + JSON.stringify(listStep.response, null, 2),
+      payloadLabel: "MCP JSON-RPC: resources/list",
+      activeNodes: ["node-backend", "node-mcp"], activeArrow: 3, arrowDir: "left",
+      arrowLabel: "\u2190 resource list", realBadge: true,
+    });
+  }
+
+  // ---- Step 6: Read aact://tables ----
+  const tablesStep = mcpFlow.find(s => s.label === "resources/read (aact://tables)");
+  if (tablesStep) {
+    await showStep(timeline, {
+      num: "6", color: "var(--mcp-color)",
+      direction: "Backend \u2190 MCP Server", dirBg: "rgba(74,222,128,0.2)", dirColor: "var(--mcp-color)",
+      title: "Backend reads table list with descriptions",
+      desc: "Following the server's instructions, the backend reads aact://tables first. This lightweight resource lists all 48 tables with descriptions, column counts, and domain classification \u2014 enough for the LLM to decide which tables matter.",
+      payload: "\u2192 REQUEST:\n" + JSON.stringify(tablesStep.request, null, 2) + "\n\n\u2190 RESPONSE (text, truncated):\n" + truncate(tablesStep.text || "", 1500),
+      payloadLabel: "MCP JSON-RPC: resources/read (aact://tables)",
+      activeNodes: ["node-backend", "node-mcp"], activeArrow: 3, arrowDir: "left",
+      arrowLabel: "\u2190 48 tables list", realBadge: true,
+    });
+  }
+
+  // ---- Steps 7+: Read each relevant table schema ----
+  const tableReadSteps = mcpFlow.filter(s => s.label.startsWith("resources/read (aact://schema/"));
+  for (let i = 0; i < tableReadSteps.length; i++) {
+    const ts = tableReadSteps[i];
+    const tblName = ts.request.params.uri.replace("aact://schema/", "");
+    await showStep(timeline, {
+      num: String(7 + i), color: "var(--mcp-color)",
+      direction: "Backend \u2190 MCP Server", dirBg: "rgba(74,222,128,0.2)", dirColor: "var(--mcp-color)",
+      title: "Read schema: " + tblName,
+      desc: "The backend reads only the <strong>" + tblName + "</strong> table schema \u2014 its columns, types, keys, and FK constraints. This is a targeted read instead of loading all 48 tables.",
+      payload: "\u2192 REQUEST:\n" + JSON.stringify(ts.request, null, 2) + "\n\n\u2190 RESPONSE (DDL):\n" + truncate(ts.text || "", 2000),
+      payloadLabel: "MCP: aact://schema/" + tblName,
+      activeNodes: ["node-backend", "node-mcp"], activeArrow: 3, arrowDir: "left",
+      arrowLabel: "\u2190 " + tblName, realBadge: true,
+      effBadge: (ts.text || "").length + " chars",
+    });
+  }
+
+  // ---- Step: Read relationships ----
+  const relsStep = mcpFlow.find(s => s.label === "resources/read (aact://relationships)");
+  const relsStepNum = 7 + tableReadSteps.length;
+  if (relsStep) {
+    await showStep(timeline, {
+      num: String(relsStepNum), color: "var(--mcp-color)",
+      direction: "Backend \u2190 MCP Server", dirBg: "rgba(74,222,128,0.2)", dirColor: "var(--mcp-color)",
+      title: "Read foreign key relationships",
+      desc: "The backend reads the relationship map so the LLM knows how to JOIN the selected tables correctly. This includes both nct_id-based joins and hierarchical FK chains.",
+      payload: "\u2192 REQUEST:\n" + JSON.stringify(relsStep.request, null, 2) + "\n\n\u2190 RESPONSE (truncated):\n" + truncate(relsStep.text || "", 1500),
+      payloadLabel: "MCP: aact://relationships",
+      activeNodes: ["node-backend", "node-mcp"], activeArrow: 3, arrowDir: "left",
+      arrowLabel: "\u2190 FK map", realBadge: true,
+    });
+  }
+
+  // ---- Step: LLM generates SQL ----
+  await showStep(timeline, {
+    num: String(relsStepNum + 1), color: "var(--llm-color)",
+    direction: "Backend \u2192 LLM", dirBg: "rgba(167,139,250,0.2)", dirColor: "var(--llm-color)",
+    title: "LLM generates SQL from targeted schema",
+    desc: "Now the LLM receives ONLY the " + relevantTables.length + " relevant table schemas + relationships (~" + schemaTokens + " tokens instead of ~" + fullSchemaTokens + "). It generates a precise PostgreSQL query.",
+    payload: "-- System prompt includes:\n-- " + relevantTables.length + " table DDLs (" + schemaTokens + " tokens)\n-- FK relationships\n-- User query: " + query + "\n\n-- Generated SQL:\n" + sql,
+    payloadLabel: "LLM Output: SQL Query",
+    activeNodes: ["node-llm", "node-backend"], activeArrow: 2, arrowDir: "left",
+    arrowLabel: "\u2190 SQL query",
+    effBadge: schemaTokens + " tokens (saved " + (fullSchemaTokens - schemaTokens) + ")",
+  });
+
+  // ---- Step: Backend returns to user ----
+  await showStep(timeline, {
+    num: String(relsStepNum + 2), color: "var(--backend-color)",
+    direction: "Backend \u2192 User", dirBg: "rgba(251,146,60,0.2)", dirColor: "var(--backend-color)",
+    title: "Backend validates and returns the SQL",
+    desc: "The backend receives the SQL, validates it (checks for dangerous operations, ensures it's a SELECT), and returns it to you. In production, this is where a human reviews the SQL before it runs against the real database.",
+    payload: JSON.stringify({ status: "success", sql: sql, tables_used: relevantTables, tokens_used: schemaTokens, tokens_saved: fullSchemaTokens - schemaTokens, validated: true }, null, 2),
+    payloadLabel: "HTTP Response",
+    activeNodes: ["node-backend", "node-user"], activeArrow: 1, arrowDir: "left",
+    arrowLabel: "\u2190 validated SQL",
+  });
+
+  // ---- Show efficiency summary ----
+  const tokensSaved = fullSchemaTokens - schemaTokens;
+  const pctSaved = Math.round((tokensSaved / fullSchemaTokens) * 100);
+  document.getElementById("effTables").textContent = relevantTables.length;
+  document.getElementById("effTokens").textContent = "~" + schemaTokens.toLocaleString();
+  document.getElementById("effFull").textContent = "~" + fullSchemaTokens.toLocaleString();
+  document.getElementById("effSaved").textContent = "~" + tokensSaved.toLocaleString() + " (" + pctSaved + "%)";
+  document.getElementById("efficiencySummary").classList.add("visible");
+
+  // ---- Show final SQL ----
   document.querySelectorAll(".arch-node").forEach(n => { n.classList.remove("active", "dimmed"); });
   document.getElementById("node-user").classList.add("active");
-
-  const sqlOutput = document.getElementById("sqlOutput");
   document.getElementById("sqlCode").textContent = sql;
-  sqlOutput.classList.add("visible");
-  sqlOutput.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  document.getElementById("sqlOutput").classList.add("visible");
+  document.getElementById("sqlOutput").scrollIntoView({ behavior: "smooth", block: "nearest" });
 
   btn.disabled = false;
-  btn.innerHTML = "Run Flow ▶";
+  btn.innerHTML = "Run Flow &#x25B6;";
   isRunning = false;
 }
 
-async function fetchSQL(query) {
-  const resp = await fetch("/api/generate-sql", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query })
-  });
-  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-  const data = await resp.json();
-  return data.sql;
+async function showStep(timeline, step) {
+  if (step.activeNodes) highlightNodes(step.activeNodes);
+  if (step.activeArrow) {
+    animateArrow(step.activeArrow, step.arrowDir, step.color);
+    setArrowLabel(step.activeArrow, step.arrowLabel);
+  }
+  const el = createStepElement(step);
+  timeline.appendChild(el);
+  await sleep(100);
+  el.classList.add("visible");
+  el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  await sleep(900);
 }
 
 // Enter key support
-document.getElementById("queryInput").addEventListener("keydown", (e) => {
+document.getElementById("queryInput").addEventListener("keydown", function(e) {
   if (e.key === "Enter") runDemo();
 });
 </script>
