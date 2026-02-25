@@ -1,0 +1,870 @@
+{
+  "_generated_by": "generate_column_profiles.py",
+  "_description": "Statistical profiles of key AACT columns. Used by the MCP server to expose the aact://column-profiles resource. Regenerate by running this script against the live AACT database.",
+  "table_row_counts": {
+    "baseline_measurements": 2791736,
+    "browse_conditions": 4171268,
+    "browse_interventions": 2469778,
+    "conditions": 1018177,
+    "countries": 779707,
+    "design_groups": 1049213,
+    "design_outcomes": 3540491,
+    "designs": 567712,
+    "documents": 10685,
+    "eligibilities": 571488,
+    "facilities": 3398347,
+    "id_information": 743912,
+    "interventions": 968032,
+    "outcome_analyses": 314105,
+    "outcome_measurements": 4758852,
+    "outcomes": 634527,
+    "reported_events": 11399953,
+    "result_groups": 2110254,
+    "sponsors": 915149,
+    "studies": 572453
+  },
+  "profiles": {
+    "studies.overall_status": {
+      "profile_type": "enum",
+      "n_distinct": 14,
+      "n_null": 0,
+      "values": {
+        "COMPLETED": 312804,
+        "UNKNOWN": 88285,
+        "RECRUITING": 65539,
+        "TERMINATED": 32925,
+        "NOT_YET_RECRUITING": 26604,
+        "ACTIVE_NOT_RECRUITING": 21517,
+        "WITHDRAWN": 16029,
+        "ENROLLING_BY_INVITATION": 5059,
+        "SUSPENDED": 1693,
+        "WITHHELD": 965,
+        "NO_LONGER_AVAILABLE": 514,
+        "AVAILABLE": 250,
+        "APPROVED_FOR_MARKETING": 234,
+        "TEMPORARILY_NOT_AVAILABLE": 35
+      },
+      "table": "studies",
+      "column": "overall_status"
+    },
+    "studies.phase": {
+      "profile_type": "enum",
+      "n_distinct": 8,
+      "n_null": 135596,
+      "values": {
+        "NA": 220711,
+        "PHASE2": 63313,
+        "PHASE1": 47007,
+        "PHASE3": 41149,
+        "PHASE4": 34789,
+        "PHASE1/PHASE2": 16391,
+        "PHASE2/PHASE3": 7365,
+        "EARLY_PHASE1": 6132
+      },
+      "table": "studies",
+      "column": "phase"
+    },
+    "studies.study_type": {
+      "profile_type": "enum",
+      "n_distinct": 3,
+      "n_null": 965,
+      "values": {
+        "INTERVENTIONAL": 436967,
+        "OBSERVATIONAL": 133488,
+        "EXPANDED_ACCESS": 1033
+      },
+      "table": "studies",
+      "column": "study_type"
+    },
+    "studies.enrollment_type": {
+      "profile_type": "enum",
+      "n_distinct": 2,
+      "n_null": 17090,
+      "values": {
+        "ACTUAL": 355925,
+        "ESTIMATED": 199438
+      },
+      "table": "studies",
+      "column": "enrollment_type"
+    },
+    "studies.source_class": {
+      "profile_type": "enum",
+      "n_distinct": 8,
+      "n_null": 965,
+      "values": {
+        "OTHER": 405543,
+        "INDUSTRY": 127411,
+        "OTHER_GOV": 14892,
+        "NIH": 12913,
+        "FED": 4940,
+        "NETWORK": 4788,
+        "INDIV": 532,
+        "UNKNOWN": 469
+      },
+      "table": "studies",
+      "column": "source_class"
+    },
+    "studies.last_known_status": {
+      "profile_type": "enum",
+      "n_distinct": 4,
+      "n_null": 484168,
+      "values": {
+        "RECRUITING": 50153,
+        "NOT_YET_RECRUITING": 21373,
+        "ACTIVE_NOT_RECRUITING": 13444,
+        "ENROLLING_BY_INVITATION": 3315
+      },
+      "table": "studies",
+      "column": "last_known_status"
+    },
+    "studies.biospec_retention": {
+      "profile_type": "enum",
+      "n_distinct": 3,
+      "n_null": 545570,
+      "values": {
+        "SAMPLES_WITH_DNA": 16536,
+        "SAMPLES_WITHOUT_DNA": 9644,
+        "NONE_RETAINED": 703
+      },
+      "table": "studies",
+      "column": "biospec_retention"
+    },
+    "studies.plan_to_share_ipd": {
+      "profile_type": "enum",
+      "n_distinct": 3,
+      "n_null": 277791,
+      "values": {
+        "NO": 194926,
+        "UNDECIDED": 49870,
+        "YES": 49866
+      },
+      "table": "studies",
+      "column": "plan_to_share_ipd"
+    },
+    "studies.enrollment": {
+      "profile_type": "numeric",
+      "min": 0.0,
+      "max": 188814085.0,
+      "median": 69.0,
+      "mean": 5417.99,
+      "n_null": 7083,
+      "n_non_null": 565370,
+      "table": "studies",
+      "column": "enrollment"
+    },
+    "studies.number_of_arms": {
+      "profile_type": "numeric",
+      "min": 1.0,
+      "max": 53.0,
+      "median": 2.0,
+      "mean": 2.15,
+      "n_null": 159454,
+      "n_non_null": 412999,
+      "table": "studies",
+      "column": "number_of_arms"
+    },
+    "studies.number_of_groups": {
+      "profile_type": "numeric",
+      "min": 1.0,
+      "max": 49.0,
+      "median": 2.0,
+      "mean": 1.85,
+      "n_null": 485121,
+      "n_non_null": 87332,
+      "table": "studies",
+      "column": "number_of_groups"
+    },
+    "studies.is_fda_regulated_drug": {
+      "profile_type": "boolean",
+      "n_true": 51846,
+      "n_false": 297214,
+      "n_null": 223393,
+      "table": "studies",
+      "column": "is_fda_regulated_drug"
+    },
+    "studies.is_fda_regulated_device": {
+      "profile_type": "boolean",
+      "n_true": 19297,
+      "n_false": 329683,
+      "n_null": 223473,
+      "table": "studies",
+      "column": "is_fda_regulated_device"
+    },
+    "studies.has_dmc": {
+      "profile_type": "boolean",
+      "n_true": 163999,
+      "n_false": 307206,
+      "n_null": 101248,
+      "table": "studies",
+      "column": "has_dmc"
+    },
+    "studies.has_expanded_access": {
+      "profile_type": "boolean",
+      "n_true": 971,
+      "n_false": 564735,
+      "n_null": 6747,
+      "table": "studies",
+      "column": "has_expanded_access"
+    },
+    "studies.fdaaa801_violation": {
+      "profile_type": "boolean",
+      "n_true": 8,
+      "n_false": 0,
+      "n_null": 572445,
+      "table": "studies",
+      "column": "fdaaa801_violation"
+    },
+    "studies.start_date": {
+      "profile_type": "date_range",
+      "min": "1900-01-31",
+      "max": "2099-01-01",
+      "n_null": 5314,
+      "n_non_null": 567139,
+      "table": "studies",
+      "column": "start_date"
+    },
+    "studies.completion_date": {
+      "profile_type": "date_range",
+      "min": "1900-01-31",
+      "max": "2100-12-31",
+      "n_null": 16702,
+      "n_non_null": 555751,
+      "table": "studies",
+      "column": "completion_date"
+    },
+    "studies.primary_completion_date": {
+      "profile_type": "date_range",
+      "min": "1900-01-31",
+      "max": "2100-12-31",
+      "n_null": 21859,
+      "n_non_null": 550594,
+      "table": "studies",
+      "column": "primary_completion_date"
+    },
+    "studies.study_first_submitted_date": {
+      "profile_type": "date_range",
+      "min": "1999-09-17",
+      "max": "2026-02-19",
+      "n_null": 0,
+      "n_non_null": 572453,
+      "table": "studies",
+      "column": "study_first_submitted_date"
+    },
+    "studies.results_first_submitted_date": {
+      "profile_type": "date_range",
+      "min": "2008-09-25",
+      "max": "2026-02-03",
+      "n_null": 495854,
+      "n_non_null": 76599,
+      "table": "studies",
+      "column": "results_first_submitted_date"
+    },
+    "conditions.downcase_name": {
+      "profile_type": "sample",
+      "n_distinct": 124996,
+      "n_null": 0,
+      "sample_values": [
+        "hypertension and balance",
+        "claudication (finding)",
+        "lipid profile and ultrasound findings in patients with pancreaticobiliary diseases",
+        "intraoperative bcc detection by fast raman device",
+        "covid-19 pneumonitis"
+      ],
+      "table": "conditions",
+      "column": "downcase_name"
+    },
+    "interventions.intervention_type": {
+      "profile_type": "enum",
+      "n_distinct": 11,
+      "n_null": 0,
+      "values": {
+        "DRUG": 398906,
+        "OTHER": 170114,
+        "DEVICE": 98335,
+        "BEHAVIORAL": 91516,
+        "PROCEDURE": 87396,
+        "BIOLOGICAL": 45858,
+        "DIETARY_SUPPLEMENT": 29280,
+        "DIAGNOSTIC_TEST": 25765,
+        "RADIATION": 12490,
+        "COMBINATION_PRODUCT": 4400,
+        "GENETIC": 3972
+      },
+      "table": "interventions",
+      "column": "intervention_type"
+    },
+    "interventions.name": {
+      "profile_type": "sample",
+      "n_distinct": 504766,
+      "n_null": 173,
+      "sample_values": [
+        "Surgical implantation with standard (DRM) or photosynthetic dermal regeneration matrices (PDRM) in same patient.",
+        "RFA+highly-purified CTL",
+        "GW815SF HFA MDI",
+        "Dental rehabilitation with either composite resin of crown therapy",
+        "local injection"
+      ],
+      "table": "interventions",
+      "column": "name"
+    },
+    "design_outcomes.outcome_type": {
+      "profile_type": "enum",
+      "n_distinct": 3,
+      "n_null": 0,
+      "values": {
+        "secondary": 2221591,
+        "primary": 1125493,
+        "other": 193407
+      },
+      "table": "design_outcomes",
+      "column": "outcome_type"
+    },
+    "design_outcomes.measure": {
+      "profile_type": "sample",
+      "n_distinct": 2467927,
+      "n_null": 9,
+      "sample_values": [
+        "Coefficient of variation for muscle activity of soleus",
+        "%CfB in Femoral Neck BMD",
+        "SUVr",
+        "look for risk factors of bleeding events",
+        "pH of Saliva 30 minutes after exposure to test mixed fruit juice"
+      ],
+      "table": "design_outcomes",
+      "column": "measure"
+    },
+    "outcomes.outcome_type": {
+      "profile_type": "enum",
+      "n_distinct": 4,
+      "n_null": 0,
+      "values": {
+        "SECONDARY": 429259,
+        "PRIMARY": 176359,
+        "OTHER_PRE_SPECIFIED": 26726,
+        "POST_HOC": 2183
+      },
+      "table": "outcomes",
+      "column": "outcome_type"
+    },
+    "outcomes.param_type": {
+      "profile_type": "enum",
+      "n_distinct": 9,
+      "n_null": 46506,
+      "values": {
+        "MEAN": 224493,
+        "NUMBER": 139997,
+        "COUNT_OF_PARTICIPANTS": 97033,
+        "MEDIAN": 57038,
+        "LEAST_SQUARES_MEAN": 35602,
+        "GEOMETRIC_MEAN": 31134,
+        "COUNT_OF_UNITS": 1859,
+        "GEOMETRIC_LEAST_SQUARES_MEAN": 783,
+        "LOG_MEAN": 82
+      },
+      "table": "outcomes",
+      "column": "param_type"
+    },
+    "outcomes.dispersion_type": {
+      "profile_type": "sample",
+      "n_distinct": 57,
+      "n_null": 249994,
+      "table": "outcomes",
+      "column": "dispersion_type",
+      "sample_values": [
+        "Standard Deviation",
+        "95% Confidence Interval",
+        "Standard Error",
+        "Full Range",
+        "Geometric Coefficient of Variation"
+      ]
+    },
+    "outcomes.units": {
+      "profile_type": "sample",
+      "n_distinct": 46255,
+      "n_null": 46545,
+      "sample_values": [
+        "percent of total Body Surface Area",
+        "gene copy number",
+        "Corneometer Units",
+        "percentage of TN participants",
+        "months of survival"
+      ],
+      "table": "outcomes",
+      "column": "units"
+    },
+    "outcome_measurements.param_type": {
+      "profile_type": "enum",
+      "n_distinct": 9,
+      "n_null": 1106,
+      "values": {
+        "MEAN": 1533869,
+        "NUMBER": 1259706,
+        "COUNT_OF_PARTICIPANTS": 1213145,
+        "MEDIAN": 269222,
+        "GEOMETRIC_MEAN": 262248,
+        "LEAST_SQUARES_MEAN": 199496,
+        "COUNT_OF_UNITS": 15910,
+        "GEOMETRIC_LEAST_SQUARES_MEAN": 3821,
+        "LOG_MEAN": 329
+      },
+      "table": "outcome_measurements",
+      "column": "param_type"
+    },
+    "outcome_measurements.dispersion_type": {
+      "profile_type": "sample",
+      "n_distinct": 57,
+      "n_null": 2228864,
+      "table": "outcome_measurements",
+      "column": "dispersion_type",
+      "sample_values": [
+        "Standard Deviation",
+        "95% Confidence Interval",
+        "Standard Error",
+        "Inter-Quartile Range",
+        "Full Range"
+      ]
+    },
+    "outcome_measurements.category": {
+      "profile_type": "sample",
+      "n_distinct": 20979,
+      "n_null": 4430530,
+      "sample_values": [
+        "Preoperative Periphery Assessment Abnormal",
+        "I, II, III or IV",
+        "3240",
+        "Participants with Partial Response",
+        "Grade 0 (no toxicity)"
+      ],
+      "table": "outcome_measurements",
+      "column": "category"
+    },
+    "outcome_analyses.param_type": {
+      "profile_type": "sample",
+      "n_distinct": 6363,
+      "n_null": 97653,
+      "table": "outcome_analyses",
+      "column": "param_type",
+      "sample_values": [
+        "Mean Difference (Final Values)",
+        "Odds Ratio (OR)",
+        "Mean Difference (Net)",
+        "LS Mean Difference",
+        "Hazard Ratio (HR)"
+      ]
+    },
+    "outcome_analyses.dispersion_type": {
+      "profile_type": "enum",
+      "n_distinct": 2,
+      "n_null": 255323,
+      "values": {
+        "STANDARD_ERROR_OF_MEAN": 53784,
+        "STANDARD_DEVIATION": 4998
+      },
+      "table": "outcome_analyses",
+      "column": "dispersion_type"
+    },
+    "outcome_analyses.method": {
+      "profile_type": "sample",
+      "n_distinct": 4467,
+      "n_null": 46498,
+      "sample_values": [
+        "Paired t test",
+        "Van Elteren's modification Mann-Whitney",
+        "Prescott Test",
+        "McNemar Test",
+        "see below"
+      ],
+      "table": "outcome_analyses",
+      "column": "method"
+    },
+    "outcome_analyses.non_inferiority_type": {
+      "profile_type": "enum",
+      "n_distinct": 8,
+      "n_null": 0,
+      "values": {
+        "SUPERIORITY": 121663,
+        "SUPERIORITY_OR_OTHER": 97187,
+        "OTHER": 51669,
+        "SUPERIORITY_OR_OTHER_LEGACY": 23591,
+        "NON_INFERIORITY_OR_EQUIVALENCE": 6754,
+        "EQUIVALENCE": 6372,
+        "NON_INFERIORITY": 5605,
+        "NON_INFERIORITY_OR_EQUIVALENCE_LEGACY": 1264
+      },
+      "table": "outcome_analyses",
+      "column": "non_inferiority_type"
+    },
+    "designs.allocation": {
+      "profile_type": "enum",
+      "n_distinct": 3,
+      "n_null": 136440,
+      "values": {
+        "RANDOMIZED": 286994,
+        "NA": 98336,
+        "NON_RANDOMIZED": 45942
+      },
+      "table": "designs",
+      "column": "allocation"
+    },
+    "designs.intervention_model": {
+      "profile_type": "enum",
+      "n_distinct": 5,
+      "n_null": 137336,
+      "values": {
+        "PARALLEL": 259033,
+        "SINGLE_GROUP": 118526,
+        "CROSSOVER": 34725,
+        "SEQUENTIAL": 12258,
+        "FACTORIAL": 5834
+      },
+      "table": "designs",
+      "column": "intervention_model"
+    },
+    "designs.observational_model": {
+      "profile_type": "enum",
+      "n_distinct": 9,
+      "n_null": 440021,
+      "values": {
+        "COHORT": 75764,
+        "CASE_CONTROL": 17916,
+        "CASE_ONLY": 16957,
+        "OTHER": 12799,
+        "ECOLOGIC_OR_COMMUNITY": 1581,
+        "CASE_CROSSOVER": 1376,
+        "DEFINED_POPULATION": 643,
+        "FAMILY_BASED": 567,
+        "NATURAL_HISTORY": 88
+      },
+      "table": "designs",
+      "column": "observational_model"
+    },
+    "designs.primary_purpose": {
+      "profile_type": "enum",
+      "n_distinct": 10,
+      "n_null": 137615,
+      "values": {
+        "TREATMENT": 278090,
+        "PREVENTION": 46367,
+        "OTHER": 24785,
+        "SUPPORTIVE_CARE": 24270,
+        "BASIC_SCIENCE": 20756,
+        "DIAGNOSTIC": 18753,
+        "HEALTH_SERVICES_RESEARCH": 11418,
+        "SCREENING": 3989,
+        "DEVICE_FEASIBILITY": 1495,
+        "ECT": 174
+      },
+      "table": "designs",
+      "column": "primary_purpose"
+    },
+    "designs.time_perspective": {
+      "profile_type": "enum",
+      "n_distinct": 4,
+      "n_null": 437141,
+      "values": {
+        "PROSPECTIVE": 86838,
+        "RETROSPECTIVE": 20624,
+        "CROSS_SECTIONAL": 17027,
+        "OTHER": 6082
+      },
+      "table": "designs",
+      "column": "time_perspective"
+    },
+    "designs.masking": {
+      "profile_type": "enum",
+      "n_distinct": 5,
+      "n_null": 136080,
+      "values": {
+        "NONE": 239873,
+        "SINGLE": 64993,
+        "DOUBLE": 58911,
+        "QUADRUPLE": 39091,
+        "TRIPLE": 28764
+      },
+      "table": "designs",
+      "column": "masking"
+    },
+    "eligibilities.gender": {
+      "profile_type": "enum",
+      "n_distinct": 3,
+      "n_null": 412,
+      "values": {
+        "ALL": 492528,
+        "FEMALE": 55191,
+        "MALE": 23357
+      },
+      "table": "eligibilities",
+      "column": "gender"
+    },
+    "eligibilities.sampling_method": {
+      "profile_type": "enum",
+      "n_distinct": 2,
+      "n_null": 442116,
+      "values": {
+        "NON_PROBABILITY_SAMPLE": 93954,
+        "PROBABILITY_SAMPLE": 35418
+      },
+      "table": "eligibilities",
+      "column": "sampling_method"
+    },
+    "eligibilities.minimum_age": {
+      "profile_type": "sample",
+      "n_distinct": 330,
+      "n_null": 36719,
+      "sample_values": [
+        "0 Months",
+        "5 Years",
+        "125 Months",
+        "7 Days",
+        "130 Days"
+      ],
+      "table": "eligibilities",
+      "column": "minimum_age"
+    },
+    "eligibilities.maximum_age": {
+      "profile_type": "sample",
+      "n_distinct": 496,
+      "n_null": 267622,
+      "sample_values": [
+        "4 Days",
+        "87 Years",
+        "1 Day",
+        "156 Months",
+        "31 Months"
+      ],
+      "table": "eligibilities",
+      "column": "maximum_age"
+    },
+    "sponsors.agency_class": {
+      "profile_type": "enum",
+      "n_distinct": 9,
+      "n_null": 965,
+      "values": {
+        "OTHER": 586916,
+        "INDUSTRY": 180415,
+        "UNKNOWN": 49526,
+        "NIH": 46599,
+        "OTHER_GOV": 31702,
+        "FED": 10764,
+        "NETWORK": 7412,
+        "INDIV": 761,
+        "AMBIG": 89
+      },
+      "table": "sponsors",
+      "column": "agency_class"
+    },
+    "sponsors.lead_or_collaborator": {
+      "profile_type": "enum",
+      "n_distinct": 2,
+      "n_null": 0,
+      "values": {
+        "lead": 572453,
+        "collaborator": 342696
+      },
+      "table": "sponsors",
+      "column": "lead_or_collaborator"
+    },
+    "facilities.status": {
+      "profile_type": "enum",
+      "n_distinct": 9,
+      "n_null": 2895417,
+      "values": {
+        "RECRUITING": 404903,
+        "NOT_YET_RECRUITING": 53544,
+        "ACTIVE_NOT_RECRUITING": 18255,
+        "COMPLETED": 8970,
+        "WITHDRAWN": 7206,
+        "SUSPENDED": 6253,
+        "TERMINATED": 2090,
+        "AVAILABLE": 1331,
+        "ENROLLING_BY_INVITATION": 378
+      },
+      "table": "facilities",
+      "column": "status"
+    },
+    "facilities.country": {
+      "profile_type": "sample",
+      "n_distinct": 225,
+      "n_null": 111,
+      "sample_values": [
+        "Laos",
+        "Colombia",
+        "Mauritius",
+        "Croatia",
+        "Lesotho"
+      ],
+      "table": "facilities",
+      "column": "country"
+    },
+    "facilities.city": {
+      "profile_type": "sample",
+      "n_distinct": 55536,
+      "n_null": 111,
+      "sample_values": [
+        "Framersheim",
+        "Muelheim A.d. Ruhr",
+        "Meldorf",
+        "Stanmore",
+        "Sado"
+      ],
+      "table": "facilities",
+      "column": "city"
+    },
+    "design_groups.group_type": {
+      "profile_type": "enum",
+      "n_distinct": 6,
+      "n_null": 161406,
+      "values": {
+        "EXPERIMENTAL": 508378,
+        "ACTIVE_COMPARATOR": 193068,
+        "PLACEBO_COMPARATOR": 77886,
+        "NO_INTERVENTION": 55048,
+        "OTHER": 41638,
+        "SHAM_COMPARATOR": 11789
+      },
+      "table": "design_groups",
+      "column": "group_type"
+    },
+    "reported_events.event_type": {
+      "profile_type": "enum",
+      "n_distinct": 2,
+      "n_null": 0,
+      "values": {
+        "other": 7133775,
+        "serious": 4266178
+      },
+      "table": "reported_events",
+      "column": "event_type"
+    },
+    "reported_events.assessment": {
+      "profile_type": "enum",
+      "n_distinct": 2,
+      "n_null": 257476,
+      "values": {
+        "SYSTEMATIC_ASSESSMENT": 8709338,
+        "NON_SYSTEMATIC_ASSESSMENT": 2433139
+      },
+      "table": "reported_events",
+      "column": "assessment"
+    },
+    "countries.name": {
+      "profile_type": "sample",
+      "n_distinct": 228,
+      "n_null": 85,
+      "sample_values": [
+        "Malawi",
+        "Zambia",
+        "Gabon",
+        "Mauritania",
+        "Curacao"
+      ],
+      "table": "countries",
+      "column": "name"
+    },
+    "countries.removed": {
+      "profile_type": "boolean",
+      "n_true": 35296,
+      "n_false": 744411,
+      "n_null": 0,
+      "table": "countries",
+      "column": "removed"
+    },
+    "documents.document_type": {
+      "profile_type": "sample",
+      "n_distinct": 351,
+      "n_null": 0,
+      "sample_values": [
+        "Breast Milk At the Dawn of New Discoveries",
+        "Education",
+        "Manual of Procedures",
+        "No individual participant data (IPD) or supporting documents will be shared. Only aggregated study results may be publis",
+        "Data Coding Manuals"
+      ],
+      "table": "documents",
+      "column": "document_type"
+    },
+    "browse_conditions.mesh_type": {
+      "profile_type": "enum",
+      "n_distinct": 2,
+      "n_null": 0,
+      "values": {
+        "mesh-ancestor": 3370334,
+        "mesh-list": 800934
+      },
+      "table": "browse_conditions",
+      "column": "mesh_type"
+    },
+    "browse_interventions.mesh_type": {
+      "profile_type": "enum",
+      "n_distinct": 2,
+      "n_null": 0,
+      "values": {
+        "mesh-ancestor": 2012752,
+        "mesh-list": 457026
+      },
+      "table": "browse_interventions",
+      "column": "mesh_type"
+    },
+    "baseline_measurements.param_type": {
+      "profile_type": "enum",
+      "n_distinct": 9,
+      "n_null": 324,
+      "values": {
+        "COUNT_OF_PARTICIPANTS": 2071636,
+        "NUMBER": 351106,
+        "MEAN": 317953,
+        "MEDIAN": 45979,
+        "COUNT_OF_UNITS": 3845,
+        "GEOMETRIC_MEAN": 735,
+        "LEAST_SQUARES_MEAN": 142,
+        "LOG_MEAN": 10,
+        "GEOMETRIC_LEAST_SQUARES_MEAN": 6
+      },
+      "table": "baseline_measurements",
+      "column": "param_type"
+    },
+    "baseline_measurements.dispersion_type": {
+      "profile_type": "enum",
+      "n_distinct": 3,
+      "n_null": 2426911,
+      "values": {
+        "STANDARD_DEVIATION": 302848,
+        "FULL_RANGE": 38796,
+        "INTER_QUARTILE_RANGE": 23181
+      },
+      "table": "baseline_measurements",
+      "column": "dispersion_type"
+    },
+    "result_groups.result_type": {
+      "profile_type": "enum",
+      "n_distinct": 4,
+      "n_null": 0,
+      "values": {
+        "Outcome": 1504301,
+        "Baseline": 227733,
+        "Reported Event": 191609,
+        "Participant Flow": 186611
+      },
+      "table": "result_groups",
+      "column": "result_type"
+    },
+    "id_information.id_type": {
+      "profile_type": "enum",
+      "n_distinct": 9,
+      "n_null": 604662,
+      "values": {
+        "OTHER": 49590,
+        "NIH": 40001,
+        "REGISTRY": 18837,
+        "EUDRACT_NUMBER": 18163,
+        "OTHER_GRANT": 10530,
+        "CTIS": 1622,
+        "AHRQ": 355,
+        "FDA": 149,
+        "SAMHSA": 3
+      },
+      "table": "id_information",
+      "column": "id_type"
+    }
+  }
+}

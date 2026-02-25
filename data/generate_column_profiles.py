@@ -170,7 +170,11 @@ COLUMNS_TO_PROFILE = [
 # ---------------------------------------------------------------------------
 
 def profile_enum(cur, table: str, col: str) -> dict:
-    """Get all distinct values with counts (for low-cardinality columns)."""
+    """Get all distinct values with counts (for low-cardinality columns).
+    
+    Safety: if the column has >50 distinct values, auto-downgrade to sample
+    mode to avoid bloating the JSON output.
+    """
     cur.execute(f"""
         SELECT {col}, COUNT(*) as cnt
         FROM ctgov.{table}
@@ -182,6 +186,16 @@ def profile_enum(cur, table: str, col: str) -> dict:
     null_count_q = f"SELECT COUNT(*) FROM ctgov.{table} WHERE {col} IS NULL"
     cur.execute(null_count_q)
     n_null = cur.fetchone()[0]
+    
+    # Safety cap: if >50 distinct values, this is not really an enum
+    if len(rows) > 50:
+        return {
+            "profile_type": "sample",
+            "n_distinct": len(rows),
+            "n_null": n_null,
+            "sample_values": [str(r[0])[:120] for r in rows[:5]],
+        }
+    
     return {
         "profile_type": "enum",
         "n_distinct": len(rows),
