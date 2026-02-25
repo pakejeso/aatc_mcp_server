@@ -1,0 +1,105 @@
+{
+  "_description": "Tested SQL query templates for common clinical trial questions. Used by the MCP server to expose the aact://query-patterns resource. These patterns help LLMs generate correct, efficient SQL by providing proven examples.",
+  "patterns": [
+    {
+      "intent": "List planned endpoints (outcome measures) for trials matching a condition",
+      "when_to_use": "User asks about endpoints, outcome measures, primary/secondary endpoints for recruiting or any trials",
+      "tables": ["studies", "conditions", "design_outcomes"],
+      "sql": "SELECT s.nct_id, s.brief_title, do_ut.outcome_type, do_ut.measure, do_ut.time_frame\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.design_outcomes do_ut ON s.nct_id = do_ut.nct_id\nWHERE UPPER(s.overall_status) = 'RECRUITING'\n  AND cond.downcase_name ILIKE '%{condition}%'\nORDER BY s.nct_id, do_ut.outcome_type\nLIMIT 100;",
+      "notes": "Uses design_outcomes (Protocol domain), NOT outcomes (Results domain). Safe for recruiting trials."
+    },
+    {
+      "intent": "List posted results/measurements for completed trials",
+      "when_to_use": "User asks about actual results, efficacy data, or outcome measurements from completed trials",
+      "tables": ["studies", "conditions", "outcomes", "outcome_measurements"],
+      "sql": "SELECT s.nct_id, s.brief_title, o.title AS outcome_title, o.outcome_type,\n       om.classification, om.category, om.param_type, om.param_value_num, om.units\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.outcomes o ON s.nct_id = o.nct_id\nJOIN ctgov.outcome_measurements om ON o.id = om.outcome_id\nWHERE UPPER(s.overall_status) = 'COMPLETED'\n  AND cond.downcase_name ILIKE '%{condition}%'\nLIMIT 100;",
+      "notes": "Uses outcomes + outcome_measurements (Results domain). Only works for completed trials with posted results."
+    },
+    {
+      "intent": "List study sites/locations for trials matching a condition",
+      "when_to_use": "User asks about sites, locations, centers, or where trials are conducted",
+      "tables": ["studies", "conditions", "facilities"],
+      "sql": "SELECT s.nct_id, s.brief_title, f.name AS facility_name, f.city, f.country, f.status\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.facilities f ON s.nct_id = f.nct_id\nWHERE UPPER(s.overall_status) = 'RECRUITING'\n  AND cond.downcase_name ILIKE '%{condition}%'\nORDER BY f.country, f.city\nLIMIT 100;",
+      "notes": "Facilities table is Protocol domain, always populated."
+    },
+    {
+      "intent": "List trials with their interventions for a condition",
+      "when_to_use": "User asks about drugs, treatments, or interventions for a disease",
+      "tables": ["studies", "conditions", "interventions"],
+      "sql": "SELECT DISTINCT s.nct_id, s.brief_title, i.intervention_type, i.name AS intervention_name\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.interventions i ON s.nct_id = i.nct_id\nWHERE cond.downcase_name ILIKE '%{condition}%'\nORDER BY s.nct_id\nLIMIT 100;",
+      "notes": "Add UPPER(s.overall_status) filter if user specifies a status."
+    },
+    {
+      "intent": "Find trials by sponsor or funder",
+      "when_to_use": "User asks about trials sponsored by a company or funded by NIH/industry",
+      "tables": ["studies", "sponsors"],
+      "sql": "SELECT s.nct_id, s.brief_title, UPPER(s.overall_status) AS status, sp.name AS sponsor_name, sp.agency_class\nFROM ctgov.studies s\nJOIN ctgov.sponsors sp ON s.nct_id = sp.nct_id\nWHERE sp.lead_or_collaborator = 'lead'\n  AND sp.name ILIKE '%{sponsor}%'\nORDER BY s.study_first_submitted_date DESC\nLIMIT 100;",
+      "notes": "Filter on lead_or_collaborator = 'lead' to get the primary sponsor only."
+    },
+    {
+      "intent": "Get eligibility criteria for trials",
+      "when_to_use": "User asks about who can participate, age limits, gender, inclusion/exclusion criteria",
+      "tables": ["studies", "conditions", "eligibilities"],
+      "sql": "SELECT s.nct_id, s.brief_title, e.gender, e.minimum_age, e.maximum_age, e.healthy_volunteers\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.eligibilities e ON s.nct_id = e.nct_id\nWHERE UPPER(s.overall_status) = 'RECRUITING'\n  AND cond.downcase_name ILIKE '%{condition}%'\nLIMIT 100;",
+      "notes": "eligibilities has one row per study. gender values are UPPERCASE: ALL, FEMALE, MALE."
+    },
+    {
+      "intent": "Get study design details",
+      "when_to_use": "User asks about randomization, blinding, study design, masking",
+      "tables": ["studies", "conditions", "designs"],
+      "sql": "SELECT s.nct_id, s.brief_title, UPPER(s.phase) AS phase, d.allocation, d.intervention_model, d.masking, d.primary_purpose\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.designs d ON s.nct_id = d.nct_id\nWHERE cond.downcase_name ILIKE '%{condition}%'\nLIMIT 100;",
+      "notes": "designs has one row per study."
+    },
+    {
+      "intent": "Get adverse events for completed trials",
+      "when_to_use": "User asks about adverse events, safety data, side effects",
+      "tables": ["studies", "conditions", "reported_events"],
+      "sql": "SELECT s.nct_id, s.brief_title, re.event_type, re.organ_system, re.adverse_event_term,\n       re.subjects_affected, re.subjects_at_risk\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.reported_events re ON s.nct_id = re.nct_id\nWHERE cond.downcase_name ILIKE '%{condition}%'\n  AND re.event_type = 'serious'\nORDER BY re.subjects_affected DESC\nLIMIT 100;",
+      "notes": "Results domain only. reported_events is only populated for trials with posted results."
+    },
+    {
+      "intent": "Count trials by status for a condition",
+      "when_to_use": "User asks how many trials exist, trial counts, or status distribution",
+      "tables": ["studies", "conditions"],
+      "sql": "SELECT UPPER(s.overall_status) AS status, COUNT(DISTINCT s.nct_id) AS trial_count\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nWHERE cond.downcase_name ILIKE '%{condition}%'\nGROUP BY UPPER(s.overall_status)\nORDER BY trial_count DESC;",
+      "notes": "No LIMIT needed for aggregation queries."
+    },
+    {
+      "intent": "Count trials by phase for a condition",
+      "when_to_use": "User asks about phase distribution of trials",
+      "tables": ["studies", "conditions"],
+      "sql": "SELECT UPPER(s.phase) AS phase, COUNT(DISTINCT s.nct_id) AS trial_count\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nWHERE cond.downcase_name ILIKE '%{condition}%'\nGROUP BY UPPER(s.phase)\nORDER BY trial_count DESC;",
+      "notes": "Phase values are UPPERCASE without spaces: PHASE1, PHASE2, PHASE3, PHASE4, EARLY_PHASE1, NA, PHASE1/PHASE2, PHASE2/PHASE3."
+    },
+    {
+      "intent": "Find trials in a specific country",
+      "when_to_use": "User asks about trials in a country or region",
+      "tables": ["studies", "conditions", "countries"],
+      "sql": "SELECT s.nct_id, s.brief_title, UPPER(s.overall_status) AS status, c.name AS country\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.countries c ON s.nct_id = c.nct_id\nWHERE cond.downcase_name ILIKE '%{condition}%'\n  AND c.name ILIKE '%{country}%'\n  AND c.removed = FALSE\nLIMIT 100;",
+      "notes": "countries table has one row per country per study. Use removed = FALSE to exclude countries where sites were removed."
+    },
+    {
+      "intent": "Get study arms with their interventions",
+      "when_to_use": "User asks about treatment arms, what each arm receives, comparators",
+      "tables": ["studies", "design_groups", "design_group_interventions", "interventions"],
+      "sql": "SELECT s.nct_id, s.brief_title, dg.group_type, dg.title AS arm_title,\n       i.intervention_type, i.name AS intervention_name\nFROM ctgov.studies s\nJOIN ctgov.design_groups dg ON s.nct_id = dg.nct_id\nJOIN ctgov.design_group_interventions dgi ON dg.id = dgi.design_group_id\nJOIN ctgov.interventions i ON dgi.intervention_id = i.id\nWHERE s.nct_id = '{nct_id}'\nORDER BY dg.group_type, dg.title;",
+      "notes": "Uses the three-way join through design_group_interventions to link arms to their interventions."
+    },
+    {
+      "intent": "Get statistical analyses with p-values for an outcome",
+      "when_to_use": "User asks about statistical results, p-values, confidence intervals, treatment effects",
+      "tables": ["studies", "outcomes", "outcome_analyses"],
+      "sql": "SELECT s.nct_id, s.brief_title, o.title AS outcome_title,\n       oa.param_type, oa.param_value, oa.p_value, oa.method,\n       oa.ci_lower_limit, oa.ci_upper_limit\nFROM ctgov.studies s\nJOIN ctgov.outcomes o ON s.nct_id = o.nct_id\nJOIN ctgov.outcome_analyses oa ON o.id = oa.outcome_id\nWHERE s.nct_id = '{nct_id}'\nORDER BY o.title;",
+      "notes": "Results domain only. outcome_analyses links to outcomes via outcome_id."
+    }
+  ],
+  "sql_conventions": [
+    "Always prefix tables with ctgov schema: ctgov.studies, ctgov.conditions, etc.",
+    "Use UPPER() on both sides or ILIKE for comparisons on enum-like columns (overall_status, phase, gender, study_type) because values are stored in UPPERCASE.",
+    "Use cond.downcase_name ILIKE '%term%' for condition searches (already lowercase).",
+    "Never use SQL reserved words as table aliases (DO, AS, GROUP, ORDER, etc.). Use descriptive aliases: do_ut for design_outcomes, cond for conditions, grp for result_groups, sp for sponsors.",
+    "Add LIMIT 100 unless the user explicitly requests more rows or the query is an aggregation.",
+    "Use COUNT(DISTINCT s.nct_id) when counting trials to avoid inflated counts from many-to-one joins.",
+    "When joining multiple many-per-study tables, consider using DISTINCT to avoid row multiplication."
+  ]
+}

@@ -80,15 +80,26 @@ mcp = FastMCP(
         "\n"
         "IMPORTANT — Follow this resource reading strategy for efficiency:\n"
         "\n"
-        "Step 1: Read aact://tables FIRST. It lists all 48 tables with their "
+        "Step 1: Read aact://glossary FIRST. It maps clinical trial "
+        "terminology (endpoints, sites, adverse events, etc.) to the correct "
+        "AACT tables and warns about Protocol vs Results domain tables.\n"
+        "\n"
+        "Step 2: Read aact://tables to see all 48 tables with their "
         "descriptions, column counts, and domain classification. Use the "
         "descriptions to identify which tables are relevant to the user's query.\n"
         "\n"
-        "Step 2: Read aact://schema/{table_name} for ONLY the tables you "
+        "Step 3: Read aact://schema/{table_name} for ONLY the tables you "
         "identified as relevant. This gives you the full column definitions, "
         "data types, and foreign key constraints for that specific table.\n"
         "\n"
-        "Step 3: If you need to understand how tables connect, read "
+        "Step 4: Read aact://column-profiles to see actual data values, "
+        "enumerations, and case conventions for key columns. Essential for "
+        "generating correct WHERE clauses.\n"
+        "\n"
+        "Step 5: Read aact://query-patterns for tested SQL templates that "
+        "cover common clinical trial questions. Adapt these to the user's query.\n"
+        "\n"
+        "Step 6: If you need to understand how tables connect, read "
         "aact://relationships for the complete foreign key map.\n"
         "\n"
         "AVOID reading aact://schema (the full schema) unless the query is "
@@ -119,6 +130,42 @@ logger.info(
     len(_TABLES),
     len(_FOREIGN_KEYS),
 )
+
+# ---------------------------------------------------------------------------
+# Load supplementary data files (glossary, column profiles, query patterns)
+# ---------------------------------------------------------------------------
+
+_GLOSSARY_PATH = Path(__file__).parent.parent / "data" / "glossary.json"
+_COLUMN_PROFILES_PATH = Path(__file__).parent.parent / "data" / "column_profiles.json"
+_QUERY_PATTERNS_PATH = Path(__file__).parent.parent / "data" / "query_patterns.json"
+
+_GLOSSARY: dict[str, Any] = {}
+if _GLOSSARY_PATH.exists():
+    with open(_GLOSSARY_PATH) as _f:
+        _GLOSSARY = json.load(_f)
+    logger.info("Glossary loaded: %d terminology entries", len(_GLOSSARY.get("terminology", [])))
+else:
+    logger.warning("Glossary file not found at %s", _GLOSSARY_PATH)
+
+_COLUMN_PROFILES: dict[str, Any] = {}
+if _COLUMN_PROFILES_PATH.exists():
+    with open(_COLUMN_PROFILES_PATH) as _f:
+        _COLUMN_PROFILES = json.load(_f)
+    logger.info("Column profiles loaded: %d profiles", len(_COLUMN_PROFILES.get("profiles", {})))
+else:
+    logger.warning(
+        "Column profiles file not found at %s. "
+        "Run data/generate_column_profiles.py against your AACT database to generate it.",
+        _COLUMN_PROFILES_PATH,
+    )
+
+_QUERY_PATTERNS: dict[str, Any] = {}
+if _QUERY_PATTERNS_PATH.exists():
+    with open(_QUERY_PATTERNS_PATH) as _f:
+        _QUERY_PATTERNS = json.load(_f)
+    logger.info("Query patterns loaded: %d patterns", len(_QUERY_PATTERNS.get("patterns", [])))
+else:
+    logger.warning("Query patterns file not found at %s", _QUERY_PATTERNS_PATH)
 
 
 # ---------------------------------------------------------------------------
@@ -404,6 +451,234 @@ async def relationships() -> str:
 
 
 # ---------------------------------------------------------------------------
+# New MCP Resources: Glossary, Column Profiles, Query Patterns
+# ---------------------------------------------------------------------------
+
+
+def _format_glossary() -> str:
+    """Format the glossary JSON into a compact, LLM-readable text."""
+    if not _GLOSSARY:
+        return "Glossary not available. No glossary.json file found.\n"
+
+    lines = [
+        "AACT CLINICAL TRIAL TERMINOLOGY GLOSSARY",
+        "=" * 50,
+        "",
+    ]
+
+    # Domain rules
+    for rule in _GLOSSARY.get("domain_rules", []):
+        lines.append(f"RULE: {rule['rule']}")
+        if "explanation" in rule:
+            lines.append(f"  {rule['explanation']}")
+        if "tables" in rule:
+            lines.append(f"  Tables: {', '.join(rule['tables'])}")
+        lines.append("")
+
+    # Terminology mappings
+    lines.append("TERMINOLOGY MAPPINGS")
+    lines.append("-" * 40)
+    lines.append("")
+
+    for entry in _GLOSSARY.get("terminology", []):
+        terms = ', '.join(f'"{t}"' for t in entry.get("terms", []))
+        lines.append(f"Terms: {terms}")
+        if "context" in entry:
+            lines.append(f"  Context: {entry['context']}")
+        lines.append(f"  Table: {entry['table']}")
+        lines.append(f"  Domain: {entry['domain']}")
+        if "key_columns" in entry:
+            for col, desc in entry["key_columns"].items():
+                lines.append(f"    {col}: {desc}")
+        if "join_pattern" in entry:
+            lines.append(f"  JOIN: {entry['join_pattern']}")
+        if "warning" in entry:
+            lines.append(f"  WARNING: {entry['warning']}")
+        if "note" in entry:
+            lines.append(f"  NOTE: {entry['note']}")
+        lines.append("")
+
+    return "\n".join(lines) + "\n"
+
+
+def _format_column_profiles() -> str:
+    """Format column profiles into a compact, LLM-readable text."""
+    if not _COLUMN_PROFILES:
+        return (
+            "Column profiles not available. Run data/generate_column_profiles.py "
+            "against your AACT database to generate column_profiles.json.\n"
+        )
+
+    lines = [
+        "AACT COLUMN VALUE PROFILES",
+        "=" * 50,
+        "",
+        "Statistical profiles of key columns showing actual data values,",
+        "ranges, and distributions. Use this to generate correct SQL",
+        "with the right values, case, and comparisons.",
+        "",
+    ]
+
+    # Table row counts
+    row_counts = _COLUMN_PROFILES.get("table_row_counts", {})
+    if row_counts:
+        lines.append("TABLE ROW COUNTS:")
+        for tname, cnt in sorted(row_counts.items()):
+            lines.append(f"  {tname}: {cnt:,} rows")
+        lines.append("")
+
+    # Column profiles
+    profiles = _COLUMN_PROFILES.get("profiles", {})
+    current_table = ""
+    for key in sorted(profiles.keys()):
+        p = profiles[key]
+        table = p.get("table", "")
+        col = p.get("column", "")
+        ptype = p.get("profile_type", "")
+
+        if table != current_table:
+            lines.append(f"--- {table} ---")
+            current_table = table
+
+        if ptype == "enum":
+            values = p.get("values", {})
+            val_list = ", ".join(
+                f"{v} ({c:,})" for v, c in
+                sorted(values.items(), key=lambda x: -x[1])[:20]
+            )
+            extra = ""
+            if len(values) > 20:
+                extra = f" ... and {len(values) - 20} more"
+            lines.append(
+                f"  {col} (enum, {len(values)} values): {val_list}{extra}"
+            )
+        elif ptype == "sample":
+            n_dist = p.get("n_distinct", "?")
+            samples = p.get("sample_values", [])
+            sample_str = ", ".join(f'"{s}"' for s in samples[:5])
+            lines.append(
+                f"  {col} (text, ~{n_dist:,} distinct): samples: {sample_str}"
+            )
+        elif ptype == "numeric":
+            lines.append(
+                f"  {col} (numeric): "
+                f"min={p.get('min')}, max={p.get('max')}, "
+                f"median={p.get('median')}, mean={p.get('mean')}"
+            )
+        elif ptype == "date_range":
+            lines.append(
+                f"  {col} (date): range {p.get('min')} to {p.get('max')}"
+            )
+        elif ptype == "boolean":
+            lines.append(
+                f"  {col} (boolean): "
+                f"true={p.get('n_true', 0):,}, "
+                f"false={p.get('n_false', 0):,}, "
+                f"null={p.get('n_null', 0):,}"
+            )
+        elif ptype == "error":
+            lines.append(f"  {col}: PROFILE ERROR - {p.get('error', '')}")
+
+    lines.append("")
+    return "\n".join(lines) + "\n"
+
+
+def _format_query_patterns() -> str:
+    """Format query patterns into a compact, LLM-readable text."""
+    if not _QUERY_PATTERNS:
+        return "Query patterns not available. No query_patterns.json file found.\n"
+
+    lines = [
+        "AACT COMMON SQL QUERY PATTERNS",
+        "=" * 50,
+        "",
+        "Tested SQL templates for common clinical trial questions.",
+        "Use these as a starting point and adapt to the user's specific query.",
+        "",
+    ]
+
+    for i, pattern in enumerate(_QUERY_PATTERNS.get("patterns", []), 1):
+        lines.append(f"Pattern {i}: {pattern['intent']}")
+        lines.append(f"  When to use: {pattern['when_to_use']}")
+        lines.append(f"  Tables: {', '.join(pattern['tables'])}")
+        lines.append(f"  SQL:")
+        for sql_line in pattern["sql"].split("\n"):
+            lines.append(f"    {sql_line}")
+        if "notes" in pattern:
+            lines.append(f"  Notes: {pattern['notes']}")
+        lines.append("")
+
+    # SQL conventions
+    conventions = _QUERY_PATTERNS.get("sql_conventions", [])
+    if conventions:
+        lines.append("SQL CONVENTIONS:")
+        for conv in conventions:
+            lines.append(f"  - {conv}")
+        lines.append("")
+
+    return "\n".join(lines) + "\n"
+
+
+@mcp.resource(
+    "aact://glossary",
+    name="AACT Glossary",
+    title="Clinical Trial Terminology Glossary",
+    description=(
+        "Maps clinical trial terminology (endpoints, sites, adverse events, "
+        "arms, eligibility, etc.) to the correct AACT database tables and "
+        "columns. CRITICAL for translating natural language queries into SQL. "
+        "Includes warnings about Protocol vs Results domain tables — e.g. "
+        "'endpoints' maps to design_outcomes (Protocol, always populated), "
+        "NOT outcomes (Results, only for completed trials). Read this BEFORE "
+        "generating SQL to avoid querying the wrong tables."
+    ),
+    mime_type="text/plain",
+)
+async def glossary() -> str:
+    """Return the clinical trial terminology glossary."""
+    return _format_glossary()
+
+
+@mcp.resource(
+    "aact://column-profiles",
+    name="AACT Column Profiles",
+    title="Column Value Profiles and Statistics",
+    description=(
+        "Statistical profiles of key AACT columns showing actual data values, "
+        "enumerations, ranges, and sample values. Essential for generating "
+        "correct SQL — tells you the exact values stored in enum-like columns "
+        "(e.g. overall_status stores 'RECRUITING' in UPPERCASE, not "
+        "'Recruiting'), date ranges, numeric ranges, and sample values for "
+        "text columns. Read this to avoid case-sensitivity bugs and "
+        "value-mismatch errors."
+    ),
+    mime_type="text/plain",
+)
+async def column_profiles() -> str:
+    """Return column value profiles and statistics."""
+    return _format_column_profiles()
+
+
+@mcp.resource(
+    "aact://query-patterns",
+    name="AACT Query Patterns",
+    title="Common SQL Query Patterns",
+    description=(
+        "Tested SQL query templates for the most common clinical trial "
+        "questions: listing endpoints, finding sites, getting results, "
+        "counting trials by status/phase, eligibility criteria, adverse "
+        "events, etc. Each pattern includes the correct tables, JOINs, "
+        "and SQL conventions. Use as starting points and adapt to the "
+        "user's specific query."
+    ),
+    mime_type="text/plain",
+)
+async def query_patterns() -> str:
+    """Return common SQL query patterns."""
+    return _format_query_patterns()
+
+
+# ---------------------------------------------------------------------------
 # Health-check endpoint (HTTP mode only)
 # ---------------------------------------------------------------------------
 
@@ -421,6 +696,9 @@ async def health_check(request: Request) -> JSONResponse:
         "transport": _TRANSPORT,
         "tables": len(_TABLES),
         "foreign_keys": len(_FOREIGN_KEYS),
+        "glossary_loaded": bool(_GLOSSARY),
+        "column_profiles_loaded": bool(_COLUMN_PROFILES),
+        "query_patterns_loaded": bool(_QUERY_PATTERNS),
     })
 
 

@@ -186,3 +186,33 @@ python app.py
 ```
 
 Note: The visualizer must be able to find the `src/` and `data/` directories in the parent directory (the repo root). Always run `app.py` from the `visualizer/` directory.
+
+## New MCP Resources (v2)
+
+In addition to the original schema resources, the server now exposes three new knowledge resources:
+
+### `aact://glossary` — Clinical Trial Terminology Glossary
+Maps clinical trial vocabulary (endpoints, sites, adverse events, arms, eligibility, etc.) to the correct AACT tables and columns. Includes critical warnings about Protocol vs Results domain tables.
+
+### `aact://column-profiles` — Column Value Profiles
+Statistical profiles of key columns showing actual data values, enumerations, ranges, and samples. Essential for generating correct SQL with the right values and case. **Requires running the profiling script once against your database** (see below).
+
+### `aact://query-patterns` — Common SQL Query Patterns
+Tested SQL templates for the most common clinical trial questions. Includes SQL conventions and best practices.
+
+### Generating Column Profiles
+
+The `aact://column-profiles` resource requires a `data/column_profiles.json` file generated from your live database:
+
+```bash
+export AACT_DATABASE_URL="postgresql://user:pass@host:5432/aact"
+cd data/
+python generate_column_profiles.py
+```
+
+This profiles ~70 key columns using a token-efficient strategy:
+- **Enum columns** (≤50 distinct values): full list with counts
+- **Text columns** (high cardinality): n_distinct + 5 random samples
+- **Numeric columns**: min, max, median, mean
+- **Date columns**: min, max range
+- **Boolean columns**: true/false/null counts

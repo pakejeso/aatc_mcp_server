@@ -1,0 +1,193 @@
+{
+  "_description": "Clinical trial terminology mapped to AACT database tables and columns. Used by the MCP server to expose the aact://glossary resource, helping LLMs translate clinical vocabulary into correct SQL.",
+  "domain_rules": [
+    {
+      "rule": "Protocol vs Results domain",
+      "explanation": "AACT tables belong to either the Protocol domain (data submitted at registration, always populated for every study) or the Results domain (data submitted after study completion, only populated for studies that have posted results — roughly 13% of all studies). When querying RECRUITING, ACTIVE_NOT_RECRUITING, or NOT_YET_RECRUITING trials, ONLY Protocol-domain tables will have data. Results-domain tables will return 0 rows for these trials."
+    },
+    {
+      "rule": "Protocol-domain tables (always populated)",
+      "tables": ["studies", "conditions", "interventions", "design_outcomes", "design_groups", "design_group_interventions", "designs", "eligibilities", "facilities", "facility_contacts", "facility_investigators", "countries", "sponsors", "keywords", "browse_conditions", "browse_interventions", "central_contacts", "overall_officials", "responsible_parties", "id_information", "brief_summaries", "detailed_descriptions", "calculated_values", "intervention_other_names", "links", "study_references"]
+    },
+    {
+      "rule": "Results-domain tables (only for completed trials with posted results)",
+      "tables": ["outcomes", "outcome_measurements", "outcome_analyses", "outcome_analysis_groups", "outcome_counts", "baseline_counts", "baseline_measurements", "result_groups", "reported_events", "milestones", "drop_withdrawals", "participant_flows", "documents", "provided_documents", "pending_results", "result_agreements", "result_contacts"]
+    }
+  ],
+  "terminology": [
+    {
+      "terms": ["endpoints", "outcome measures", "primary endpoint", "secondary endpoint", "primary outcome", "secondary outcome"],
+      "context": "When asking about PLANNED endpoints or outcome measures (what the trial intends to measure)",
+      "table": "design_outcomes",
+      "domain": "Protocol",
+      "key_columns": {
+        "outcome_type": "Values: 'primary', 'secondary', 'other', 'post_hoc' (lowercase)",
+        "measure": "Free-text description of the endpoint/outcome measure",
+        "time_frame": "Time period over which the outcome is assessed",
+        "description": "Detailed description of the outcome measure"
+      },
+      "warning": "Do NOT use the 'outcomes' table for this query. The 'outcomes' table is in the Results domain and is only populated for completed trials that have posted results. For recruiting or ongoing trials, 'outcomes' will return 0 rows. Always use 'design_outcomes' when the user asks about endpoints of active/recruiting trials."
+    },
+    {
+      "terms": ["results", "outcome results", "efficacy data", "outcome data", "posted results", "study results"],
+      "context": "When asking about ACTUAL results or measurements from completed trials",
+      "table": "outcomes + outcome_measurements",
+      "domain": "Results",
+      "key_columns": {
+        "outcomes.title": "Title of the outcome measure as reported in results",
+        "outcomes.param_type": "Type of parameter (e.g., Mean, Median, Number, Least Squares Mean)",
+        "outcome_measurements.param_value_num": "Numeric value of the measurement",
+        "outcome_measurements.param_value_string": "String value when not numeric"
+      },
+      "join_pattern": "outcomes.id = outcome_measurements.outcome_id",
+      "warning": "These tables are ONLY populated for studies that have posted results. Filter studies.overall_status to completed/terminated studies, or check that results data exists."
+    },
+    {
+      "terms": ["statistical analysis", "p-value", "confidence interval", "treatment effect", "statistical test"],
+      "context": "When asking about statistical analyses of outcomes",
+      "table": "outcome_analyses",
+      "domain": "Results",
+      "key_columns": {
+        "p_value": "P-value from the statistical test",
+        "param_type": "Type of estimate (e.g., Mean Difference, Odds Ratio, Hazard Ratio)",
+        "param_value": "Estimated value of the treatment effect",
+        "ci_lower_limit": "Lower bound of confidence interval",
+        "ci_upper_limit": "Upper bound of confidence interval",
+        "method": "Statistical method used (e.g., ANCOVA, Chi-squared, Log Rank)"
+      },
+      "join_pattern": "outcomes.id = outcome_analyses.outcome_id"
+    },
+    {
+      "terms": ["sites", "locations", "centers", "study sites", "clinical sites", "where is the trial"],
+      "context": "When asking about where trials are conducted",
+      "table": "facilities",
+      "domain": "Protocol",
+      "key_columns": {
+        "name": "Name of the facility/hospital/center",
+        "city": "City",
+        "state": "State or province",
+        "zip": "Postal code",
+        "country": "Country name",
+        "status": "Recruiting status of this specific facility"
+      },
+      "note": "For country-level queries, the 'countries' table is more efficient (one row per country per study) than aggregating from facilities."
+    },
+    {
+      "terms": ["adverse events", "safety", "side effects", "toxicity", "AE", "SAE", "serious adverse events"],
+      "context": "When asking about safety or adverse event data",
+      "table": "reported_events",
+      "domain": "Results",
+      "key_columns": {
+        "event_type": "Type: 'serious', 'other'",
+        "subjects_affected": "Number of participants affected",
+        "subjects_at_risk": "Number of participants at risk",
+        "organ_system": "Body system affected (MedDRA System Organ Class)",
+        "adverse_event_term": "Name of the adverse event"
+      },
+      "warning": "Only populated for studies that have posted results."
+    },
+    {
+      "terms": ["arms", "groups", "treatment arms", "study arms", "cohorts"],
+      "context": "When asking about study arms or treatment groups",
+      "table": "design_groups",
+      "domain": "Protocol",
+      "key_columns": {
+        "group_type": "Type of group (e.g., Experimental, Active Comparator, Placebo Comparator, Sham Comparator, No Intervention, Other)",
+        "title": "Name/title of the arm",
+        "description": "Description of what this arm receives"
+      },
+      "note": "To see which interventions are assigned to which arms, join through design_group_interventions."
+    },
+    {
+      "terms": ["eligibility", "inclusion criteria", "exclusion criteria", "who can participate", "age", "gender"],
+      "context": "When asking about who can participate in a trial",
+      "table": "eligibilities",
+      "domain": "Protocol",
+      "key_columns": {
+        "gender": "Values: ALL, FEMALE, MALE (UPPERCASE)",
+        "minimum_age": "Minimum age as text (e.g., '18 Years', '6 Months')",
+        "maximum_age": "Maximum age as text (e.g., '65 Years', 'N/A')",
+        "criteria": "Full text of inclusion/exclusion criteria",
+        "healthy_volunteers": "Whether healthy volunteers are accepted"
+      }
+    },
+    {
+      "terms": ["sponsor", "funder", "funding", "who funds", "pharmaceutical company", "industry"],
+      "context": "When asking about who sponsors or funds a trial",
+      "table": "sponsors",
+      "domain": "Protocol",
+      "key_columns": {
+        "name": "Name of the sponsor/collaborator organization",
+        "agency_class": "Type: NIH, FED (US Federal), INDUSTRY, NETWORK, OTHER",
+        "lead_or_collaborator": "Role: lead, collaborator"
+      }
+    },
+    {
+      "terms": ["study design", "randomized", "blinded", "masking", "allocation", "crossover", "parallel"],
+      "context": "When asking about how a trial is designed",
+      "table": "designs",
+      "domain": "Protocol",
+      "key_columns": {
+        "allocation": "Randomized, Non-Randomized, N/A",
+        "intervention_model": "Parallel Assignment, Crossover Assignment, Single Group Assignment, Sequential Assignment, Factorial Assignment",
+        "masking": "None (Open Label), Single, Double, Triple, Quadruple",
+        "primary_purpose": "Treatment, Prevention, Diagnostic, Supportive Care, Screening, Health Services Research, Basic Science, Device Feasibility, Other"
+      }
+    },
+    {
+      "terms": ["publications", "papers", "references", "PubMed", "literature"],
+      "context": "When asking about publications related to a trial",
+      "table": "study_references",
+      "domain": "Protocol",
+      "key_columns": {
+        "pmid": "PubMed unique identifier",
+        "citation": "Full bibliographic citation",
+        "reference_type": "Type of reference"
+      }
+    },
+    {
+      "terms": ["participant flow", "enrollment", "completion", "dropout", "withdrawal", "retention"],
+      "context": "When asking about how many participants enrolled, completed, or dropped out",
+      "table": "milestones + drop_withdrawals",
+      "domain": "Results",
+      "warning": "Only populated for studies that have posted results. For planned enrollment numbers, use studies.enrollment instead."
+    },
+    {
+      "terms": ["baseline characteristics", "demographics", "baseline data"],
+      "context": "When asking about participant demographics or baseline measurements",
+      "table": "baseline_measurements",
+      "domain": "Results",
+      "key_columns": {
+        "title": "Name of the baseline measure (e.g., Age, Sex, Race)",
+        "param_type": "Mean, Median, Count of Participants, Number",
+        "param_value": "The value as string",
+        "param_value_num": "The value as number",
+        "units": "Units of measurement"
+      },
+      "warning": "Only populated for studies that have posted results."
+    },
+    {
+      "terms": ["condition", "disease", "indication", "therapeutic area"],
+      "context": "When asking about what disease or condition a trial studies",
+      "table": "conditions",
+      "domain": "Protocol",
+      "key_columns": {
+        "name": "Condition name as entered by sponsor",
+        "downcase_name": "Lowercase version for case-insensitive searching"
+      },
+      "note": "For standardized MeSH terms, use browse_conditions instead."
+    },
+    {
+      "terms": ["drug", "treatment", "intervention", "therapy", "device", "procedure", "vaccine"],
+      "context": "When asking about what treatments or interventions are used",
+      "table": "interventions",
+      "domain": "Protocol",
+      "key_columns": {
+        "intervention_type": "DRUG, DEVICE, BIOLOGICAL, PROCEDURE, RADIATION, DIETARY_SUPPLEMENT, BEHAVIORAL, GENETIC, COMBINATION_PRODUCT, DIAGNOSTIC_TEST, OTHER",
+        "name": "Name of the intervention",
+        "description": "Description of the intervention"
+      },
+      "note": "For alternative names/synonyms, join to intervention_other_names."
+    }
+  ]
+}
