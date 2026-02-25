@@ -17,6 +17,10 @@ Usage:
     # Or pass the URL as an argument:
     python generate_column_profiles.py "postgresql://user:pass@host:5432/aact"
 
+    # Windows PowerShell:
+    $env:AACT_DATABASE_URL = "postgresql://user:pass@host:5432/aact"
+    python generate_column_profiles.py
+
 Output:
     data/column_profiles.json  (written next to this script)
 
@@ -216,10 +220,15 @@ def profile_text(cur, table: str, col: str) -> dict:
     """)
     n_null = cur.fetchone()[0]
 
+    # Use a subquery to get random samples — compatible with PostgreSQL
+    # (SELECT DISTINCT ... ORDER BY RANDOM() is not allowed in PostgreSQL)
     cur.execute(f"""
-        SELECT DISTINCT {col}
-        FROM ctgov.{table}
-        WHERE {col} IS NOT NULL
+        SELECT {col}
+        FROM (
+            SELECT DISTINCT {col}
+            FROM ctgov.{table}
+            WHERE {col} IS NOT NULL
+        ) sub
         ORDER BY RANDOM()
         LIMIT 5
     """)
@@ -321,7 +330,7 @@ def main():
 
     print(f"Connecting to database...")
     conn = psycopg2.connect(db_url)
-    conn.set_session(readonly=True)
+    conn.set_session(readonly=True, autocommit=True)
     cur = conn.cursor()
 
     # Get total row counts per table (for context)
@@ -334,6 +343,8 @@ def main():
 
     # Profile each column
     profiles = {}
+    n_ok = 0
+    n_fail = 0
     for table, col, ptype in COLUMNS_TO_PROFILE:
         key = f"{table}.{col}"
         print(f"  Profiling {key} ({ptype})...", end=" ", flush=True)
@@ -344,6 +355,7 @@ def main():
             result["column"] = col
             profiles[key] = result
             print("OK")
+            n_ok += 1
         except Exception as exc:
             print(f"FAILED: {exc}")
             profiles[key] = {
@@ -352,6 +364,7 @@ def main():
                 "profile_type": "error",
                 "error": str(exc),
             }
+            n_fail += 1
 
     cur.close()
     conn.close()
@@ -374,6 +387,9 @@ def main():
 
     print(f"\nDone! Written to {out_path}")
     print(f"Profiled {len(profiles)} columns across {len(table_names)} tables.")
+    print(f"  OK: {n_ok}  |  Failed: {n_fail}")
+    if n_fail > 0:
+        print("  (Failed columns are recorded as 'error' entries in the JSON)")
 
 
 if __name__ == "__main__":
