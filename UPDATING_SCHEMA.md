@@ -75,4 +75,4 @@ The LLM should now produce a final `aact_schema_static.json` file. Before using 
 3.  Verify that the `foreign_keys` array is present and contains the expected relationships.
 4.  Replace the old `data/aact_schema_static.json` with this new file.
 
-This semi-automated, LLM-driven process ensures that the static schema remains not only structurally accurate but also enriched with the high-quality, human-readable context necessary for the LLM to generate the best possible SQL queries.
+This semi-automated, LLM-driven process ensures that the static schema remains not only structurally accurate but also enriched with the high-quality, human-readable context necessary for accurate SQL generation.

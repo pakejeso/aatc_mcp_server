@@ -1,63 +1,54 @@
 ================================================================================
-AACT Schema MCP Server — Developer Instructions
+AACT Schema MCP Server — Developer Reference
 ================================================================================
 
-PROJECT OVERVIEW
-----------------
-This is a read-only Model Context Protocol (MCP) server that exposes the AACT
-(Aggregate Analysis of ClinicalTrials.gov) database schema as MCP Resources.
-It is designed so that an LLM can read the database structure and generate
-accurate SQL queries, without ever executing SQL itself.
+PURPOSE
+-------
+A read-only MCP server that exposes the AACT clinical trials database schema
+and reference data (glossary, column profiles, query patterns) as structured
+MCP Resources. It provides the context a consuming application — such as the
+CT.Sight backend — needs to generate accurate SQL queries.
 
-The schema is loaded from a bundled static JSON file that includes rich,
-human-readable descriptions sourced from the official AACT data dictionary.
-No database connection is needed.
+This server does NOT:
+  - Execute any SQL against a database
+  - Call any LLM or external API
+  - Require any API keys or .env file
 
-ARCHITECTURE
-------------
-The server fits into a "Human-in-the-loop" SQL generation pipeline:
+It is a pure data-serving process. Install, set transport env vars, run.
 
-  User -> Backend -> LLM -> [THIS MCP SERVER reads schema] -> LLM generates SQL
-                                                             -> Backend validates & executes SQL
-
-This server ONLY provides schema context. It implements ZERO MCP Tools.
-
-PROJECT STRUCTURE
------------------
+REPOSITORY STRUCTURE
+--------------------
   aatc_mcp_server/
   ├── src/
-  │   ├── __init__.py              # Package marker
-  │   ├── __main__.py              # Entry point for `python -m src`
-  │   └── server.py                # Main MCP server (all logic here)
+  │   ├── __init__.py
+  │   ├── __main__.py             # Allows: python -m src
+  │   └── server.py               # Full MCP server implementation
   ├── data/
-  │   └── aact_schema_static.json  # Bundled schema (48 tables, 63 FKs, rich descriptions)
-  ├── visualizer/
-  │   ├── Dockerfile               # Docker image for the flow visualizer
-  │   ├── requirements.txt         # Python deps for the visualizer
-  │   ├── app.py                   # Flask backend (LLM proxy)
-  │   ├── index.html               # Interactive MCP flow demo UI
-  │   └── schema_compact.txt       # Compact schema for LLM context
-  ├── docker-compose.yml           # One-command deployment for the visualizer
-  ├── pyproject.toml               # Project metadata and dependencies
-  ├── .env.example                 # Template for visualizer config
+  │   ├── aact_schema_static.json # Bundled schema (48 tables, 63 FKs, rich descriptions)
+  │   ├── glossary.json           # Clinical trial terminology → AACT tables/columns
+  │   ├── column_profiles.json    # Statistical profiles of key columns
+  │   ├── query_patterns.json     # Tested SQL templates for common queries
+  │   └── generate_column_profiles.py  # Script to regenerate column_profiles.json
+  ├── pyproject.toml              # Project metadata and dependencies
+  ├── test_server.py              # Automated test script
   ├── .gitignore
-  ├── README.md
-  ├── UPDATING_SCHEMA.md           # Guide to regenerate the static schema
-  ├── test_server.py               # Automated test script (9 tests)
-  └── INSTRUCTIONS.txt             # This file
+  ├── README.md                   # Main documentation
+  ├── UPDATING_SCHEMA.md          # Guide to regenerate the static schema
+  ├── WINDOWS_SETUP.md            # Step-by-step Windows setup for CT.Sight integration
+  └── INSTRUCTIONS.txt            # This file
 
 DEPENDENCIES
 ------------
   - Python 3.10+
   - mcp >= 1.0.0  (MCP SDK with FastMCP)
 
-That's it. No database driver, no dotenv. Install: pip install -e .
+That's it. No database driver, no OpenAI SDK, no dotenv. Install: pip install -e .
 
 MCP RESOURCES EXPOSED
 ---------------------
 URI: aact://schema
   Returns: Complete DDL-style schema of all 48 tables (~42K chars, ~10K tokens)
-  Use: Primary resource for initial LLM context
+  Use: Primary resource for initial context
 
 URI: aact://schema/{table_name}
   Returns: DDL for a single table + its FK relationships (both as child and parent)
@@ -70,6 +61,22 @@ URI: aact://tables
 URI: aact://relationships
   Returns: All 63 FK relationships, separated into nct_id joins and hierarchical FKs
   Use: Essential for writing correct JOINs
+
+URI: aact://glossary
+  Returns: Clinical trial terminology mapped to AACT tables and columns
+  Use: Read before generating SQL to avoid querying wrong tables
+
+URI: aact://column-profiles
+  Returns: Summary of which tables have column profiles available
+  Use: Discover available profiles before requesting per-table detail
+
+URI: aact://column-profiles/{table_name}
+  Returns: Statistical profiles for key columns in a specific table
+  Use: Get actual enum values, ranges, samples for correct WHERE clauses
+
+URI: aact://query-patterns
+  Returns: Tested SQL templates for common clinical trial questions
+  Use: Starting points to adapt for specific queries
 
 OUTPUT FORMAT
 -------------
@@ -90,19 +97,27 @@ Example output for aact://schema/conditions:
 
 HOW TO RUN
 ----------
-  # As installed script:
+  # Stdio mode (default — for subprocess/local use):
   aact-mcp-server
 
-  # As Python module:
-  python -m src
+  # HTTP mode (for CT.Sight integration — see WINDOWS_SETUP.md):
+  # Linux/macOS:
+  export AACT_MCP_TRANSPORT=streamable-http
+  export AACT_MCP_HOST=0.0.0.0
+  export AACT_MCP_PORT=8001
+  aact-mcp-server
 
-  # The server communicates over stdio (JSON-RPC 2.0)
-  # No configuration needed — reads from the bundled static schema.
+  # Windows PowerShell:
+  $env:AACT_MCP_TRANSPORT = "streamable-http"
+  $env:AACT_MCP_HOST = "0.0.0.0"
+  $env:AACT_MCP_PORT = "8001"
+  aact-mcp-server
 
 HOW TO TEST
 -----------
   python test_server.py
-  # Runs 9 tests covering all resources, descriptions, and schema integrity.
+
+  Runs tests covering all resources, descriptions, and schema integrity.
 
 UPDATING THE SCHEMA
 --------------------
@@ -110,7 +125,6 @@ When the AACT database schema changes, the bundled JSON needs to be regenerated.
 This is a semi-automated process that requires an LLM because the rich
 descriptions are not stored in the database — they must be extracted from the
 AACT data dictionary (HTML) and merged with the structural data from schema.rb.
-
 See UPDATING_SCHEMA.md for the full step-by-step guide.
 
 KEY DESIGN DECISIONS
@@ -118,14 +132,23 @@ KEY DESIGN DECISIONS
 1. Static-only (no DB connection): Simplifies deployment to zero configuration.
    The schema changes rarely (a few times per year at most). When it does,
    follow the UPDATING_SCHEMA.md guide to regenerate the JSON.
+
 2. Resource-only (no Tools): Eliminates SQL injection risk entirely.
+
 3. DDL output format: Maximizes LLM comprehension of schema structure.
+
 4. Rich descriptions: Column and table descriptions from the official AACT
-   data dictionary are embedded in the JSON, giving the LLM much better
-   context than raw column names alone.
+   data dictionary are embedded in the JSON, giving much better context than
+   raw column names alone.
+
 5. Per-table resources: Allows token-efficient, surgical context loading.
+
 6. FK relationship summary: Separated into nct_id joins (46) and hierarchical
-   FKs (17) so the LLM knows which JOINs are "interesting" vs. ubiquitous.
+   FKs (17) so the consumer knows which JOINs are "interesting" vs. ubiquitous.
+
+7. Reference data resources: Glossary, column profiles, and query patterns
+   provide additional context beyond raw schema — actual data values, domain
+   terminology, and tested SQL examples.
 
 AACT DATABASE KEY FACTS
 ------------------------
@@ -139,13 +162,20 @@ AACT DATABASE KEY FACTS
 - 48 tables total, ~500 columns
 - Domains: Protocol (study design), Results (reported outcomes), Both
 
-FUTURE INTEGRATION NOTES
--------------------------
-This server is intended to be integrated with the AACT Analytics Website project.
-When integrating:
-  - The main backend should spawn this server as a subprocess (stdio transport)
-  - Or use SSE transport: mcp.run(transport="sse") for HTTP-based integration
-  - The LLM client connects to this server to read schema before generating SQL
-  - The main backend validates and executes the generated SQL against the real DB
+CT.SIGHT INTEGRATION
+---------------------
+The CT.Sight backend (running in Docker) connects to this server over HTTP
+using the streamable-http transport. The connection flow is:
 
+  CT.Sight backend (Docker)  →  http://host.docker.internal:8001/mcp
+                                 ↓
+                             This MCP server (running on Windows host)
+
+The CT.Sight docker-compose.yml sets:
+  AACT_MCP_URL: http://host.docker.internal:8001
+
+Docker Desktop on Windows resolves host.docker.internal to the host machine,
+where this server is listening on 0.0.0.0:8001.
+
+See WINDOWS_SETUP.md for the full setup guide.
 ================================================================================

@@ -5,8 +5,9 @@ A read-only MCP server that exposes the AACT (Aggregate Analysis of
 ClinicalTrials.gov) database schema as MCP Resources.
 
 This server provides structural context (tables, columns, types, keys,
-relationships, and rich descriptions) so that an LLM can generate accurate
-SQL queries. It does NOT execute any SQL against the database.
+relationships, and rich descriptions) so that a consuming application
+(such as the CT.Sight backend) or an LLM can generate accurate SQL
+queries. It does NOT execute any SQL against the database.
 
 The schema is loaded from a bundled JSON snapshot
 (data/aact_schema_static.json) which includes rich descriptions sourced
@@ -740,7 +741,7 @@ async def query_patterns() -> str:
 @mcp.custom_route("/health", methods=["GET"])
 async def health_check(request: Request) -> JSONResponse:
     """
-    Liveness probe for Docker / load balancers and the CT.Sight backend.
+    Liveness probe for the CT.Sight backend or any other client.
 
     Returns a JSON object with server status, transport mode, and schema
     statistics so that clients can verify connectivity before sending queries.
