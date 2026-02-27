@@ -12,6 +12,12 @@ dependencies = [
 [project.scripts]
 aact-mcp-server = "src.server:main"
 
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.setuptools.package-data]
+"src" = ["../data/*.json"]
+
 [build-system]
 requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
