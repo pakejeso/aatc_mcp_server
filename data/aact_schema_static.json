@@ -1248,6 +1248,13 @@
       "rows_per_study": "many",
       "columns": [
         {
+          "column_name": "id",
+          "data_type": "integer",
+          "is_nullable": "NO",
+          "is_primary_key": true,
+          "description": "Auto-generated primary key"
+        },
+        {
           "column_name": "nct_id",
           "data_type": "character varying",
           "is_nullable": "YES",
@@ -1734,6 +1741,13 @@
       "rows_per_study": "many",
       "columns": [
         {
+          "column_name": "id",
+          "data_type": "integer",
+          "is_nullable": "NO",
+          "is_primary_key": true,
+          "description": "Auto-generated primary key"
+        },
+        {
           "column_name": "nct_id",
           "data_type": "character varying",
           "is_nullable": "YES",
@@ -2000,6 +2014,13 @@
       "rows_per_study": "many",
       "columns": [
         {
+          "column_name": "id",
+          "data_type": "integer",
+          "is_nullable": "NO",
+          "is_primary_key": true,
+          "description": "Auto-generated primary key"
+        },
+        {
           "column_name": "nct_id",
           "data_type": "character varying",
           "is_nullable": "YES",
@@ -2217,6 +2238,13 @@
       "domain": "Results",
       "rows_per_study": "many",
       "columns": [
+        {
+          "column_name": "id",
+          "data_type": "integer",
+          "is_nullable": "NO",
+          "is_primary_key": true,
+          "description": "Auto-generated primary key"
+        },
         {
           "column_name": "nct_id",
           "data_type": "character varying",
@@ -2657,6 +2685,13 @@
       "domain": "Results",
       "rows_per_study": "many",
       "columns": [
+        {
+          "column_name": "id",
+          "data_type": "integer",
+          "is_nullable": "NO",
+          "is_primary_key": true,
+          "description": "Auto-generated primary key"
+        },
         {
           "column_name": "nct_id",
           "data_type": "character varying",
@@ -3349,6 +3384,13 @@
       "domain": "Results",
       "rows_per_study": "many",
       "columns": [
+        {
+          "column_name": "id",
+          "data_type": "integer",
+          "is_nullable": "NO",
+          "is_primary_key": true,
+          "description": "Auto-generated primary key"
+        },
         {
           "column_name": "nct_id",
           "data_type": "character varying",

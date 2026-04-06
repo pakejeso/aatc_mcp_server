@@ -21,7 +21,7 @@
       "table": "design_outcomes",
       "domain": "Protocol",
       "key_columns": {
-        "outcome_type": "Values: 'primary', 'secondary', 'other', 'post_hoc' (lowercase)",
+        "outcome_type": "Values: 'primary', 'secondary', 'other' (lowercase)",
         "measure": "Free-text description of the endpoint/outcome measure",
         "time_frame": "Time period over which the outcome is assessed",
         "description": "Detailed description of the outcome measure"
@@ -37,7 +37,7 @@
         "outcomes.title": "Title of the outcome measure as reported in results",
         "outcomes.param_type": "Type of parameter (e.g., Mean, Median, Number, Least Squares Mean)",
         "outcome_measurements.param_value_num": "Numeric value of the measurement",
-        "outcome_measurements.param_value_string": "String value when not numeric"
+        "outcome_measurements.param_value": "String value of the measurement (use param_value_num for numeric comparisons)"
       },
       "join_pattern": "outcomes.id = outcome_measurements.outcome_id",
       "warning": "These tables are ONLY populated for studies that have posted results. Filter studies.overall_status to completed/terminated studies, or check that results data exists."
@@ -78,7 +78,7 @@
       "table": "reported_events",
       "domain": "Results",
       "key_columns": {
-        "event_type": "Type: 'serious', 'other'",
+        "event_type": "Values: 'serious', 'other' (lowercase)",
         "subjects_affected": "Number of participants affected",
         "subjects_at_risk": "Number of participants at risk",
         "organ_system": "Body system affected (MedDRA System Organ Class)",
@@ -92,7 +92,7 @@
       "table": "design_groups",
       "domain": "Protocol",
       "key_columns": {
-        "group_type": "Type of group (e.g., Experimental, Active Comparator, Placebo Comparator, Sham Comparator, No Intervention, Other)",
+        "group_type": "Type of group — UPPERCASE values: EXPERIMENTAL, ACTIVE_COMPARATOR, PLACEBO_COMPARATOR, SHAM_COMPARATOR, NO_INTERVENTION, OTHER",
         "title": "Name/title of the arm",
         "description": "Description of what this arm receives"
       },
@@ -118,7 +118,7 @@
       "domain": "Protocol",
       "key_columns": {
         "name": "Name of the sponsor/collaborator organization",
-        "agency_class": "Type: NIH, FED (US Federal), INDUSTRY, NETWORK, OTHER",
+        "agency_class": "UPPERCASE values: OTHER, INDUSTRY, NIH, OTHER_GOV, FED, NETWORK, UNKNOWN, INDIV, AMBIG",
         "lead_or_collaborator": "Role: lead, collaborator"
       }
     },
@@ -128,10 +128,10 @@
       "table": "designs",
       "domain": "Protocol",
       "key_columns": {
-        "allocation": "Randomized, Non-Randomized, N/A",
-        "intervention_model": "Parallel Assignment, Crossover Assignment, Single Group Assignment, Sequential Assignment, Factorial Assignment",
-        "masking": "None (Open Label), Single, Double, Triple, Quadruple",
-        "primary_purpose": "Treatment, Prevention, Diagnostic, Supportive Care, Screening, Health Services Research, Basic Science, Device Feasibility, Other"
+        "allocation": "UPPERCASE values: RANDOMIZED, NON_RANDOMIZED, NA",
+        "intervention_model": "UPPERCASE values: PARALLEL, CROSSOVER, SINGLE_GROUP, SEQUENTIAL, FACTORIAL",
+        "masking": "UPPERCASE values: NONE, SINGLE, DOUBLE, TRIPLE, QUADRUPLE",
+        "primary_purpose": "UPPERCASE values: TREATMENT, PREVENTION, DIAGNOSTIC, SUPPORTIVE_CARE, SCREENING, HEALTH_SERVICES_RESEARCH, BASIC_SCIENCE, DEVICE_FEASIBILITY, ECT, OTHER"
       }
     },
     {
