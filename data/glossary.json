@@ -35,6 +35,7 @@
       "domain": "Results",
       "key_columns": {
         "outcomes.title": "Title of the outcome measure as reported in results",
+        "outcomes.outcome_type": "UPPERCASE values: PRIMARY, SECONDARY, OTHER_PRE_SPECIFIED, POST_HOC (note: different casing from design_outcomes.outcome_type which is lowercase)",
         "outcomes.param_type": "Type of parameter (e.g., Mean, Median, Number, Least Squares Mean)",
         "outcome_measurements.param_value_num": "Numeric value of the measurement",
         "outcome_measurements.param_value": "String value of the measurement (use param_value_num for numeric comparisons)"
@@ -224,7 +225,7 @@
       "key_exceptions": {
         "result_groups.result_type": "Title Case: 'Baseline', 'Outcome', 'Reported Event', 'Participant Flow'",
         "reported_events.event_type": "lowercase: 'serious', 'other'",
-        "outcomes.outcome_type": "lowercase: 'primary', 'secondary', 'other'",
+        "outcomes.outcome_type": "UPPERCASE: 'PRIMARY', 'SECONDARY', 'OTHER_PRE_SPECIFIED', 'POST_HOC'",
         "design_outcomes.outcome_type": "lowercase: 'primary', 'secondary', 'other'"
       }
     }
