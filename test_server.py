@@ -140,8 +140,34 @@ async def test_resources():
     assert tables_with_desc > 30, f"Expected >30 tables with descriptions, got {tables_with_desc}"
     print("    PASS")
 
+    # 11. Test glossary includes common_pitfalls
+    print("\n[11] Testing aact://glossary for common_pitfalls ...")
+    from src.server import glossary
+    result = await glossary()
+    assert "COMMON PITFALLS" in result, "Expected COMMON PITFALLS section in glossary"
+    assert "result_groups" in result, "Expected result_groups pitfall in glossary"
+    assert "ILIKE" in result, "Expected ILIKE pitfall in glossary"
+    assert "ctgov" in result, "Expected ctgov prefix pitfall in glossary"
+    pitfall_count = result.count("Pitfall ")
+    print(f"    Output: {len(result)} chars, {pitfall_count} pitfalls")
+    assert pitfall_count >= 6, f"Expected >= 6 pitfalls, got {pitfall_count}"
+    print("    PASS")
+
+    # 12. Test query patterns include new complex patterns
+    print("\n[12] Testing aact://query-patterns for new patterns ...")
+    from src.server import query_patterns
+    result = await query_patterns()
+    assert "baseline_measurements" in result, "Expected baseline demographics pattern"
+    assert "result_groups" in result, "Expected result_groups in patterns"
+    assert "outcome_analysis_groups" in result, "Expected full pipeline pattern"
+    assert "milestones" in result, "Expected participant flow pattern"
+    pattern_count = result.count("Pattern ")
+    assert pattern_count >= 18, f"Expected >= 18 patterns, got {pattern_count}"
+    print(f"    Output: {len(result)} chars, {pattern_count} patterns")
+    print("    PASS")
+
     print("\n" + "=" * 60)
-    print("ALL 10 TESTS PASSED")
+    print("ALL 12 TESTS PASSED")
     print("=" * 60)
 
 

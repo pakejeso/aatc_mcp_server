@@ -91,6 +91,41 @@
       "tables": ["studies", "outcomes", "outcome_analyses"],
       "sql": "SELECT s.nct_id, s.brief_title, o.title AS outcome_title,\n       oa.param_type, oa.param_value, oa.p_value, oa.method,\n       oa.ci_lower_limit, oa.ci_upper_limit\nFROM ctgov.studies s\nJOIN ctgov.outcomes o ON s.nct_id = o.nct_id\nJOIN ctgov.outcome_analyses oa ON o.id = oa.outcome_id\nWHERE s.nct_id = '{nct_id}'\nORDER BY o.title;",
       "notes": "Results domain only. outcome_analyses links to outcomes via outcome_id."
+    },
+    {
+      "intent": "Get baseline demographics (age, sex) per treatment arm for completed trials",
+      "when_to_use": "User asks about participant demographics, baseline characteristics, age/sex breakdown by arm, or baseline data comparison across groups",
+      "tables": ["studies", "conditions", "result_groups", "baseline_measurements"],
+      "sql": "SELECT s.nct_id, s.brief_title, rg.title AS arm_title,\n       bm.title AS measure_name, bm.category, bm.param_type,\n       bm.param_value_num, bm.units\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.result_groups rg ON s.nct_id = rg.nct_id\n  AND rg.result_type = 'Baseline'\nJOIN ctgov.baseline_measurements bm ON rg.id = bm.result_group_id\nWHERE UPPER(s.overall_status) = 'COMPLETED'\n  AND cond.downcase_name ILIKE '%{condition}%'\n  AND bm.title IN ('Age', 'Sex: Female, Male', 'Race/Ethnicity, Customized')\nORDER BY s.nct_id, rg.title, bm.title\nLIMIT 100;",
+      "notes": "Uses the result_groups bridge pattern: filter rg.result_type = 'Baseline' (Title Case) to get baseline-specific arms. Common bm.title values include 'Age', 'Sex: Female, Male', 'Race/Ethnicity, Customized'. Results domain only — only populated for trials with posted results."
+    },
+    {
+      "intent": "Compare adverse events across treatment arms for completed trials",
+      "when_to_use": "User asks to compare adverse events between arms, safety comparison between treatment and control, or adverse event rates per group",
+      "tables": ["studies", "conditions", "result_groups", "reported_events"],
+      "sql": "SELECT s.nct_id, s.brief_title, rg.title AS arm_title,\n       re.event_type, re.organ_system, re.adverse_event_term,\n       re.subjects_affected, re.subjects_at_risk\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.result_groups rg ON s.nct_id = rg.nct_id\n  AND rg.result_type = 'Reported Event'\nJOIN ctgov.reported_events re ON rg.id = re.result_group_id\nWHERE UPPER(s.overall_status) = 'COMPLETED'\n  AND cond.downcase_name ILIKE '%{condition}%'\n  AND re.event_type = 'serious'\nORDER BY s.nct_id, rg.title, re.subjects_affected DESC\nLIMIT 100;",
+      "notes": "Uses result_groups with result_type = 'Reported Event' to separate AE data by arm. The rg.title column identifies each arm (e.g. 'Drug A 10mg', 'Placebo'). Compare subjects_affected/subjects_at_risk across arms to calculate incidence rates. Change event_type to 'other' for non-serious AEs."
+    },
+    {
+      "intent": "Get efficacy outcome measurements broken down by treatment arm",
+      "when_to_use": "User asks about outcome results per arm, efficacy data by treatment group, or comparing measurement values across arms",
+      "tables": ["studies", "conditions", "outcomes", "outcome_measurements", "result_groups"],
+      "sql": "SELECT s.nct_id, s.brief_title, o.title AS outcome_title, o.outcome_type,\n       rg.title AS arm_title,\n       om.param_type, om.param_value_num, om.units,\n       om.dispersion_type, om.dispersion_value_num\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.outcomes o ON s.nct_id = o.nct_id\nJOIN ctgov.outcome_measurements om ON o.id = om.outcome_id\nJOIN ctgov.result_groups rg ON om.result_group_id = rg.id\nWHERE UPPER(s.overall_status) = 'COMPLETED'\n  AND cond.downcase_name ILIKE '%{condition}%'\n  AND o.outcome_type = 'primary'\nORDER BY s.nct_id, o.title, rg.title\nLIMIT 100;",
+      "notes": "Demonstrates the dual-join pattern: outcome_measurements links to outcomes via outcome_id AND to result_groups via result_group_id. This gives per-arm efficacy data for each outcome. Filter o.outcome_type = 'primary' for primary endpoints (lowercase values: primary, secondary, other). Results domain only."
+    },
+    {
+      "intent": "Track participant flow — enrollment, completion, and dropout reasons per arm",
+      "when_to_use": "User asks about how many participants completed the study, dropout rates, withdrawal reasons, or participant retention by arm",
+      "tables": ["studies", "conditions", "result_groups", "milestones", "drop_withdrawals"],
+      "sql": "SELECT s.nct_id, s.brief_title, rg.title AS arm_title,\n       ms.title AS milestone, ms.period, ms.count AS milestone_count,\n       dw.reason AS withdrawal_reason, dw.count AS withdrawal_count\nFROM ctgov.studies s\nJOIN ctgov.conditions cond ON s.nct_id = cond.nct_id\nJOIN ctgov.result_groups rg ON s.nct_id = rg.nct_id\n  AND rg.result_type = 'Participant Flow'\nLEFT JOIN ctgov.milestones ms ON rg.id = ms.result_group_id\nLEFT JOIN ctgov.drop_withdrawals dw ON rg.id = dw.result_group_id\n  AND dw.period = ms.period\nWHERE UPPER(s.overall_status) = 'COMPLETED'\n  AND cond.downcase_name ILIKE '%{condition}%'\nORDER BY s.nct_id, rg.title, ms.period, ms.title\nLIMIT 100;",
+      "notes": "Uses result_groups with result_type = 'Participant Flow' for flow-specific arms. LEFT JOINs milestones and drop_withdrawals because not all arms have dropouts. Common milestone titles: 'STARTED', 'COMPLETED'. The period column groups milestones into study phases (e.g. 'Overall Study'). drop_withdrawals shares the same period values and links through result_group_id."
+    },
+    {
+      "intent": "Get complete statistical analysis results with arm identification",
+      "when_to_use": "User asks about treatment comparison statistics with arm details, which arms were compared in the analysis, or full outcome analysis pipeline",
+      "tables": ["studies", "outcomes", "outcome_analyses", "outcome_analysis_groups", "result_groups"],
+      "sql": "SELECT s.nct_id, s.brief_title, o.title AS outcome_title,\n       oa.param_type AS estimate_type, oa.param_value AS estimate_value,\n       oa.p_value, oa.method AS statistical_method,\n       oa.ci_n_sides, oa.ci_lower_limit, oa.ci_upper_limit,\n       rg.title AS compared_arm, rg.ctgov_group_code\nFROM ctgov.studies s\nJOIN ctgov.outcomes o ON s.nct_id = o.nct_id\nJOIN ctgov.outcome_analyses oa ON o.id = oa.outcome_id\nJOIN ctgov.outcome_analysis_groups oag ON oa.id = oag.outcome_analysis_id\nJOIN ctgov.result_groups rg ON oag.result_group_id = rg.id\nWHERE s.nct_id = '{nct_id}'\nORDER BY o.title, oa.id, rg.ctgov_group_code;",
+      "notes": "Chains through the full results hierarchy: studies -> outcomes -> outcome_analyses -> outcome_analysis_groups -> result_groups. This is the ONLY way to identify which arms were compared in each statistical analysis. outcome_analysis_groups is a bridge table — each analysis typically has 2 rows (one per compared arm). The param_type in outcome_analyses is free text (e.g. 'Mean Difference', 'Odds Ratio (OR)', 'Hazard Ratio (HR)')."
     }
   ],
   "sql_conventions": [
@@ -100,6 +135,7 @@
     "Never use SQL reserved words as table aliases (DO, AS, GROUP, ORDER, etc.). Use descriptive aliases: do_ut for design_outcomes, cond for conditions, grp for result_groups, sp for sponsors.",
     "Add LIMIT 100 unless the user explicitly requests more rows or the query is an aggregation.",
     "Use COUNT(DISTINCT s.nct_id) when counting trials to avoid inflated counts from many-to-one joins.",
-    "When joining multiple many-per-study tables, consider using DISTINCT to avoid row multiplication."
+    "When joining multiple many-per-study tables, consider using DISTINCT to avoid row multiplication.",
+    "When joining Results-domain tables through result_groups, filter rg.result_type to scope the groups. Values are Title Case: 'Baseline', 'Outcome', 'Reported Event', 'Participant Flow'. Not all joins require this filter — joins through outcome_measurements or outcome_analysis_groups already constrain the group type."
   ]
 }

@@ -189,5 +189,44 @@
       },
       "note": "For alternative names/synonyms, join to intervention_other_names."
     }
+  ],
+  "common_pitfalls": [
+    {
+      "pitfall": "Free-text search requires ILIKE",
+      "explanation": "Columns like conditions.name, interventions.name, and eligibilities.criteria contain free-text sponsor-entered data with inconsistent casing and spelling. Always use ILIKE for pattern matching. For conditions, prefer conditions.downcase_name ILIKE '%term%' which is already lowercase. Never use = for these columns unless you have the exact value.",
+      "example_wrong": "WHERE conditions.name = 'diabetes'",
+      "example_correct": "WHERE cond.downcase_name ILIKE '%diabetes%'"
+    },
+    {
+      "pitfall": "NULL prevalence in Results-domain tables",
+      "explanation": "Only ~13% of studies have posted results, so Results-domain tables (outcomes, outcome_measurements, baseline_measurements, reported_events, etc.) are empty for most studies. Even within studies that have results, columns like dispersion_type, category, and classification are frequently NULL. Always use LEFT JOIN when mixing Protocol and Results tables, and consider adding IS NOT NULL filters or COALESCE for display.",
+      "example": "LEFT JOIN ctgov.outcome_measurements om ON o.id = om.outcome_id  -- use LEFT JOIN, not INNER JOIN, if you want all outcomes even those without measurements"
+    },
+    {
+      "pitfall": "result_groups is the bridge to arm-level results data",
+      "explanation": "To get results data broken down by treatment arm, you MUST join through result_groups. It is the central hub connecting arms/groups to baseline_measurements, outcome_measurements, outcome_counts, reported_events, milestones, and drop_withdrawals via result_group_id. Filter result_groups.result_type to scope: 'Baseline', 'Outcome', 'Reported Event', 'Participant Flow' (Title Case, not UPPER_SNAKE_CASE). Without this join, you get aggregate data with no arm identification.",
+      "join_pattern": "JOIN ctgov.result_groups rg ON s.nct_id = rg.nct_id AND rg.result_type = 'Baseline'  THEN  JOIN ctgov.baseline_measurements bm ON rg.id = bm.result_group_id"
+    },
+    {
+      "pitfall": "Aggregation required for results tables",
+      "explanation": "Results tables contain multiple rows per study per group per measure. For example, baseline_measurements may have rows for Age, Sex, Race each with multiple categories, all for each arm. outcome_measurements has rows for each time point, category, and classification. Always use appropriate GROUP BY and aggregation (SUM, AVG, COUNT) or accept the granular row-level data. Without aggregation, joining multiple results tables can cause severe row multiplication.",
+      "example": "SELECT s.nct_id, rg.title, COUNT(DISTINCT bm.title) AS n_measures FROM ... GROUP BY s.nct_id, rg.title"
+    },
+    {
+      "pitfall": "Always use ctgov schema prefix",
+      "explanation": "All AACT tables live in the ctgov schema. Queries without the schema prefix will fail because the default search_path does not include ctgov. Always write ctgov.studies, ctgov.conditions, etc.",
+      "example_wrong": "SELECT * FROM studies",
+      "example_correct": "SELECT * FROM ctgov.studies"
+    },
+    {
+      "pitfall": "Case sensitivity in enum columns varies by table",
+      "explanation": "Most enum columns in Protocol-domain tables use UPPER_SNAKE_CASE (e.g. overall_status = 'RECRUITING', phase = 'PHASE2', allocation = 'RANDOMIZED'). However, some columns use different conventions. Always check column profiles (aact://column-profiles/{table}) to verify exact values before writing WHERE clauses.",
+      "key_exceptions": {
+        "result_groups.result_type": "Title Case: 'Baseline', 'Outcome', 'Reported Event', 'Participant Flow'",
+        "reported_events.event_type": "lowercase: 'serious', 'other'",
+        "outcomes.outcome_type": "lowercase: 'primary', 'secondary', 'other'",
+        "design_outcomes.outcome_type": "lowercase: 'primary', 'secondary', 'other'"
+      }
+    }
   ]
 }

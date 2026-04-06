@@ -511,6 +511,29 @@ def _format_glossary() -> str:
             lines.append(f"  NOTE: {entry['note']}")
         lines.append("")
 
+    # Common pitfalls
+    pitfalls = _GLOSSARY.get("common_pitfalls", [])
+    if pitfalls:
+        lines.append("COMMON PITFALLS")
+        lines.append("-" * 40)
+        lines.append("")
+
+        for i, entry in enumerate(pitfalls, 1):
+            lines.append(f"Pitfall {i}: {entry['pitfall']}")
+            lines.append(f"  {entry['explanation']}")
+            if "example_wrong" in entry:
+                lines.append(f"  WRONG:   {entry['example_wrong']}")
+            if "example_correct" in entry:
+                lines.append(f"  CORRECT: {entry['example_correct']}")
+            if "example" in entry:
+                lines.append(f"  Example: {entry['example']}")
+            if "join_pattern" in entry:
+                lines.append(f"  Pattern: {entry['join_pattern']}")
+            if "key_exceptions" in entry:
+                for col, desc in entry["key_exceptions"].items():
+                    lines.append(f"    {col}: {desc}")
+            lines.append("")
+
     return "\n".join(lines) + "\n"
 
 

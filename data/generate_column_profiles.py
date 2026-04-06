@@ -103,12 +103,21 @@ COLUMNS_TO_PROFILE = [
     ("outcome_measurements", "param_type", "enum"),
     ("outcome_measurements", "dispersion_type", "enum"),
     ("outcome_measurements", "category", "auto"),
+    ("outcome_measurements", "title", "text"),
+    ("outcome_measurements", "units", "auto"),
+    ("outcome_measurements", "classification", "auto"),
+
+    # --- outcome_counts ---
+    ("outcome_counts", "scope", "auto"),
+    ("outcome_counts", "units", "auto"),
 
     # --- outcome_analyses ---
     ("outcome_analyses", "param_type", "enum"),
     ("outcome_analyses", "dispersion_type", "enum"),
     ("outcome_analyses", "method", "auto"),
     ("outcome_analyses", "non_inferiority_type", "enum"),
+    ("outcome_analyses", "ci_n_sides", "enum"),
+    ("outcome_analyses", "p_value_modifier", "enum"),
 
     # --- designs ---
     ("designs", "allocation", "enum"),
@@ -139,6 +148,8 @@ COLUMNS_TO_PROFILE = [
     # --- reported_events ---
     ("reported_events", "event_type", "enum"),
     ("reported_events", "assessment", "auto"),
+    ("reported_events", "organ_system", "auto"),
+    ("reported_events", "adverse_event_term", "text"),
 
     # --- countries ---
     ("countries", "name", "auto"),
@@ -156,6 +167,19 @@ COLUMNS_TO_PROFILE = [
     # --- baseline_measurements ---
     ("baseline_measurements", "param_type", "enum"),
     ("baseline_measurements", "dispersion_type", "enum"),
+    ("baseline_measurements", "title", "text"),
+    ("baseline_measurements", "units", "auto"),
+    ("baseline_measurements", "category", "auto"),
+    ("baseline_measurements", "classification", "auto"),
+
+    # --- milestones ---
+    ("milestones", "title", "auto"),
+    ("milestones", "period", "auto"),
+    ("milestones", "count_units", "auto"),
+
+    # --- drop_withdrawals ---
+    ("drop_withdrawals", "period", "auto"),
+    ("drop_withdrawals", "reason", "auto"),
 
     # --- result_groups ---
     ("result_groups", "result_type", "enum"),
